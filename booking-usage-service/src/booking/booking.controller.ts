@@ -2,6 +2,9 @@ import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common'
 import { BookingService } from './booking.service';
 import { Booking } from './booking.entity';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { CreateBookingDto } from './dto/createBooking.dto';
+import { UpdateBookingDto } from './dto/update-booking.dto';
+import { BookingIdDto } from './dto/booking-Id.dto';
 
 @ApiTags('booking')
 @Controller('bookings')
@@ -11,7 +14,7 @@ export class BookingController {
   
   @Post()
   @ApiOperation({ summary: 'Tạo booking (đặt lịch xe) mới' })
-  async createBooking(@Body() data: Partial<Booking>) {
+  async createBooking(@Body() data: CreateBookingDto) {
     return this.bookingService.createBooking(data);
   }
 
