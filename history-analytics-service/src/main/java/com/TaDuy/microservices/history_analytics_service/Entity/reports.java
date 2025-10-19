@@ -3,14 +3,13 @@ package com.TaDuy.microservices.history_analytics_service.Entity;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
 @Data
 @Document(collection = "reports")
-public class reports {
+public class Reports {
     @Id
     private String report_id;
 
@@ -23,10 +22,6 @@ public class reports {
     private String format;
 
     private LocalDateTime generated_at;
-
-
-
-
 
 
 }

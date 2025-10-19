@@ -2,7 +2,7 @@ package com.TaDuy.microservices.history_analytics_service.DTO;
 
 import java.time.LocalDateTime;
 
-public class reportDTO {
+public class ReportDTO {
     private String report_id;
 
     private String user_id;

@@ -9,12 +9,12 @@ import java.time.LocalDateTime;
 
 @Data
 @Document(collection = "ai_analysis")
-public class aiAnalysis {
+public class AiAnalysis {
     @Id
     private String analysis_id;
     private String usage_id;
     @DBRef
-    private reports reports;
+    private Reports reports;
     private String key_metrics;
     private LocalDateTime analysis_date;
     private String model_used;
