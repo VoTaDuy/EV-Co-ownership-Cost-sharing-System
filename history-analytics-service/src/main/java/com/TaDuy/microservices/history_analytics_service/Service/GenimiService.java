@@ -29,6 +29,8 @@ public class GenimiService implements GenimiServiceImp {
     public String generateReport(String prompt) {
         String url = genimiConfig.getUrl() + "?key=" + genimiConfig.getApiKey();
 
+        System.out.println(url);
+
         Map<String, Object> body = Map.of(
                 "contents", new Object[]{
                         Map.of("parts", new Object[]{Map.of("text", prompt)})
