@@ -26,11 +26,14 @@ export class Booking {
   })
   booking_status: BookingStatus;
 
-  @Column({ type: 'datetime' })
-  start_time: Date;
+  @Column({ type: 'date' })
+  booking_date: Date;
 
-  @Column({ type: 'datetime', nullable: true })
-  end_time: Date;
+  @Column({ type: 'time' })
+  start_time: string;
+
+  @Column({ type: 'time', nullable: true })
+  end_time: string;
 
   @Column({ nullable: true })
   cancel_reason: string;

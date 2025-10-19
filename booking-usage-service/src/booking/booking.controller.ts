@@ -27,19 +27,19 @@ export class BookingController {
 
   @Get(':id')
   @ApiOperation({ summary: 'Lấy booking (đặt lịch xe) theo ID của booking đó' })
-  async getBookingById(@Param('id') id: string) {
-    return this.bookingService.getBookingById(id);
+  async getBookingById(@Param() params: BookingIdDto) {
+    return this.bookingService.getBookingById(params.id);
   }
 
   @Put(':id')
   @ApiOperation({ summary: 'Cập nhật thông tin booking (đặt lịch xe)' })
-  async updateBooking(@Param('id') id: string, @Body() data: Partial<Booking>) {
-    return this.bookingService.updateBooking(id, data);
+  async updateBooking(@Param() params: BookingIdDto, @Body() data: UpdateBookingDto) {
+    return this.bookingService.updateBooking(params.id, data);
   }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Xóa booking (đặt lịch xe)' })
-  async deleteBooking(@Param('id') id: string) {
-    return this.bookingService.deleteBooking(id);
+  async deleteBooking(@Param() params: BookingIdDto) {
+    return this.bookingService.deleteBooking(params.id);
   }
 }
