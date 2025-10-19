@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Vehicle } from './vehicles.entity';
+import { CreateVehicleDto, UpdateVehicleDto } from './vehicles.dto';
 
 @Injectable()
 export class VehiclesService {
@@ -10,22 +11,32 @@ export class VehiclesService {
     private readonly vehicleRepo: Repository<Vehicle>,
   ) {}
 
-  findAll() {
-    return this.vehicleRepo.find();
-  }
-
-  findOne(id: string) {
-    return this.vehicleRepo.findOne({ where: { vehicle_id: id } });
-  }
-
-  create(data: Partial<Vehicle>) {
+  async create(data: CreateVehicleDto): Promise<Vehicle> {
     const vehicle = this.vehicleRepo.create(data);
-    return this.vehicleRepo.save(vehicle);
+    return await this.vehicleRepo.save(vehicle);
   }
 
-  async update(id: string, data: Partial<Vehicle>) {
-    await this.vehicleRepo.update(id, data);
-    return this.findOne(id);
+  async findAll(): Promise<Vehicle[]> {
+    return await this.vehicleRepo.find();
+  }
+
+  async findOne(id: string): Promise<Vehicle> {
+    const vehicle = await this.vehicleRepo.findOne({
+      where: { vehicle_id: id },
+    });
+    if (!vehicle) throw new NotFoundException('Vehicle not found');
+    return vehicle;
+  }
+
+  async update(id: string, data: UpdateVehicleDto): Promise<Vehicle> {
+    const vehicle = await this.findOne(id);
+    Object.assign(vehicle, data);
+    return await this.vehicleRepo.save(vehicle);
+  }
+
+  async delete(id: string): Promise<void> {
+    const result = await this.vehicleRepo.delete(id);
+    if (result.affected === 0) throw new NotFoundException('Vehicle not found');
   }
 
   async updateImages(
@@ -35,10 +46,5 @@ export class VehiclesService {
   ) {
     await this.vehicleRepo.update(id, { image_url, spec_image_urls });
     return this.findOne(id);
-  }
-
-  async remove(id: string) {
-    await this.vehicleRepo.delete(id);
-    return { deleted: true };
   }
 }

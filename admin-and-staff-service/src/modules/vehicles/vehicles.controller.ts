@@ -1,5 +1,4 @@
 import { VehiclesService } from './vehicles.service';
-import { Vehicle } from './vehicles.entity';
 import {
   Controller,
   Get,
@@ -8,14 +7,21 @@ import {
   Delete,
   Body,
   Param,
+  Patch,
 } from '@nestjs/common';
+import { CreateVehicleDto, UpdateVehicleDto } from './vehicles.dto';
 
 @Controller('vehicles')
 export class VehiclesController {
   constructor(private readonly vehiclesService: VehiclesService) {}
 
+  @Post()
+  create(@Body() dto: CreateVehicleDto) {
+    return this.vehiclesService.create(dto);
+  }
+
   @Get()
-  findAll(): Promise<Vehicle[]> {
+  findAll() {
     return this.vehiclesService.findAll();
   }
 
@@ -24,16 +30,15 @@ export class VehiclesController {
     return this.vehiclesService.findOne(id);
   }
 
-  @Post()
-  create(@Body() data: Partial<Vehicle>) {
-    return this.vehiclesService.create(data);
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() dto: UpdateVehicleDto) {
+    return this.vehiclesService.update(id, dto);
   }
 
-  @Put(':id')
-  update(@Param('id') id: string, @Body() data: Partial<Vehicle>) {
-    return this.vehiclesService.update(id, data);
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.vehiclesService.delete(id);
   }
-
   // Cập nhật ảnh xe
   @Put(':id/images')
   updateImages(
@@ -42,10 +47,5 @@ export class VehiclesController {
   ) {
     const { image_url, spec_image_urls } = body;
     return this.vehiclesService.updateImages(id, image_url, spec_image_urls);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.vehiclesService.remove(id);
   }
 }
