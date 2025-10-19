@@ -1,4 +1,3 @@
-import { OwnershipGroupsModule } from './modules/ownership-groups/ownership-groups.module';
 import { OwnershipGroupsService } from './modules/ownership-groups/ownership-groups.service';
 import { OwnershipGroupsController } from './modules/ownership-groups/ownership-groups.controller';
 import { Module } from '@nestjs/common';
@@ -6,11 +5,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { VehiclesModule } from './modules/vehicles/vehicles.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersModule } from './modules/users/users.module';
+import { ServiceTasksModule } from './modules/service-tasks/service-tasks.module';
+import { OwnershipGroupsModule } from './modules/ownership-groups/ownership-groups.module';
 
 @Module({
   imports: [
-    OwnershipGroupsModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
@@ -22,7 +21,8 @@ import { UsersModule } from './modules/users/users.module';
       synchronize: true, // chỉ bật khi dev
     }),
     VehiclesModule,
-    UsersModule,
+    ServiceTasksModule,
+    OwnershipGroupsModule,
   ],
   controllers: [OwnershipGroupsController, AppController],
   providers: [OwnershipGroupsService, AppService],
