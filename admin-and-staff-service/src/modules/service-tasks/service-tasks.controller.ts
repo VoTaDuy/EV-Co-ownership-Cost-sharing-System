@@ -6,16 +6,26 @@ import {
   Body,
   Put,
   Delete,
+  Patch,
 } from '@nestjs/common';
 import { ServiceTasksService } from './service-tasks.service';
 import { ServiceTask } from './service-tasks.entity';
+import {
+  CreateServiceTaskDto,
+  UpdateServiceTaskDto,
+} from './service-tasks.dto';
 
 @Controller('service-tasks')
 export class ServiceTasksController {
   constructor(private readonly serviceTasksService: ServiceTasksService) {}
 
+  @Post()
+  create(@Body() dto: CreateServiceTaskDto) {
+    return this.serviceTasksService.create(dto);
+  }
+
   @Get()
-  findAll(): Promise<ServiceTask[]> {
+  findAll() {
     return this.serviceTasksService.findAll();
   }
 
@@ -24,14 +34,14 @@ export class ServiceTasksController {
     return this.serviceTasksService.findOne(id);
   }
 
-  @Post()
-  create(@Body() data: Partial<ServiceTask>) {
-    return this.serviceTasksService.create(data);
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() dto: UpdateServiceTaskDto) {
+    return this.serviceTasksService.update(id, dto);
   }
 
-  @Put(':id')
-  update(@Param('id') id: string, @Body() data: Partial<ServiceTask>) {
-    return this.serviceTasksService.update(id, data);
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.serviceTasksService.delete(id);
   }
 
   // Cập nhật trạng thái (pending → in_progress → completed, v.v.)
@@ -41,10 +51,5 @@ export class ServiceTasksController {
     @Body('status') status: ServiceTask['status'],
   ) {
     return this.serviceTasksService.updateStatus(id, status);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.serviceTasksService.remove(id);
   }
 }

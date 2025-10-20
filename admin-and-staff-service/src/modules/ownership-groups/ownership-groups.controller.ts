@@ -8,7 +8,10 @@ import {
   Delete,
 } from '@nestjs/common';
 import { OwnershipGroupsService } from './ownership-groups.service';
-import { OwnershipGroup } from './ownership-groups.entity';
+import {
+  CreateOwnershipGroupDto,
+  UpdateOwnershipGroupDto,
+} from './ownership-groups.dto';
 
 @Controller('ownership-groups')
 export class OwnershipGroupsController {
@@ -17,8 +20,8 @@ export class OwnershipGroupsController {
   ) {}
 
   @Post()
-  create(@Body() data: Partial<OwnershipGroup>) {
-    return this.ownershipGroupsService.create(data);
+  create(@Body() dto: CreateOwnershipGroupDto) {
+    return this.ownershipGroupsService.create(dto);
   }
 
   @Get()
@@ -32,8 +35,8 @@ export class OwnershipGroupsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() data: Partial<OwnershipGroup>) {
-    return this.ownershipGroupsService.update(id, data);
+  update(@Param('id') id: string, @Body() dto: UpdateOwnershipGroupDto) {
+    return this.ownershipGroupsService.update(id, dto);
   }
 
   @Delete(':id')

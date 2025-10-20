@@ -2,6 +2,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ServiceTask } from './service-tasks.entity';
+import {
+  CreateServiceTaskDto,
+  UpdateServiceTaskDto,
+} from './service-tasks.dto';
 
 @Injectable()
 export class ServiceTasksService {
@@ -10,27 +14,34 @@ export class ServiceTasksService {
     private readonly taskRepo: Repository<ServiceTask>,
   ) {}
 
-  findAll() {
-    return this.taskRepo.find({ relations: ['vehicle'] });
+  async create(data: CreateServiceTaskDto): Promise<ServiceTask> {
+    const task = this.taskRepo.create(data);
+    return await this.taskRepo.save(task);
   }
 
-  findOne(id: string) {
-    return this.taskRepo.findOne({
+  async findAll(): Promise<ServiceTask[]> {
+    return await this.taskRepo.find({ relations: ['vehicle'] });
+  }
+
+  async findOne(id: string): Promise<ServiceTask> {
+    const task = await this.taskRepo.findOne({
       where: { task_id: id },
       relations: ['vehicle'],
     });
+    if (!task) throw new NotFoundException('Service task not found');
+    return task;
   }
 
-  async create(data: Partial<ServiceTask>) {
-    const task = this.taskRepo.create(data);
-    return this.taskRepo.save(task);
+  async update(id: string, data: UpdateServiceTaskDto): Promise<ServiceTask> {
+    const task = await this.findOne(id);
+    Object.assign(task, data);
+    return await this.taskRepo.save(task);
   }
 
-  async update(id: string, data: Partial<ServiceTask>) {
-    const task = await this.taskRepo.findOne({ where: { task_id: id } });
-    if (!task) throw new NotFoundException(`Task ${id} not found`);
-    await this.taskRepo.update(id, { ...data, updated_at: new Date() });
-    return this.findOne(id);
+  async delete(id: string): Promise<void> {
+    const result = await this.taskRepo.delete(id);
+    if (result.affected === 0)
+      throw new NotFoundException('Service task not found');
   }
 
   async updateStatus(id: string, status: ServiceTask['status']) {
@@ -40,10 +51,5 @@ export class ServiceTasksService {
     task.updated_at = new Date();
     if (status === 'completed') task.completed_at = new Date();
     return this.taskRepo.save(task);
-  }
-
-  async remove(id: string) {
-    await this.taskRepo.delete(id);
-    return { deleted: true };
   }
 }

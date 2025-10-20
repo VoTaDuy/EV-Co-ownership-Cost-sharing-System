@@ -3,7 +3,7 @@ package com.TaDuy.microservices.history_analytics_service.DTO;
 
 import java.time.LocalDateTime;
 
-public class aiAnalysisDTO {
+public class AiAnalysisDTO {
     private String analysis_id;
     private String usage_id;
     private String report_id;

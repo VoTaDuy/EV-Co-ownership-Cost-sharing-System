@@ -6,6 +6,10 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { OwnershipGroup } from './ownership-groups.entity';
+import {
+  CreateOwnershipGroupDto,
+  UpdateOwnershipGroupDto,
+} from './ownership-groups.dto';
 @Injectable()
 export class OwnershipGroupsService {
   constructor(
@@ -14,16 +18,16 @@ export class OwnershipGroupsService {
   ) {}
 
   // 🟢 Tạo mới group — mỗi xe chỉ được thuộc 1 nhóm
-  async create(data: Partial<OwnershipGroup>): Promise<OwnershipGroup> {
+  async create(dto: CreateOwnershipGroupDto): Promise<OwnershipGroup> {
     // 1️⃣ Kiểm tra xem xe đã thuộc group nào chưa
     const existing = await this.groupRepo.findOne({
-      where: { vehicle_id: data.vehicle_id },
+      where: { vehicle_id: dto.vehicle_id },
     });
 
     if (existing) {
       throw new BadRequestException('Xe này đã thuộc về một nhóm khác.');
     }
-    const group = this.groupRepo.create(data);
+    const group = this.groupRepo.create(dto);
     return await this.groupRepo.save(group);
   }
 
@@ -42,10 +46,10 @@ export class OwnershipGroupsService {
 
   async update(
     id: string,
-    data: Partial<OwnershipGroup>,
+    dto: UpdateOwnershipGroupDto,
   ): Promise<OwnershipGroup> {
     const group = await this.findOne(id);
-    Object.assign(group, data);
+    Object.assign(group, dto);
     return await this.groupRepo.save(group);
   }
 
