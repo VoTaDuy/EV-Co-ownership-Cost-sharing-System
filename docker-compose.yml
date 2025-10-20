@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+  admin-and-staff-service:
+    build: ./admin-and-staff-service
+    container_name: admin-and-staff-service
+    ports:
+      - "3001:3000"
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_HOST: postgres        # ✅ Tên service DB trong cùng network
+      DATABASE_PORT: 5432
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: 123456
+      DATABASE_NAME: postgres
+    networks:
+      - ev-network                   # ✅ Cho vào cùng network với DB
+
+  postgres:
+    image: postgres:17
+    container_name: ev-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: postgres
+    ports:
+      - "5433:5433"                  # ✅ Cho phép DBeaver kết nối qua localhost:5433
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - ev-network                   # ✅ Nằm cùng mạng với service
+
+networks:
+  ev-network:                        # ✅ Khai báo mạng riêng cho các container
+
+volumes:
+  pgdata:
