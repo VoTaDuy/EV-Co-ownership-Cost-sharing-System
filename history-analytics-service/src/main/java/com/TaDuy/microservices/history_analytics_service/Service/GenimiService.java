@@ -51,5 +51,9 @@ public class GenimiService implements GenimiServiceImp {
         }catch (Exception e ){
             return "Error analysis response from genimi: " + e.getMessage();
         }
+
+
+
+
     }
 }
