@@ -42,7 +42,7 @@ public class GenimiService implements GenimiServiceImp {
         HttpEntity<Map<String,Object>> request = new HttpEntity<>(body, headers);
         ResponseEntity<Map> response = restTemplate.postForEntity(url, request, Map.class);
 
-        if (response.getBody() == null) return "no response from genimi. ";
+        if (response.getBody() == null) return "no response from genimi.";
         try {
             Map content = (Map) ((Map)((java.util.List<?>)response.getBody().get("candidates")).get(0)).get("content");
             Map part = (Map) ((java.util.List)content.get("parts")).get(0);
