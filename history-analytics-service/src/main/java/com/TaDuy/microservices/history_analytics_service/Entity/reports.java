@@ -23,5 +23,8 @@ public class Reports {
 
     private LocalDateTime generated_at;
 
+    private String pdfUrl;
+
+    private String excelUrl;
 
 }
