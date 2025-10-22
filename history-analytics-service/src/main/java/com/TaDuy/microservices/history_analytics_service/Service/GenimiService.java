@@ -2,8 +2,12 @@ package com.TaDuy.microservices.history_analytics_service.Service;
 
 
 import com.TaDuy.microservices.history_analytics_service.Config.GenimiConfig;
+import com.TaDuy.microservices.history_analytics_service.Entity.Reports;
+import com.TaDuy.microservices.history_analytics_service.Repository.ReportRepository;
+import com.TaDuy.microservices.history_analytics_service.Service.Imp.CloudinaryServiceImp;
 import com.TaDuy.microservices.history_analytics_service.Service.Imp.GenimiServiceImp;
 import com.TaDuy.microservices.history_analytics_service.Service.Imp.ReportServiceImp;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.File;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Objects;
 
@@ -19,6 +25,12 @@ import static javax.swing.UIManager.get;
 
 @Service
 public class GenimiService implements GenimiServiceImp {
+    @Autowired
+    CloudinaryServiceImp cloudinaryServiceImp;
+
+    @Autowired
+    ReportRepository reportRepository;
+
     @Autowired
     private ReportServiceImp reportServiceImp;
 
@@ -56,9 +68,26 @@ public class GenimiService implements GenimiServiceImp {
 
             String excelPath = reportServiceImp.createdExcelFromText(text);
 
-            return text;
+            String pdfUrl = cloudinaryServiceImp.uploadFile(new File(pdfPath), "reports/pdf");
 
+            String excelUrl = cloudinaryServiceImp.uploadFile(new File(excelPath), "reports/excel");
 
+            Reports reports = new Reports();
+            reports.setGenerated_at(LocalDateTime.now());
+            reports.setType("ai-generated");
+            reports.setPdfUrl(pdfUrl);
+            reports.setExcelUrl(excelUrl);
+            reportRepository.save(reports);
+
+            new File(pdfPath).delete();
+            new File(excelPath).delete();
+
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.writeValueAsString(Map.of(
+                    "pdfUrl", pdfUrl,
+                    "excelUrl", excelUrl,
+                    "summary", text
+            ));
         }catch (Exception e ){
             return "Error analysis response from genimi: " + e.getMessage();
         }
