@@ -65,8 +65,10 @@ public class GenimiService implements GenimiServiceImp {
             String text =  part.get("text").toString();
 
             String pdfPath = reportServiceImp.createdPdfFromText(text);
+            System.out.println(" PDF created at: " + pdfPath);
 
             String excelPath = reportServiceImp.createdExcelFromText(text);
+            System.out.println(" PDF created at: " + excelPath);
 
             String pdfUrl = cloudinaryServiceImp.uploadFile(new File(pdfPath), "reports/pdf");
 
@@ -79,8 +81,13 @@ public class GenimiService implements GenimiServiceImp {
             reports.setExcelUrl(excelUrl);
             reportRepository.save(reports);
 
-            new File(pdfPath).delete();
-            new File(excelPath).delete();
+            File pdfFile = new File(pdfPath);
+            File excelFile = new File(excelPath);
+
+            if (pdfFile.exists()) pdfFile.delete();
+            if (excelFile.exists()) excelFile.delete();
+
+
 
             ObjectMapper mapper = new ObjectMapper();
             return mapper.writeValueAsString(Map.of(

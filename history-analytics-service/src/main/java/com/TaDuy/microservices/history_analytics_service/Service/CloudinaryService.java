@@ -31,16 +31,15 @@ public class CloudinaryService implements CloudinaryServiceImp {
     }
 
     @Override
-    public String uploadFile(File file, String folder) {
+    public String uploadFile(File file, String folderName) throws IOException {
+        String resourceType = "auto";
+        Map<String, Object> params = ObjectUtils.asMap(
+                "folder", folderName,
+                "resource_type", resourceType
+        );
 
-        try {
-            Map uploadResult = cloudinary.uploader().upload(file, ObjectUtils.asMap(
-                    "folder", folder
-            ));
-            return uploadResult.get("secure_url").toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Upload file to cloudinary failed: " + e.getMessage());
-        }
+        Map<?, ?> uploadResult = cloudinary.uploader().upload(file, params);
+        System.out.println("Uploaded file: " + uploadResult);
+        return uploadResult.get("secure_url").toString();
     }
 }
