@@ -8,9 +8,11 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.stereotype.Service;
 
 import java.io.FileOutputStream;
 
+@Service
 public class ReportService implements ReportServiceImp {
     @Override
     public String createdPdfFromText(String text) throws  Exception {
