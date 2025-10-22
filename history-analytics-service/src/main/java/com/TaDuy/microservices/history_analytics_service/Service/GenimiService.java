@@ -19,7 +19,6 @@ import org.springframework.web.client.RestTemplate;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.Objects;
 
 import static javax.swing.UIManager.get;
 
@@ -56,23 +55,18 @@ public class GenimiService implements GenimiServiceImp {
 
         HttpEntity<Map<String,Object>> request = new HttpEntity<>(body, headers);
         ResponseEntity<Map> response = restTemplate.postForEntity(url, request, Map.class);
-
         if (response.getBody() == null) return "no response from genimi.";
         try {
             Map content = (Map) ((Map)((java.util.List<?>)response.getBody().get("candidates")).get(0)).get("content");
             Map part = (Map) ((java.util.List)content.get("parts")).get(0);
-
             String text =  part.get("text").toString();
-
             String pdfPath = reportServiceImp.createdPdfFromText(text);
             System.out.println(" PDF created at: " + pdfPath);
-
             String excelPath = reportServiceImp.createdExcelFromText(text);
             System.out.println(" PDF created at: " + excelPath);
-
             String pdfUrl = cloudinaryServiceImp.uploadFile(new File(pdfPath), "reports/pdf");
-
             String excelUrl = cloudinaryServiceImp.uploadFile(new File(excelPath), "reports/excel");
+
 
             Reports reports = new Reports();
             reports.setGenerated_at(LocalDateTime.now());
@@ -81,14 +75,11 @@ public class GenimiService implements GenimiServiceImp {
             reports.setExcelUrl(excelUrl);
             reportRepository.save(reports);
 
+
             File pdfFile = new File(pdfPath);
             File excelFile = new File(excelPath);
-
             if (pdfFile.exists()) pdfFile.delete();
             if (excelFile.exists()) excelFile.delete();
-
-
-
             ObjectMapper mapper = new ObjectMapper();
             return mapper.writeValueAsString(Map.of(
                     "pdfUrl", pdfUrl,
@@ -98,9 +89,9 @@ public class GenimiService implements GenimiServiceImp {
         }catch (Exception e ){
             return "Error analysis response from genimi: " + e.getMessage();
         }
-
-
-
-
     }
+
+
+
+
 }

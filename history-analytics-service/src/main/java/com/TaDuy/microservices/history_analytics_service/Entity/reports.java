@@ -3,9 +3,11 @@ package com.TaDuy.microservices.history_analytics_service.Entity;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Document(collection = "reports")
@@ -19,13 +21,17 @@ public class Reports {
 
     private String type;
 
-    private String format;
-
     private LocalDateTime generated_at;
 
     private String pdfUrl;
 
     private String excelUrl;
+
+    private LocalDateTime fromTime;
+
+    private LocalDateTime toTime;
+    @DBRef
+    private List<History> histories;
 
     public String getReport_id() {
         return report_id;
@@ -59,14 +65,6 @@ public class Reports {
         this.type = type;
     }
 
-    public String getFormat() {
-        return format;
-    }
-
-    public void setFormat(String format) {
-        this.format = format;
-    }
-
     public LocalDateTime getGenerated_at() {
         return generated_at;
     }
@@ -89,5 +87,21 @@ public class Reports {
 
     public void setExcelUrl(String excelUrl) {
         this.excelUrl = excelUrl;
+    }
+
+    public LocalDateTime getFromTime() {
+        return fromTime;
+    }
+
+    public void setFromTime(LocalDateTime fromTime) {
+        this.fromTime = fromTime;
+    }
+
+    public LocalDateTime getToTime() {
+        return toTime;
+    }
+
+    public void setToTime(LocalDateTime toTime) {
+        this.toTime = toTime;
     }
 }
