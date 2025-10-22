@@ -1,4 +1,4 @@
-package com.example.EV_Co_ownership.Cost_sharing.Entity;
+package com.example.EV_Co_ownership.User_and_ownership_service.Entity;
 
 import jakarta.persistence.*;
 
