@@ -9,7 +9,7 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int user_id;
 
-    @Column(name = "email  ")
+    @Column(name = "email")
     private String email;
 
     @Column(name = "role_id")
@@ -20,6 +20,9 @@ public class Users {
 
     @Column(name = "is_verified")
     private boolean is_verified;
+
+    @Column(name = "is_deleted")
+    private boolean isDeleted = false;
 
     @Column(name = "created_at")
     private String created_at;
@@ -63,6 +66,10 @@ public class Users {
     public void setIs_verified(boolean is_verified) {
         this.is_verified = is_verified;
     }
+
+    public boolean isDeleted() { return isDeleted; }
+
+    public void setDeleted(boolean deleted) { isDeleted = deleted; }
 
     public String getCreated_at() {
         return created_at;
