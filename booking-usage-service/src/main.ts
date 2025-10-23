@@ -20,10 +20,10 @@ async function bootstrap() {
   // Lấy ConfigService của NestJS để đọc env
     const configService = app.get(ConfigService);
     const dbHost = configService.get<string>('DB_HOST');
-    const port = process.env.PORT ?? 3000;
+    const port = process.env.PORT ?? 5001;
 
 
-  await app.listen(port);
+  await app.listen(process.env.PORT || 5001);
   console.log(`Server đang chạy ở: http://localhost:${port}`);
   console.log(`API Swagger docs đang khả dụng: http://localhost:${port}/api/docs`);
   console.log(`DB host: ${dbHost}`); // In ra giá trị của DB_HOST từ file .env

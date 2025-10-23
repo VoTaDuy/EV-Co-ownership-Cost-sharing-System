@@ -1,0 +1,44 @@
+services:
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-booking-usage-service
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: booking_usage_service
+      MYSQL_USER: booking_user
+      MYSQL_PASSWORD: 123456
+    ports:
+      - "3308:3306"  # ánh xạ port để truy cập từ host nếu cần
+    volumes:
+      - ./mysql_data:/var/lib/mysql  # dữ liệu MySQL sẽ không mất
+    networks:
+      - booking-network
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nest-booking-usage-service
+    restart: always
+    depends_on:
+      - mysql-db
+    environment:
+      DB_HOST: mysql-db           # kết nối nội bộ bằng service name
+      DB_PORT: 3306               # dùng port nội bộ
+      DB_USER: booking_user
+      DB_PASS: 123456
+      DB_NAME: booking_usage_service
+      PORT: 5001                  # port ứng dụng backend
+    ports:
+      - "5001:5001"               # Swagger/UI của bạn
+    volumes:
+      - .:/usr/src/app            # để hot reload khi dev (code thay đổi auto update)
+      - /usr/src/app/node_modules # tránh ghi đè node_modules trong container
+    command: npm run start:dev
+    networks:
+      - booking-network
+
+networks:
+  booking-network:
+    driver: bridge
