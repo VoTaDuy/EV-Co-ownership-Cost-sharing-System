@@ -1,6 +1,10 @@
 package com.example.EV_Co_ownership.User_and_ownership_service.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -12,8 +16,10 @@ public class Users {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "role_id")
-    private int role_id;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id")
+    private Roles roles;
 
     @Column(name = "password")
     private String password;
@@ -25,7 +31,7 @@ public class Users {
     private boolean isDeleted = false;
 
     @Column(name = "created_at")
-    private String created_at;
+    private LocalDateTime created_at;
 
     public int getUsers_id() {
         return user_id;
@@ -51,12 +57,12 @@ public class Users {
         this.password = password;
     }
 
-    public int getRole_id() {
-        return role_id;
+    public Roles getRoles() {
+        return roles;
     }
 
-    public void setRole_id(int role_id) {
-        this.role_id = role_id;
+    public void setRoles(Roles roles) {
+        this.roles = roles;
     }
 
     public boolean isIs_verified() {
@@ -71,11 +77,19 @@ public class Users {
 
     public void setDeleted(boolean deleted) { isDeleted = deleted; }
 
-    public String getCreated_at() {
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
+
+    public LocalDateTime getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(String created_at) {
+    public void setCreated_at(LocalDateTime created_at) {
         this.created_at = created_at;
     }
 }

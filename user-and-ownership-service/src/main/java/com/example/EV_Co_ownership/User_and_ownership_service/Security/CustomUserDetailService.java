@@ -1,4 +1,4 @@
-package com.example.EV_Co_ownership.User_and_ownership_service.Service;
+package com.example.EV_Co_ownership.User_and_ownership_service.Security;
 
 import com.example.EV_Co_ownership.User_and_ownership_service.Entity.Users;
 import com.example.EV_Co_ownership.User_and_ownership_service.Repository.UserRepository;

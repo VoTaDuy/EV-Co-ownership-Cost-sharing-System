@@ -24,7 +24,7 @@ services:
     # Ánh xạ cổng (port mapping)
     # Ánh xạ cổng 3306 của máy bạn vào cổng 3306 bên trong container
     ports:
-      - "3306:3306"
+      - "3307:3306"
 
     # Gắn kết volume để lưu trữ dữ liệu
     # Dữ liệu của MySQL sẽ được lưu vào volume tên là 'mysql-data'

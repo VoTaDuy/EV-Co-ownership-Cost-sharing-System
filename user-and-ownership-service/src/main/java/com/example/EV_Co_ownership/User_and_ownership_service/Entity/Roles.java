@@ -2,6 +2,9 @@ package com.example.EV_Co_ownership.User_and_ownership_service.Entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "roles")
 public class Roles {
@@ -15,6 +18,8 @@ public class Roles {
     @Column(name = "created_date")
     private String created_date;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Users> usersList;
     public int getRole_id() {
         return role_id;
     }
@@ -37,5 +42,13 @@ public class Roles {
 
     public void setCreated_date(String created_date) {
         this.created_date = created_date;
+    }
+
+    public List<Users> getUsersList() {
+        return usersList;
+    }
+
+    public void setUsersList(List<Users> usersList) {
+        this.usersList = usersList;
     }
 }
