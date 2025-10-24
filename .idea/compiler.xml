@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="EV-Co-ownership-Cost-sharing-System" target="21" />
+      <module name="EV-Co-ownership-Cost-sharing-System (1)" target="21" />
+      <module name="history-analytics-service" target="25" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
