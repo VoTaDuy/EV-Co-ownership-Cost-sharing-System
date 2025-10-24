@@ -38,10 +38,7 @@ public class CustomFilterSecurity {
         http
                 .csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(request -> request.requestMatchers(
-                                "/user/**",
-                                "/user/{userId}/delete_user",
-                                "/login/sign_in/**",
-                                "/login/Sign_up/**")
+                                "api/login/sign_in/**")
                         .permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
