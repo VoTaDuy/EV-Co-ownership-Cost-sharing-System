@@ -1,38 +1,18 @@
-package com.example.EV.Co_ownership.Cost_sharing.System.Entity;
+package com.example.EV.Co_ownership.Cost_sharing.System.DTO;
 
 import com.example.EV.Co_ownership.Cost_sharing.System.Enum.VehicleCostStatus;
-import jakarta.persistence.*;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Entity (name = "vehicle_cost")
-public class VehicleCost {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class VehicleCostDTO {
     private int cost_id;
-
-
-    @Column(name = "group_id")
     private int group_id;
-
-    @Column(name = "vehicle_id")
     private int vehicle_id;
-
-    @Column(name = "cost_name")
     private String cost_name;
-
-    @Column(name = "amount")
     private BigDecimal amount;
-
-    @Column (name = "status")
     private VehicleCostStatus status;
-
-    @Column(name = "created_at")
     private LocalDateTime created_at;
-
-    @Column(name = "updated_at")
     private LocalDateTime updated_at;
 
     public int getCost_id() {
@@ -42,7 +22,6 @@ public class VehicleCost {
     public void setCost_id(int cost_id) {
         this.cost_id = cost_id;
     }
-
 
     public int getGroup_id() {
         return group_id;

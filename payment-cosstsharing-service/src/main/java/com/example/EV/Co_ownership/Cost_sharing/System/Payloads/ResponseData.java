@@ -1,5 +1,7 @@
 package com.example.EV.Co_ownership.Cost_sharing.System.Payloads;
 
+import lombok.Data;
+
 public class ResponseData {
     private int status = 200;
     private boolean isSuccess = true;
@@ -37,4 +39,6 @@ public class ResponseData {
     public void setData(Object data) {
         this.data = data;
     }
+
+
 }
