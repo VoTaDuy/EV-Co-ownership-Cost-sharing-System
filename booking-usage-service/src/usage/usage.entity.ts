@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany, JoinColumn, OneToOne } from 'typeorm';
 import { Booking } from '../booking/booking.entity';
+import { DigitalSignature } from '../digital_signature/digital-signature.entity';
 
 @Entity({ name: 'usage_record' })
 export class UsageRecord {
@@ -30,4 +31,7 @@ export class UsageRecord {
   @OneToOne(() => Booking)
   @JoinColumn({ name: 'booking_id' })
   booking: Booking;
+
+  @OneToMany(() => DigitalSignature, (signature) => signature.usage)
+  digitalSignatures: DigitalSignature[];
 }
