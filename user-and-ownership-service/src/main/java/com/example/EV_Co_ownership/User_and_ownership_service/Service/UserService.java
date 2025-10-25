@@ -1,15 +1,19 @@
 package com.example.EV_Co_ownership.User_and_ownership_service.Service;
 
 import com.example.EV_Co_ownership.User_and_ownership_service.DTO.UserDTO;
+import com.example.EV_Co_ownership.User_and_ownership_service.Entity.Roles;
 import com.example.EV_Co_ownership.User_and_ownership_service.Entity.Users;
+import com.example.EV_Co_ownership.User_and_ownership_service.Payloads.Request.RegisterRequest;
 import com.example.EV_Co_ownership.User_and_ownership_service.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +39,6 @@ public class UserService  {
         return userDTOList;
     }
 
-
     public Users findUserById(long id) {
         return userRepository.findById((int) id)
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + id));
@@ -50,6 +53,5 @@ public class UserService  {
         userRepository.save(user);
         return user;
     }
-
 
 }

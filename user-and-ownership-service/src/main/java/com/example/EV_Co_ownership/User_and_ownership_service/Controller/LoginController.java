@@ -2,6 +2,7 @@ package com.example.EV_Co_ownership.User_and_ownership_service.Controller;
 
 
 import com.example.EV_Co_ownership.User_and_ownership_service.Entity.Users;
+import com.example.EV_Co_ownership.User_and_ownership_service.Payloads.Request.RegisterRequest;
 import com.example.EV_Co_ownership.User_and_ownership_service.Payloads.ResponseData;
 import com.example.EV_Co_ownership.User_and_ownership_service.Service.LoginService;
 import com.example.EV_Co_ownership.User_and_ownership_service.Service.UserService;
@@ -19,8 +20,7 @@ import java.util.Map;
 @RequestMapping("/api/login")
 public class LoginController {
     @Autowired
-    JwtUtilHelper  jwtUtilHelper;
-
+    JwtUtilHelper jwtUtilHelper;
     @Autowired
     LoginService loginService;
 
@@ -46,6 +46,27 @@ public class LoginController {
             responseData.setSuccess(false);
         }
         return new ResponseEntity<>(responseData, HttpStatus.OK);
+    }
 
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@RequestBody RegisterRequest request) {
+        ResponseData responseData = new ResponseData();
+        try {
+            boolean isSuccess = loginService.registerUser(request);
+            if (isSuccess) {
+                responseData.setData("User registered successfully. Please login.");
+                responseData.setSuccess(true);
+                return new ResponseEntity<>(responseData, HttpStatus.CREATED);
+            } else {
+                responseData.setData("Registration failed due to internal error.");
+                responseData.setSuccess(false);
+                return new ResponseEntity<>(responseData, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+        } catch (RuntimeException e) {
+            responseData.setData(e.getMessage());
+            responseData.setSuccess(false);
+            return new ResponseEntity<>(responseData, HttpStatus.BAD_REQUEST);
+        }
     }
 }
