@@ -1,5 +1,6 @@
 package com.example.EV.Co_ownership.Cost_sharing.System.Entity;
 
+import com.example.EV.Co_ownership.Cost_sharing.System.Enum.UserGroupRole;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -10,30 +11,29 @@ public class UserGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int user_group_id;
 
-    @Column (name = "group_id")
+    @Column(name = "group_id")
     private int group_id;
-    @Column (name = "group_name")
+
+    @Column(name = "group_name")
     private String group_name;
-    @Column (name = "description")
+
+    @Column(name = "description")
     private String description;
-    @Column (name = "created_by")
+
+    @Column(name = "created_by")
     private String created_by;
-    @Column (name = "user_id")
+
+    @Column(name = "user_id")
     private int user_id;
 
-    @Enumerated(EnumType.STRING)
-    @Column (name = "role")
-    private Role role = Role.MEMBER;
+    @Column(name = "role")
+    private UserGroupRole role;
 
-    @Column (name = "created_at")
+    @Column(name = "created_at")
     private LocalDateTime created_at;
-    @Column (name = "updated_at")
-    private LocalDateTime updated_at;
 
-    public enum Role {
-        MEMBER,
-        ADMIN
-    }
+    @Column(name = "upload_at")
+    private LocalDateTime upload_at;
 
     public int getUser_group_id() {
         return user_group_id;
@@ -83,11 +83,11 @@ public class UserGroup {
         this.user_id = user_id;
     }
 
-    public Role getRole() {
+    public UserGroupRole getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(UserGroupRole role) {
         this.role = role;
     }
 
@@ -99,11 +99,11 @@ public class UserGroup {
         this.created_at = created_at;
     }
 
-    public LocalDateTime getUpdated_at() {
-        return updated_at;
+    public LocalDateTime getUpload_at() {
+        return upload_at;
     }
 
-    public void setUpdated_at(LocalDateTime updated_at) {
-        this.updated_at = updated_at;
+    public void setUpload_at(LocalDateTime upload_at) {
+        this.upload_at = upload_at;
     }
 }

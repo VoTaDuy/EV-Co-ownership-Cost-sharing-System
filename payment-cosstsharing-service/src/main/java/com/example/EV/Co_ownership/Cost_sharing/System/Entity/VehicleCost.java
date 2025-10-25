@@ -1,5 +1,6 @@
 package com.example.EV.Co_ownership.Cost_sharing.System.Entity;
 
+import com.example.EV.Co_ownership.Cost_sharing.System.Enum.VehicleCostStatus;
 import jakarta.persistence.*;
 import org.springframework.stereotype.Component;
 
@@ -12,31 +13,27 @@ public class VehicleCost {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int cost_id;
 
-    @Column (name = "group_id")
-    private int group_id;
-    @Column (name = "vehicle_id")
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private UserGroup group_id;
+
+    @Column(name = "vehicle_id")
     private int vehicle_id;
-    @Column (name = "cost_name")
+
+    @Column(name = "cost_name")
     private String cost_name;
-    @Column (name = "amount")
+
+    @Column(name = "amount")
     private BigDecimal amount;
 
-    @Enumerated(EnumType.STRING)
     @Column (name = "status")
-    private status status;
+    private VehicleCostStatus status;
 
-    @Column (name = "created_at")
+    @Column(name = "created_at")
     private LocalDateTime created_at;
-    @Column (name = "updated_at")
+
+    @Column(name = "updated_at")
     private LocalDateTime updated_at;
-
-    public enum status{
-        PENDING,FAILED,CANCELLED
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "group_id", referencedColumnName = "group_id", insertable = false, updatable = false)
-    private  UserGroup userGroup;
 
     public int getCost_id() {
         return cost_id;
@@ -46,11 +43,11 @@ public class VehicleCost {
         this.cost_id = cost_id;
     }
 
-    public int getGroup_id() {
+    public UserGroup getGroup_id() {
         return group_id;
     }
 
-    public void setGroup_id(int group_id) {
+    public void setGroup_id(UserGroup group_id) {
         this.group_id = group_id;
     }
 
@@ -78,11 +75,11 @@ public class VehicleCost {
         this.amount = amount;
     }
 
-    public status getStatus() {
+    public VehicleCostStatus getStatus() {
         return status;
     }
 
-    public void setStatus(status status) {
+    public void setStatus(VehicleCostStatus status) {
         this.status = status;
     }
 
@@ -100,13 +97,5 @@ public class VehicleCost {
 
     public void setUpdated_at(LocalDateTime updated_at) {
         this.updated_at = updated_at;
-    }
-
-    public UserGroup getUserGroup() {
-        return userGroup;
-    }
-
-    public void setUserGroup(UserGroup userGroup) {
-        this.userGroup = userGroup;
     }
 }
