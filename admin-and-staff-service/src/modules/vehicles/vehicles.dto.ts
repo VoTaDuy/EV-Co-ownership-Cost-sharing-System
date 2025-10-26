@@ -7,6 +7,7 @@ import {
   IsArray,
   IsNotEmpty,
   IsUrl,
+  IsDateString,
 } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 
@@ -15,28 +16,35 @@ import { PartialType } from '@nestjs/mapped-types';
  */
 export class CreateVehicleDto {
   @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Tên xe không được để trống' })
   vehicle_name: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Biển số xe không được để trống' })
   license_plate: string;
 
   @IsString()
   @IsOptional()
   description?: string;
 
-  @IsUrl()
+  @IsUrl({}, { message: 'image_url phải là một URL hợp lệ' })
   @IsOptional()
   image_url?: string; // Ảnh đại diện của xe
 
   @IsArray()
   @IsOptional()
+  @IsUrl(
+    {},
+    {
+      each: true,
+      message: 'Mỗi phần tử trong spec_image_urls phải là URL hợp lệ',
+    },
+  )
   spec_image_urls?: string[]; // Danh sách ảnh thông số kỹ thuật
 
   @IsBoolean()
   @IsOptional()
-  is_active?: boolean;
+  is_active?: boolean = true;
 }
 
 /**
@@ -58,20 +66,23 @@ export class VehicleResponseDto {
   license_plate: string;
 
   @IsString()
-  description: string;
+  @IsOptional()
+  description?: string;
 
   @IsUrl()
-  image_url: string;
+  @IsOptional()
+  image_url?: string;
 
   @IsArray()
-  spec_image_urls: string[];
+  @IsOptional()
+  spec_image_urls?: string[];
 
   @IsBoolean()
   is_active: boolean;
 
-  @IsString()
+  @IsDateString()
   created_at: Date;
 
-  @IsString()
+  @IsDateString()
   updated_at: Date;
 }

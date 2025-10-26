@@ -10,7 +10,7 @@ COPY package*.json ./
 
 RUN npm install
 
-# ----------- 5. Copy source code -----------
+# ----------- 5. Copy source code ----------- 
 COPY . .
 
 # ----------- 6. Build source code (nếu dùng TypeScript) -----------
