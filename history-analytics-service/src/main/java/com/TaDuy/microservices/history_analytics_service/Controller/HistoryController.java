@@ -24,7 +24,10 @@ public class HistoryController {
         return new ResponseEntity<>(historyServiceImp.getAllHistory(),HttpStatus.OK);
     }
 
+    public ResponseEntity<?> getPromptFromHistory(){
 
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 
 }

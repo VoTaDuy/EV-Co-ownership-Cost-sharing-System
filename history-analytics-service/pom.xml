@@ -27,7 +27,7 @@
 		<url/>
 	</scm>
 	<properties>
-		<java.version>25</java.version>
+		<java.version>21</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -93,11 +93,7 @@
 			<artifactId>mysql</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
-            <groupId>com.TaDuy.microservices</groupId>
-            <artifactId>history-analytics-service</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+
     </dependencies>
 
 	<build>

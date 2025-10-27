@@ -7,6 +7,7 @@ import com.TaDuy.microservices.history_analytics_service.Service.Imp.HistoryServ
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,4 +36,15 @@ public class HistoryService implements HistoryServiceImp {
         }
         return historyDTOList;
     }
+
+    @Override
+    public String convertHistoryListToString(LocalDateTime startTime, LocalDateTime endTime) {
+        List<History> historyList  = historyRepository.findGeneratedAtBetween(startTime, endTime);
+
+        return "";
+    }
+
+
 }
+
+
