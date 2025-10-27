@@ -17,7 +17,7 @@ public class VehicleCostService implements VehicleCostServiceImp {
 
     @Autowired
     VehicleCostRepository vehicleCostRepository;
-    
+
     @Override
     public VehicleCostDTO getVehicleCostById(int cost_id) {
 

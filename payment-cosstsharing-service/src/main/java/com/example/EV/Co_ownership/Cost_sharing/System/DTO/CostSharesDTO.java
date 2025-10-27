@@ -1,14 +1,25 @@
 package com.example.EV.Co_ownership.Cost_sharing.System.DTO;
 
+import com.example.EV.Co_ownership.Cost_sharing.System.Enum.CostShareStatus;
+
 import java.math.BigDecimal;
 
 public class CostSharesDTO {
+    private int share_id;
     private int cost_id;
-    private int vehicle_id;
     private int user_id;
     private BigDecimal share_percentage;
     private BigDecimal amount_due;
-    public BigDecimal settle_amount;
+    private BigDecimal settled_amount;
+    private CostShareStatus status;
+
+    public int getShare_id() {
+        return share_id;
+    }
+
+    public void setShare_id(int share_id) {
+        this.share_id = share_id;
+    }
 
     public int getCost_id() {
         return cost_id;
@@ -16,14 +27,6 @@ public class CostSharesDTO {
 
     public void setCost_id(int cost_id) {
         this.cost_id = cost_id;
-    }
-
-    public int getVehicle_id() {
-        return vehicle_id;
-    }
-
-    public void setVehicle_id(int vehicle_id) {
-        this.vehicle_id = vehicle_id;
     }
 
     public int getUser_id() {
@@ -50,11 +53,19 @@ public class CostSharesDTO {
         this.amount_due = amount_due;
     }
 
-    public BigDecimal getSettle_amount() {
-        return settle_amount;
+    public BigDecimal getSettled_amount() {
+        return settled_amount;
     }
 
-    public void setSettle_amount(BigDecimal settle_amount) {
-        this.settle_amount = settle_amount;
+    public void setSettled_amount(BigDecimal settled_amount) {
+        this.settled_amount = settled_amount;
+    }
+
+    public CostShareStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(CostShareStatus status) {
+        this.status = status;
     }
 }

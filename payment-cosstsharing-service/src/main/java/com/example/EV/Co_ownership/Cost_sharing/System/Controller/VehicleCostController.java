@@ -2,6 +2,7 @@ package com.example.EV.Co_ownership.Cost_sharing.System.Controller;
 
 
 import com.example.EV.Co_ownership.Cost_sharing.System.DTO.VehicleCostDTO;
+import com.example.EV.Co_ownership.Cost_sharing.System.Entity.VehicleCost;
 import com.example.EV.Co_ownership.Cost_sharing.System.Payloads.ResponseData;
 import com.example.EV.Co_ownership.Cost_sharing.System.Service.Imp.VehicleCostServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
+@CrossOrigin("*")
 @RestController
-@RequestMapping(name = "/api/cost")
+@RequestMapping("/api/cost")
 public class VehicleCostController {
 
     @Autowired
