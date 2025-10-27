@@ -1,37 +1,20 @@
-package com.example.EV.Co_ownership.Cost_sharing.System.Entity;
+package com.example.EV.Co_ownership.Cost_sharing.System.DTO;
 
+import com.example.EV.Co_ownership.Cost_sharing.System.Entity.VehicleCost;
 import com.example.EV.Co_ownership.Cost_sharing.System.Enum.PollStatus;
-import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Entity(name = "polls")
-public class Polls {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "poll_id")
+@NoArgsConstructor
+public class PollsDTO {
     private int id;
-
-    @Column(name = "group_id")
     private int group_id;
-
-
-    @Column(name = "cost_id")
     private int cost_id;
-
-    @Column(name = "description")
     private String description;
-
-    @Column(name = "created_by")
     private int created_by;
-
-    @Column(name = "created_at")
     private LocalDateTime created_at;
-
-    @Column(name = "expires_at")
     private LocalDateTime expires_at;
-
-    @Column(name = "status")
     private PollStatus status;
 
     public int getId() {
@@ -97,4 +80,6 @@ public class Polls {
     public void setStatus(PollStatus status) {
         this.status = status;
     }
+
+
 }

@@ -1,46 +1,17 @@
-package com.example.EV.Co_ownership.Cost_sharing.System.Entity;
+package com.example.EV.Co_ownership.Cost_sharing.System.Payloads.request;
 
 import com.example.EV.Co_ownership.Cost_sharing.System.Enum.PollStatus;
-import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
-@Entity(name = "polls")
-public class Polls {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "poll_id")
-    private int id;
-
-    @Column(name = "group_id")
+public class PollRequest {
     private int group_id;
-
-
-    @Column(name = "cost_id")
     private int cost_id;
-
-    @Column(name = "description")
     private String description;
-
-    @Column(name = "created_by")
     private int created_by;
-
-    @Column(name = "created_at")
     private LocalDateTime created_at;
-
-    @Column(name = "expires_at")
-    private LocalDateTime expires_at;
-
-    @Column(name = "status")
+    private LocalDateTime updated_at;
     private PollStatus status;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public int getGroup_id() {
         return group_id;
@@ -82,12 +53,12 @@ public class Polls {
         this.created_at = created_at;
     }
 
-    public LocalDateTime getExpires_at() {
-        return expires_at;
+    public LocalDateTime getUpdated_at() {
+        return updated_at;
     }
 
-    public void setExpires_at(LocalDateTime expires_at) {
-        this.expires_at = expires_at;
+    public void setUpdated_at(LocalDateTime updated_at) {
+        this.updated_at = updated_at;
     }
 
     public PollStatus getStatus() {

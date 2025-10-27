@@ -32,7 +32,7 @@ public class VehicleCostController {
     }
 
     @GetMapping("getAll")
-    public ResponseEntity<?> getAllCosts() {
+    public ResponseEntity<?> getAllCosts(@RequestParam int cost_id) {
         ResponseData responseData = new ResponseData();
         List<VehicleCostDTO> list = vehicleCostServiceImp.getAllVehicleCost();
 
