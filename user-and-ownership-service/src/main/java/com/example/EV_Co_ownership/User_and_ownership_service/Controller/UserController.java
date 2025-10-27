@@ -1,7 +1,10 @@
 package com.example.EV_Co_ownership.User_and_ownership_service.Controller;
 
+import com.example.EV_Co_ownership.User_and_ownership_service.DTO.ProfileDTO;
+import com.example.EV_Co_ownership.User_and_ownership_service.Entity.Profiles;
 import com.example.EV_Co_ownership.User_and_ownership_service.Entity.Users;
 import com.example.EV_Co_ownership.User_and_ownership_service.Payloads.ResponseData;
+import com.example.EV_Co_ownership.User_and_ownership_service.Service.ProfileService;
 import com.example.EV_Co_ownership.User_and_ownership_service.Service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,6 +20,9 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ProfileService profileService;
 
     @GetMapping("/get")
     public ResponseEntity<?> getAllUsers(){
@@ -40,6 +46,26 @@ public class UserController {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(reponseData, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{userId}/profile")
+    public ResponseEntity<?> getProfileByUserId(@PathVariable int userId) {
+        try {
+            Profiles profile = profileService.getProfileByUserId(userId);
+            return new ResponseEntity<>(profile, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("/{userId}/profile")
+    public ResponseEntity<?> updateProfile(@PathVariable int userId, @RequestBody ProfileDTO profileDTO) {
+        try {
+            Profiles updatedProfile = profileService.updateProfile(userId, profileDTO);
+            return new ResponseEntity<>(updatedProfile, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

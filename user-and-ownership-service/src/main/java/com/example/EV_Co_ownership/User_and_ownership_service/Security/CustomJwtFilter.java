@@ -21,7 +21,6 @@ public class CustomJwtFilter extends OncePerRequestFilter {
     @Autowired
     JwtUtilHelper jwtUtilHelper;
 
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = request.getHeader("Authorization");

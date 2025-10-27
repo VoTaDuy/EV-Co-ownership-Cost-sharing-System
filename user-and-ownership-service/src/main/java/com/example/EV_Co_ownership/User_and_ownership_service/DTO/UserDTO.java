@@ -3,7 +3,6 @@ package com.example.EV_Co_ownership.User_and_ownership_service.DTO;
 import java.time.LocalDateTime;
 
 public class UserDTO {
-
     private int user_id;
     private String email;
     private int role_id;
