@@ -40,7 +40,7 @@ public class CustomFilterSecurity {
                 .authorizeHttpRequests(request -> request.requestMatchers(
                                 "api/login/sign_in/**",
                                 "api/login/register/**",
-                                "user/{userId}/profile/** ")
+                                "user/{userId}/profile")
                         .permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
