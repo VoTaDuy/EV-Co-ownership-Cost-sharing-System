@@ -24,4 +24,7 @@ public class HistoryController {
         return new ResponseEntity<>(historyServiceImp.getAllHistory(),HttpStatus.OK);
     }
 
+
+
+
 }
