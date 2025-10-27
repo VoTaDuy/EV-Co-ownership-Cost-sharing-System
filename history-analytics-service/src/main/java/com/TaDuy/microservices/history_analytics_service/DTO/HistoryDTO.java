@@ -1,16 +1,8 @@
-package com.TaDuy.microservices.history_analytics_service.Entity;
-
-
-import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+package com.TaDuy.microservices.history_analytics_service.DTO;
 
 import java.time.LocalDateTime;
 
-@Data
-@Document(collection = "history")
-public class History {
-    @Id
+public class HistoryDTO {
     private String history_id;
     private String userId;
     private String vehicleId;

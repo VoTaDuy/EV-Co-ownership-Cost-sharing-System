@@ -30,6 +30,7 @@ public class Reports {
     private LocalDateTime fromTime;
 
     private LocalDateTime toTime;
+
     @DBRef
     private List<History> histories;
 
