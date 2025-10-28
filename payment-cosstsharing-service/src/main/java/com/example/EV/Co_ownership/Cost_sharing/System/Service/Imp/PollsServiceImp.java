@@ -1,13 +1,14 @@
 package com.example.EV.Co_ownership.Cost_sharing.System.Service.Imp;
 
 import com.example.EV.Co_ownership.Cost_sharing.System.DTO.PollsDTO;
-import com.example.EV.Co_ownership.Cost_sharing.System.Entity.Polls;
 
 import java.util.List;
 
 public interface PollsServiceImp {
-    Polls findById(int poll_id);
-    List<Polls> getAllPolls();
+    List<PollsDTO> getAllPolls();
+    PollsDTO getPollById(int poll_id);
     PollsDTO createPolls(PollsDTO dto);
-    boolean deleteById(int poll_id);
+    PollsDTO updatePolls(int poll_id,PollsDTO dto, int created_by);
+    void deletePollById(int poll_id);
+    PollsDTO closePoll(int poll_id, int created_by);
 }

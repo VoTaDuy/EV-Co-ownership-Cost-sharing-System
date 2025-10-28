@@ -7,6 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PollsRepository extends JpaRepository<Polls, Integer> {
-    Polls findById(int poll_id);
-
+    Polls getPollById(int id);
 }
