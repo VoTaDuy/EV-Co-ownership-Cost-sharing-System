@@ -8,13 +8,14 @@ import java.time.LocalDateTime;
 
 @Entity(name = "poll_votes")
 public class PollVotes {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int vote_id;
 
     @ManyToOne
-    @JoinColumn(name = "poll_id")
-    private Polls poll_id;
+    @JoinColumn(name = "poll_id", referencedColumnName = "poll_id")
+    private Polls poll;
 
     @Column(name = "user_id")
     private int user_id;
@@ -33,12 +34,12 @@ public class PollVotes {
         this.vote_id = vote_id;
     }
 
-    public Polls getPoll_id() {
-        return poll_id;
+    public Polls getPoll() {
+        return poll;
     }
 
-    public void setPoll_id(Polls poll_id) {
-        this.poll_id = poll_id;
+    public void setPoll(Polls poll) {
+        this.poll = poll;
     }
 
     public int getUser_id() {

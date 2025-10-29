@@ -5,26 +5,26 @@ import com.example.EV.Co_ownership.Cost_sharing.System.Enum.PollVoteValue;
 import java.time.LocalDateTime;
 
 public class PollVotesDTO {
-    private int votes_id;
+    private int vote_id;
     private int poll_id;
     private int user_id;
-    private PollVoteValue status;
+    private PollVoteValue vote_value;
     private LocalDateTime vote_at;
 
-    public int getVotes_id() {
-        return votes_id;
+    public LocalDateTime getVote_at() {
+        return vote_at;
     }
 
-    public void setVotes_id(int votes_id) {
-        this.votes_id = votes_id;
+    public void setVote_at(LocalDateTime vote_at) {
+        this.vote_at = vote_at;
     }
 
-    public int getPoll_id() {
-        return poll_id;
+    public PollVoteValue getVote_value() {
+        return vote_value;
     }
 
-    public void setPoll_id(int poll_id) {
-        this.poll_id = poll_id;
+    public void setVote_value(PollVoteValue vote_value) {
+        this.vote_value = vote_value;
     }
 
     public int getUser_id() {
@@ -35,19 +35,19 @@ public class PollVotesDTO {
         this.user_id = user_id;
     }
 
-    public PollVoteValue getStatus() {
-        return status;
+    public int getPoll_id() {
+        return poll_id;
     }
 
-    public void setStatus(PollVoteValue status) {
-        this.status = status;
+    public void setPoll_id(int poll_id) {
+        this.poll_id = poll_id;
     }
 
-    public LocalDateTime getVote_at() {
-        return vote_at;
+    public int getVote_id() {
+        return vote_id;
     }
 
-    public void setVote_at(LocalDateTime vote_at) {
-        this.vote_at = vote_at;
+    public void setVote_id(int vote_id) {
+        this.vote_id = vote_id;
     }
 }
