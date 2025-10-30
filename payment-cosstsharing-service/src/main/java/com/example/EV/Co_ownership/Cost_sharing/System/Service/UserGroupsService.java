@@ -31,7 +31,7 @@ public class UserGroupsService implements UserGroupsServiceImp {
 
     @Override
     public List<UserGroups> getUserGroupsByGroupId(int group_id) {
-        return userGroupsRepository.findByGroupId(group_id);
+        return userGroupsRepository.findByGroup_id(group_id);
     }
 
     @Override
