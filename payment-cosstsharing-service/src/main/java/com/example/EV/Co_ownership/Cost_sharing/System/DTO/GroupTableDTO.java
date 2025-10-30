@@ -1,29 +1,14 @@
 package com.example.EV.Co_ownership.Cost_sharing.System.DTO;
 
-import com.example.EV.Co_ownership.Cost_sharing.System.Entity.VehicleCost;
-import com.example.EV.Co_ownership.Cost_sharing.System.Enum.PollStatus;
-import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
 
-@NoArgsConstructor
-public class PollsDTO {
-    private int id;
+public class GroupTableDTO {
     private int group_id;
-    private int cost_id;
+    private String group_name;
     private String description;
     private int created_by;
     private LocalDateTime created_at;
-    private LocalDateTime expires_at;
-    private PollStatus status;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    private LocalDateTime updated_at;
 
     public int getGroup_id() {
         return group_id;
@@ -33,12 +18,12 @@ public class PollsDTO {
         this.group_id = group_id;
     }
 
-    public int getCost_id() {
-        return cost_id;
+    public String getGroup_name() {
+        return group_name;
     }
 
-    public void setCost_id(int cost_id) {
-        this.cost_id = cost_id;
+    public void setGroup_name(String group_name) {
+        this.group_name = group_name;
     }
 
     public String getDescription() {
@@ -65,21 +50,11 @@ public class PollsDTO {
         this.created_at = created_at;
     }
 
-    public LocalDateTime getExpires_at() {
-        return expires_at;
+    public LocalDateTime getUpdated_at() {
+        return updated_at;
     }
 
-    public void setExpires_at(LocalDateTime expires_at) {
-        this.expires_at = expires_at;
+    public void setUpdated_at(LocalDateTime updated_at) {
+        this.updated_at = updated_at;
     }
-
-    public PollStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(PollStatus status) {
-        this.status = status;
-    }
-
-
 }

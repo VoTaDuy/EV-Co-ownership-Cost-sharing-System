@@ -1,23 +1,17 @@
 package com.example.EV.Co_ownership.Cost_sharing.System.Entity;
 
-import com.example.EV.Co_ownership.Cost_sharing.System.Enum.PollStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
-@Entity(name = "polls")
-public class Polls {
+@Entity(name = "group_table")
+public class GroupTable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "poll_id")
-    private int id;
-
-    @Column(name = "group_id")
     private int group_id;
 
-
-    @Column(name = "cost_id")
-    private int cost_id;
+    @Column(name = "group_name")
+    private String group_name;
 
     @Column(name = "description")
     private String description;
@@ -28,19 +22,8 @@ public class Polls {
     @Column(name = "created_at")
     private LocalDateTime created_at;
 
-    @Column(name = "expires_at")
-    private LocalDateTime expires_at;
-
-    @Column(name = "status")
-    private PollStatus status;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    @Column(name = "updated_at")
+    private LocalDateTime updated_at;
 
     public int getGroup_id() {
         return group_id;
@@ -50,12 +33,12 @@ public class Polls {
         this.group_id = group_id;
     }
 
-    public int getCost_id() {
-        return cost_id;
+    public String getGroup_name() {
+        return group_name;
     }
 
-    public void setCost_id(int cost_id) {
-        this.cost_id = cost_id;
+    public void setGroup_name(String group_name) {
+        this.group_name = group_name;
     }
 
     public String getDescription() {
@@ -82,19 +65,11 @@ public class Polls {
         this.created_at = created_at;
     }
 
-    public LocalDateTime getExpires_at() {
-        return expires_at;
+    public LocalDateTime getUpdated_at() {
+        return updated_at;
     }
 
-    public void setExpires_at(LocalDateTime expires_at) {
-        this.expires_at = expires_at;
-    }
-
-    public PollStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(PollStatus status) {
-        this.status = status;
+    public void setUpdated_at(LocalDateTime updated_at) {
+        this.updated_at = updated_at;
     }
 }
