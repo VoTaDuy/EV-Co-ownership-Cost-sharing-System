@@ -6,6 +6,7 @@ import com.TaDuy.microservices.history_analytics_service.Entity.Reports;
 import com.TaDuy.microservices.history_analytics_service.Repository.ReportRepository;
 import com.TaDuy.microservices.history_analytics_service.Service.Imp.CloudinaryServiceImp;
 import com.TaDuy.microservices.history_analytics_service.Service.Imp.GenimiServiceImp;
+import com.TaDuy.microservices.history_analytics_service.Service.Imp.HistoryServiceImp;
 import com.TaDuy.microservices.history_analytics_service.Service.Imp.ReportServiceImp;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ import static javax.swing.UIManager.get;
 
 @Service
 public class GenimiService implements GenimiServiceImp {
+
+    @Autowired
+    HistoryServiceImp historyServiceImp;
     @Autowired
     CloudinaryServiceImp cloudinaryServiceImp;
 
@@ -40,14 +44,17 @@ public class GenimiService implements GenimiServiceImp {
 
 
     @Override
-    public String generateReport(String prompt) {
+    public String generateReport(String prompt, LocalDateTime startTime, LocalDateTime endTime) {
         String url = genimiConfig.getUrl() + "?key=" + genimiConfig.getApiKey();
 
+        String historyText = historyServiceImp.convertHistoryListToString(startTime, endTime);
+        String fullPrompt = prompt + "\n\nDưới đây là dữ liệu lịch sử từ " +
+                startTime + " đến " + endTime + ":\n" + historyText;
         System.out.println(url);
 
         Map<String, Object> body = Map.of(
                 "contents", new Object[]{
-                        Map.of("parts", new Object[]{Map.of("text", prompt)})
+                        Map.of("parts", new Object[]{Map.of("text", fullPrompt)})
                 }
         );
         HttpHeaders headers = new HttpHeaders();

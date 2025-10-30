@@ -15,21 +15,21 @@ public class AiReportController {
     private GenimiServiceImp genimiServiceImp;
 
 
-    @PostMapping(
-            value = "/gen",
-            consumes = "application/json",
-            produces = "application/json")
-    public ResponseEntity<?> generateReport(@RequestBody String input){
-        ResponseData  responseData = new ResponseData();
-        try {
-            return new ResponseEntity<>(genimiServiceImp.generateReport(input), HttpStatus.OK);
-        }catch (Exception e){
-            responseData.setData("failure Generate");
-            responseData.setDesc(e.getMessage());
-            return new ResponseEntity<>(responseData, HttpStatus.FAILED_DEPENDENCY);
-        }
+//    @PostMapping(
+//            value = "/gen",
+//            consumes = "application/json",
+//            produces = "application/json")
+//    public ResponseEntity<?> generateReport(@RequestBody String input){
+//        ResponseData  responseData = new ResponseData();
+//        try {
+//            return new ResponseEntity<>(genimiServiceImp.generateReport(input), HttpStatus.OK);
+//        }catch (Exception e){
+//            responseData.setData("failure Generate");
+//            responseData.setDesc(e.getMessage());
+//            return new ResponseEntity<>(responseData, HttpStatus.FAILED_DEPENDENCY);
+//        }
 
 
-    }
+//    }
 
 }

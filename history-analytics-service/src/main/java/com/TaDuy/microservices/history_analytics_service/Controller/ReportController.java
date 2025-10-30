@@ -7,6 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.Map;
+
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/api/reports")
@@ -16,11 +19,14 @@ public class ReportController {
     private GenimiServiceImp genimiServiceImp;
 
     @PostMapping("/generate")
-    public ResponseEntity<?> generateReport(@RequestBody String prompt) {
+    public ResponseEntity<?> generateReport(@RequestBody Map<String,String> request) {
         ResponseData responseData = new ResponseData();
 
         try {
-            Object result = genimiServiceImp.generateReport(prompt);
+            String prompt = request.get("prompt");
+            LocalDateTime startTime = LocalDateTime.parse(request.get("startTime"));
+            LocalDateTime endTime = LocalDateTime.parse(request.get("endTime"));
+            Object result = genimiServiceImp.generateReport(prompt, startTime, endTime);
             responseData.setData(result);
             return new ResponseEntity<>(responseData, HttpStatus.OK);
         }catch (Exception e){

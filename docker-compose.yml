@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   # === MySQL cho User service ===
   mysql-user:
@@ -84,7 +86,7 @@ services:
     depends_on:
       - mysql-user
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-user:3306/ev_cost_sharing_db
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-user:3307/ev_cost_sharing_db
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
       SERVER_PORT: 8080
@@ -94,10 +96,11 @@ services:
       - microservices-network
 
   # === Payment & Costsharing (Spring Boot) ===
+  # === Payment & Costsharing (Spring Boot) ===
   payment-service:
     build:
       context: ./payment-cosstsharing-service
-      dockerfile: Dockerfile
+      dockerfile: dockerfile
     container_name: payment-service
     restart: always
     depends_on:
@@ -177,7 +180,7 @@ services:
   api-gateway:
     build:
       context: ./Api-Gateway
-      dockerfile: Dockerfile
+      dockerfile: DockerFile
     container_name: api-gateway
     restart: always
     depends_on:
