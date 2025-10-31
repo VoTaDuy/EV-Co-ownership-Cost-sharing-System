@@ -1,8 +1,6 @@
 package com.example.EV_Co_ownership.User_and_ownership_service.Entity;
 
 import jakarta.persistence.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
