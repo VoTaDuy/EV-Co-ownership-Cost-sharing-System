@@ -40,7 +40,7 @@ public class HistoryService implements HistoryServiceImp {
 
     @Override
     public String convertHistoryListToString(LocalDateTime startTime, LocalDateTime endTime) {
-        List<History> historyList  = historyRepository.findGeneratedAtBetween(startTime, endTime);
+        List<History> historyList  = historyRepository.findByRecordedAtBetween(startTime, endTime);
         if (historyList.isEmpty()){
             return "no history in this time";
         }

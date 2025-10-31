@@ -21,6 +21,7 @@ public class History {
     private Double fuelUsed;
     private LocalDateTime recordedAt;
 
+
     public String getHistory_id() {
         return history_id;
     }
