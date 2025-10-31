@@ -2,15 +2,12 @@ package com.example.EV.Co_ownership.Cost_sharing.System.Controller;
 
 
 import com.example.EV.Co_ownership.Cost_sharing.System.Entity.GroupFund;
-import com.example.EV.Co_ownership.Cost_sharing.System.Entity.GroupTable;
-import com.example.EV.Co_ownership.Cost_sharing.System.Repository.GroupTableRepository;
+
 import com.example.EV.Co_ownership.Cost_sharing.System.Service.GroupFundService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/groupfunds")
