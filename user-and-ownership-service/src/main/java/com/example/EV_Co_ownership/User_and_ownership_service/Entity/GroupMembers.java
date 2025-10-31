@@ -11,12 +11,12 @@ public class GroupMembers {
     private GroupMemberId id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("userId")
+    @MapsId("user_id")
     @JoinColumn(name = "user_id")
     private Users user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("groupId")
+    @MapsId("group_id")
     @JoinColumn(name = "group_id")
     private GroupUsers group;
 
