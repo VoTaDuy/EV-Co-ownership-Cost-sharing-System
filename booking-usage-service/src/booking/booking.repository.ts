@@ -15,6 +15,9 @@ export class BookingRepository {
     const booking = this.bookingRepo.create(data);
     return this.bookingRepo.save(booking);
   }
+  async findByVehicleAndDate(vehicle_id: string, date: Date): Promise<Booking[]> {
+    return this.bookingRepo.find({ where: { vehicle_id, booking_date: date } });
+  }
 
   // Lấy tất cả booking (hoặc lọc sau này)
   async findAll(): Promise<Booking[]> {
