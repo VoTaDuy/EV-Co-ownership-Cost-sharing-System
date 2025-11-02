@@ -27,7 +27,7 @@ public class HistoryAnalyticsServiceApplication {
             e.printStackTrace();
         }
         SpringApplication.run(HistoryAnalyticsServiceApplication.class, args);
-
+    
 	}
 
 }
