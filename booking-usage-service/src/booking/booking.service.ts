@@ -12,8 +12,8 @@ export class BookingService {
 
   //Tạo booking mới
   async createBooking(data: Partial<Booking>): Promise<Booking> {
-  if (!data.vehicle_id || !data.booking_date || !data.start_time || !data.end_time) {
-      throw new Error('Thiếu thông tin bắt buộc: vehicle_id, booking_date, start_time, end_time');
+  if (!data.vehicle_id || !data.booking_date || !data.check_in_time || !data.check_out_time) {
+      throw new Error('Thiếu thông tin bắt buộc: vehicle_id, booking_date, check_in_time, check_out_time');
     }
 
     const existingBookings = await this.bookingRepository.findByVehicleAndDate(
@@ -23,8 +23,8 @@ export class BookingService {
 
     const hasConflict = existingBookings.some(
       (b) =>
-        (data.start_time! >= b.start_time && data.start_time! < b.end_time) ||
-        (data.end_time! > b.start_time && data.end_time! <= b.end_time),
+        (data.check_in_time! >= b.check_in_time && data.check_in_time! < b.check_out_time) ||
+        (data.check_out_time! > b.check_in_time && data.check_out_time! <= b.check_out_time),
     );
 
     // Đầu tiên tạo booking

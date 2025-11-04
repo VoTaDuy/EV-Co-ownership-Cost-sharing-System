@@ -30,10 +30,10 @@ export class Booking {
   booking_date: Date;
 
   @Column({ type: 'time' })
-  start_time: string;
+  check_in_time: string;
 
   @Column({ type: 'time', nullable: true })
-  end_time: string;
+  check_out_time: string;
 
   @Column({ nullable: true })
   cancel_reason: string;

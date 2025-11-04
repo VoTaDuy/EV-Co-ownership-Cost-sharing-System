@@ -12,12 +12,12 @@ export class UpdateBookingDto {
   @ApiProperty({ example: '08:00', required: false })
   @IsOptional()
   @IsString()
-  start_time?: string;
+  check_in_time?: string;
 
   @ApiProperty({ example: '10:00', required: false })
   @IsOptional()
   @IsString()
-  end_time?: string;
+  check_out_time?: string;
 
   @ApiProperty({ enum: BookingStatus, required: false })
   @IsOptional()

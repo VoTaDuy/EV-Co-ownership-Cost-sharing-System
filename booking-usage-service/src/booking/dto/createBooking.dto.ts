@@ -23,11 +23,11 @@ export class CreateBookingDto {
         description: 'Thời gian bắt đầu đặt xe (định dạng HH:MM)',
         example: '09:00',
     })
-    start_time: string;
+    check_in_time: string;
 
     @ApiProperty({
         description: 'Thời gian kết thúc đặt xe (định dạng HH:MM)',
         example: '17:00',
     })
-    end_time: string;
+    check_out_time: string;
 }
