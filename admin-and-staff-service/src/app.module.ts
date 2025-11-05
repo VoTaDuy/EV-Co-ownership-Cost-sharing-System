@@ -11,6 +11,7 @@ import { OwnershipGroupsModule } from './modules/ownership-groups/ownership-grou
 import { OwnershipGroupsService } from './modules/ownership-groups/ownership-groups.service';
 import { OwnershipGroupsController } from './modules/ownership-groups/ownership-groups.controller';
 import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
+import { ReportModule } from './modules/report/reports.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
     ServiceTasksModule,
     OwnershipGroupsModule,
     CloudinaryModule,
+    ReportModule,
   ],
   controllers: [AppController, OwnershipGroupsController],
   providers: [AppService, OwnershipGroupsService],
