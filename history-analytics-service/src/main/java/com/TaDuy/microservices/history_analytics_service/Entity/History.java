@@ -14,6 +14,7 @@ public class History {
     private String history_id;
     private String userId;
     private String vehicleId;
+    private String groupId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Double distanceKm;
@@ -21,6 +22,13 @@ public class History {
     private Double fuelUsed;
     private LocalDateTime recordedAt;
 
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
 
     public String getHistory_id() {
         return history_id;

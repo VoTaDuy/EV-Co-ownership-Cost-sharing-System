@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface HistoryRepository extends MongoRepository<History, String> {
     List<History> findByRecordedAtBetween(LocalDateTime startTime, LocalDateTime endTime);
+
+    List<History> findHistoryByUserId(String userId);
 }
