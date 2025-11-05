@@ -12,6 +12,7 @@ import { OwnershipGroupsService } from './modules/ownership-groups/ownership-gro
 import { OwnershipGroupsController } from './modules/ownership-groups/ownership-groups.controller';
 import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
 import { ReportModule } from './modules/report/reports.module';
+import { ContractsTemplateModule } from './modules/contracts-template/contracts-template.module';
 
 @Module({
   imports: [
@@ -30,12 +31,12 @@ import { ReportModule } from './modules/report/reports.module';
       autoLoadEntities: true,
       synchronize: true,
     }),
-
     VehiclesModule,
     ServiceTasksModule,
     OwnershipGroupsModule,
     CloudinaryModule,
     ReportModule,
+    ContractsTemplateModule,
   ],
   controllers: [AppController, OwnershipGroupsController],
   providers: [AppService, OwnershipGroupsService],

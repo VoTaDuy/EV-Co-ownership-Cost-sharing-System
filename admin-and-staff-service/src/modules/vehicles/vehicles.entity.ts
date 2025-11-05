@@ -40,7 +40,7 @@ export class Vehicle {
     this.created_at = new Date();
     this.updated_at = new Date();
   }
-  
+
   @OneToMany(() => Report, (report) => report.vehicle)
   reports: Report[];
 }
