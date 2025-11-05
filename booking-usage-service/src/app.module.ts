@@ -4,6 +4,7 @@ import { DatabaseModule } from './config/database.module';
 import { BookingModule } from './booking/booking.module';
 import { UsageModule } from './usage/usage.module';
 import { DigitalSignatureModule } from './digital_signature/digital-signature.module';
+import { ConflictLogModule } from './conflict_log/conflict-log.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { DigitalSignatureModule } from './digital_signature/digital-signature.mo
     BookingModule,
     UsageModule,
     DigitalSignatureModule,
+    ConflictLogModule,
   ],
 })
 export class AppModule {}

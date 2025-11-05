@@ -1,5 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert } from 'typeorm';
+import { OneToMany } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
+import { Report } from '../report/report.entity';
 
 @Entity('vehicles')
 export class Vehicle {
@@ -38,4 +40,7 @@ export class Vehicle {
     this.created_at = new Date();
     this.updated_at = new Date();
   }
+
+  @OneToMany(() => Report, (report) => report.vehicle)
+  reports: Report[];
 }
