@@ -1,6 +1,5 @@
 package com.example.EV_Co_ownership.User_and_ownership_service.Security;
 
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -34,13 +33,13 @@ public class CustomFilterSecurity {
     }
     @Bean
     public SecurityFilterChain customFilterSercurity(HttpSecurity http) throws Exception {
-
         http
                 .csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(request -> request.requestMatchers(
                                 "api/login/sign_in/**",
                                 "api/login/register/**",
-                                "user/{userId}/profile")
+                                "user/{userId}/profile",
+                                "/api/login/forgot-password")
                         .permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
@@ -48,11 +47,7 @@ public class CustomFilterSecurity {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.addFilterBefore(customJwtFilter, UsernamePasswordAuthenticationFilter.class);
-
-
-
         return http.build();
-
     }
     @Bean
     public ModelMapper modelMapper(){
