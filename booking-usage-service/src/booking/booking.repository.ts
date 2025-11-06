@@ -15,8 +15,8 @@ export class BookingRepository {
     const booking = this.bookingRepo.create(data);
     return this.bookingRepo.save(booking);
   }
-  async findByVehicleAndDate(vehicle_id: string, date: Date): Promise<Booking[]> {
-    return this.bookingRepo.find({ where: { vehicle_id, booking_date: date } });
+  async findByVehicleAndDate(vehicle_id: string, start_date: Date, end_date: Date): Promise<Booking[]> {
+    return this.bookingRepo.find({ where: { vehicle_id, start_date, end_date } });
   }
 
   // Lấy tất cả booking (hoặc lọc sau này)
@@ -38,6 +38,7 @@ export class BookingRepository {
     }
     return updatedBooking;
   }
+
 
   // Xóa booking
   async deleteBooking(id: string): Promise<void> {

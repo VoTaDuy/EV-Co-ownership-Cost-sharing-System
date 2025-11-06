@@ -7,7 +7,12 @@ export class UpdateBookingDto {
   @ApiProperty({ required: false })
   @IsOptional()
   @IsDateString()
-  booking_date?: Date;
+  start_date?: Date;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsDateString()
+  end_date?: Date;
 
   @ApiProperty({ example: '08:00', required: false })
   @IsOptional()

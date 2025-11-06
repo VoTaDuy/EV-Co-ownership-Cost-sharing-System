@@ -14,19 +14,25 @@ export class CreateBookingDto {
     vehicle_id: string;
 
     @ApiProperty({
-        description: 'Ngày đặt xe',
+        description: 'Ngày bắt đầu sử dụng xe',
         example: '2024-07-15',
     })
-    booking_date: Date;
+    start_date: Date;
 
     @ApiProperty({
-        description: 'Thời gian bắt đầu đặt xe (định dạng HH:MM)',
+        description: 'Ngày kết thúc sử dụng xe',
+        example: '2024-07-15',
+    })
+    end_date: Date;
+
+    @ApiProperty({
+        description: 'Thời gian check-in khi nhận xe (định dạng HH:MM)',
         example: '09:00',
     })
     check_in_time: string;
 
     @ApiProperty({
-        description: 'Thời gian kết thúc đặt xe (định dạng HH:MM)',
+        description: 'Thời gian check-out khi trả xe (định dạng HH:MM)',
         example: '17:00',
     })
     check_out_time: string;

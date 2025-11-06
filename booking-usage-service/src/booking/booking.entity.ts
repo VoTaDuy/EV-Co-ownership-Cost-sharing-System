@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne } from 'typeorm';
+import { UsageRecord } from '../usage/usage.entity';
 
 export enum BookingStatus {
   PENDING = 'pending',
@@ -27,7 +28,10 @@ export class Booking {
   booking_status: BookingStatus;
 
   @Column({ type: 'date' })
-  booking_date: Date;
+  start_date: Date;
+
+  @Column({ type: 'date' })
+  end_date: Date;
 
   @Column({ type: 'time' })
   check_in_time: string;
@@ -38,9 +42,12 @@ export class Booking {
   @Column({ nullable: true })
   cancel_reason: string;
 
-  @CreateDateColumn({ type: 'datetime' })
+  @CreateDateColumn({ type: 'timestamp', precision: 6, default: () => 'CURRENT_TIMESTAMP(6)' })
   created_at: Date;
 
-  @UpdateDateColumn({ type: 'datetime' })
+  @UpdateDateColumn({ type: 'timestamp', precision: 6, default: () => 'CURRENT_TIMESTAMP(6)', onUpdate: 'CURRENT_TIMESTAMP(6)' })
   updated_at: Date;
+
+  @OneToOne(() => UsageRecord, (usage) => usage.booking)
+  usage: UsageRecord;
 }

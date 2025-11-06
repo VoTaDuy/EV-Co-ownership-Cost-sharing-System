@@ -5,13 +5,15 @@ import { BookingService } from './booking.service';
 import { BookingController } from './booking.controller';
 import { BookingRepository } from './booking.repository';
 import { ConflictLogModule } from '../conflict_log/conflict-log.module';
+import { UsageModule } from '../usage/usage.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Booking])
     , ConflictLogModule
+    , UsageModule
   ],
   controllers: [BookingController],
   providers: [BookingService, BookingRepository],
-  exports: [BookingService],
+  exports: [BookingService, BookingRepository],
 })
 export class BookingModule {}
