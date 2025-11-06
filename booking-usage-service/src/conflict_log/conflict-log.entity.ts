@@ -30,10 +30,10 @@ export class ConflictLog {
   @Column({ type: 'text', nullable: true })
   description: string;
 
-  @CreateDateColumn({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn({ type: 'timestamp', precision: 6, default: () => 'CURRENT_TIMESTAMP(6)'})
   created_at: Date;
 
-  @Column({ type: 'datetime', nullable: true })
+  @Column({type: 'timestamp', precision: 6, nullable: true })
   resolved_at: Date;
 
   // Liên kết với bảng booking

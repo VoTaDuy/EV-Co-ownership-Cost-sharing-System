@@ -15,7 +15,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         password: configService.get<string>('DB_PASS'),
         database: configService.get<string>('DB_NAME'),
         autoLoadEntities: true,
-        synchronize: false, // để tránh ghi đè DB
+        synchronize: true, // để tránh ghi đè DB
         logging: true,      // cho phép log query ra console
       }),
     }),
