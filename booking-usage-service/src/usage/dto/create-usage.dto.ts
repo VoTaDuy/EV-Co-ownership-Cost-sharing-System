@@ -1,12 +1,18 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsOptional, IsISO8601, IsNumber } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  IsISO8601,
+  IsNumber,
+  IsUUID,
+} from 'class-validator';
 
 export class CreateUsageDto {
   @ApiProperty({
     description: 'ID của booking liên quan',
-    example: 'bkg-550e8400-e29b-41d4-a716-446655440000',
+    example: 'ed0c0207-9159-43f0-915d-9c8e1873afc8',
   })
-  @IsString()
+  @IsUUID()
   booking_id: string;
 
   @ApiProperty({
@@ -17,22 +23,43 @@ export class CreateUsageDto {
   user_id: string;
 
   @ApiProperty({
-    description: 'Thời điểm check-in (ISO 8601). Có thể để trống nếu chưa checkin.',
-    example: '2025-10-20T08:30:00Z',
-    required: false,
+    description: 'ID của xe được sử dụng',
+    example: 'vehicle-5678',
   })
-  @IsOptional()
-  @IsISO8601()
-  checkin_time?: string;
+  @IsString()
+  vehicle_id: string;
 
   @ApiProperty({
-    description: 'Thời điểm check-out (ISO 8601). Có thể để trống nếu chưa checkout.',
-    example: '2025-10-20T10:30:00Z',
+    description: 'Ngày bắt đầu sử dụng xe (ISO 8601)',
+    example: '2025-11-15',
+  })
+  @IsISO8601()
+  start_date: string;
+
+  @ApiProperty({
+    description: 'Ngày kết thúc sử dụng xe (ISO 8601)',
+    example: '2025-11-16',
+  })
+  @IsISO8601()
+  end_date: string;
+
+  @ApiProperty({
+    description: 'Thời điểm check-in (ISO 8601). Có thể để trống nếu chưa check-in.',
+    example: '09:00',
     required: false,
   })
   @IsOptional()
   @IsISO8601()
-  checkout_time?: string;
+  check_in_time?: string;
+
+  @ApiProperty({
+    description: 'Thời điểm check-out (ISO 8601). Có thể để trống nếu chưa check-out.',
+    example: '17:00',
+    required: false,
+  })
+  @IsOptional()
+  @IsISO8601()
+  check_out_time?: string;
 
   @ApiProperty({
     description: 'Mô tả tình trạng xe tại thời điểm trả (nếu có)',
