@@ -26,6 +26,28 @@ export class UsageRepository {
     return this.usageRepo.findOne({ where: { usage_id: id } });
   }
 
+  // Lấy bản ghi usage theo booking_id
+  async findByBookingId(bookingId: string): Promise<UsageRecord | null> {
+    return this.usageRepo.findOne({
+      where: { booking_id: bookingId },
+    });
+  }
+
+  async updateUsage(id: string, data: Partial<UsageRecord>): Promise<UsageRecord> {
+    const formatted = { ...data };
+    if (formatted.check_in_time && !formatted.check_in_time.includes(':'))
+      formatted.check_in_time = `${formatted.check_in_time}:00`;
+    if (formatted.check_out_time && !formatted.check_out_time.includes(':'))
+      formatted.check_out_time = `${formatted.check_out_time}:00`;
+
+    const existing = await this.usageRepo.findOneBy({ usage_id: id });
+    if (!existing) throw new Error('Usage record not found');
+
+    Object.assign(existing, formatted);
+    await this.usageRepo.save(existing);
+    return existing;
+  }
+
   // Xóa bản ghi
   async deleteUsage(id: string): Promise<void> {
     await this.usageRepo.delete(id);

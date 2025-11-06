@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany, JoinColumn, OneToOne } from 'typeorm';
 import { Booking } from '../booking/booking.entity';
-import { DigitalSignature } from '../digital_signature/digital-signature.entity';
+import { DigitalSignature } from '../digital-signature/digital-signature.entity';
 
 @Entity({ name: 'usage_record' })
 export class UsageRecord {
@@ -13,17 +13,26 @@ export class UsageRecord {
   @Column()
   user_id: string;
 
-  @Column({ type: 'datetime', nullable: true })
-  checkin_time: Date;
+  @Column()
+  vehicle_id: string;
 
-  @Column({ type: 'datetime', nullable: true })
-  checkout_time: Date;
+  @Column({ type: 'date' })
+  start_date: Date;
+
+  @Column({ type: 'date' })
+  end_date: Date;
+
+  @Column({ type: 'time', nullable: true })
+  check_in_time: string | null;
+
+  @Column({ type: 'time', nullable: true })
+  check_out_time: string | null;
 
   @Column({ type: 'text', nullable: true })
-  vehicle_condition: string;
+  vehicle_condition: string | null;
 
   @Column({ type: 'float', nullable: true })
-  distance: number;
+  distance: number | null;
 
   @CreateDateColumn({ type: 'datetime', name: 'record_time' })
   record_time: Date;

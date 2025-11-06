@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Body, Put, Param } from '@nestjs/common';
 import { UsageService } from './usage.service';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody, } from '@nestjs/swagger';
 import { UsageRecord } from './usage.entity';
 import { CreateUsageDto } from './dto/create-usage.dto';
 import { UsageIdDto } from './dto/usage-id.dto';
+import { UpdateUsageDto } from './dto/update-usage.dto';
 
 
 @ApiTags('usage')
@@ -21,9 +22,7 @@ export class UsageController {
   })
   async createUsage(@Body() data: CreateUsageDto) {
     const usageData: Partial<UsageRecord> = {
-      ...data,
-      checkin_time: data.checkin_time ? new Date(data.checkin_time) : undefined,
-      checkout_time: data.checkout_time ? new Date(data.checkout_time) : undefined,
+  
     };
     return this.usageService.createUsage(usageData);
   }
@@ -41,7 +40,6 @@ export class UsageController {
 
   @Get(':id')
     @ApiOperation({ summary: 'Lấy bản ghi cụ thể theo ID' })
-    @ApiParam({ name: 'id', description: 'ID của usage record', example: 'usage-abc123' })
     @ApiResponse({
       status: 200,
       description: 'Thông tin usage record',
@@ -52,9 +50,29 @@ export class UsageController {
       return this.usageService.getUsageById(params.usage_id);
     }
 
+  @Put(':id') 
+  @ApiOperation({ summary: 'Cập nhật thông tin bản ghi usage' })
+  @ApiBody({ type: UpdateUsageDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Cập nhật usage record thành công',
+    type: UsageRecord,
+  })
+  @ApiResponse({ status: 404, description: 'Không tìm thấy usage record' })
+  async updateUsage(
+    @Param() params: UsageIdDto,
+    @Body() updateDto: UpdateUsageDto,
+  ) {
+    const data: Partial<UsageRecord> = {
+      ...(updateDto as unknown as Partial<UsageRecord>),
+      start_date: updateDto.start_date ? new Date(updateDto.start_date) : undefined,
+      end_date: updateDto.end_date ? new Date(updateDto.end_date) : undefined,
+    };
+    return this.usageService.updateUsage(params.usage_id, data);
+  }
+
   @Delete(':id')
   @ApiOperation({ summary: 'Xóa bản ghi sử dụng xe theo ID' })
-  @ApiParam({ name: 'id', description: 'ID của usage record', example: 'usage-xyz789' })
   @ApiResponse({ status: 200, description: 'Xóa thành công' })
   @ApiResponse({ status: 404, description: 'Không tìm thấy usage record' })
   async deleteUsage(@Param() params: UsageIdDto) {
