@@ -23,6 +23,16 @@ public class JwtUtilHelper {
     private Claims extractAllClaims(String token){
         return Jwts.parserBuilder().setSigningKey(getKey()).build().parseClaimsJws(token).getBody();
     }
+
+    public String getSubject(String token) {
+        try {
+            return extractAllClaims(token).getSubject();
+        } catch (Exception e) {
+            System.err.println("Lỗi giải mã token: " + e.getMessage());
+            return null;
+        }
+    }
+
     public boolean verifyToken (String token){
         System.out.println("token received: " + token);
         SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(privateKey));

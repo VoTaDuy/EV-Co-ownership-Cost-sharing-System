@@ -98,7 +98,7 @@ services:
   # === Payment & Costsharing (Spring Boot) ===
   payment-service:
     build:
-      context: ./payment-cosstsharing-service
+      context: payment-costsharing-service
       dockerfile: dockerfile
     container_name: payment-service
     restart: always
