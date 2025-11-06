@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn, Unique } from 'typeorm';
 import { UsageRecord } from '../usage/usage.entity';
 
 export enum SignatureType {
@@ -6,6 +6,7 @@ export enum SignatureType {
   CHECKOUT = 'checkout',
 }
 
+@Unique(['usage_id', 'type']) // 👈 Thêm dòng này
 @Entity({ name: 'digital_signature' })
 export class DigitalSignature {
   @PrimaryGeneratedColumn('uuid')
@@ -26,7 +27,7 @@ export class DigitalSignature {
   @Column({ type: 'text', nullable: true })
   signature_data: string;
 
-  @CreateDateColumn({ type: 'datetime' })
+  @CreateDateColumn({ type: 'timestamp', precision: 6, default: () => 'CURRENT_TIMESTAMP(6)' })
   signed_at: Date;
 
   // relation -> usage_record (many signatures may exist for a usage, but

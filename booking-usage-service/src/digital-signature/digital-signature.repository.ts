@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { DigitalSignature } from './digital-signature.entity';
+import { DigitalSignature, SignatureType } from './digital-signature.entity';
 import { UsageRecord } from '../usage/usage.entity';
 import * as crypto from 'crypto';
 
@@ -13,38 +13,40 @@ export class DigitalSignatureRepository {
 
     @InjectRepository(UsageRecord)
     private readonly usageRepo: Repository<UsageRecord>,
+
   ) {}
 
-  // Tạo mới chữ ký số và ký hash server-side
   async createSignature(data: Partial<DigitalSignature>): Promise<DigitalSignature> {
-    // Tạo dữ liệu cần ký
     const now = new Date();
+
+    // Giờ Việt Nam (Asia/Ho_Chi_Minh)
+    const localTime = now.toLocaleTimeString('en-GB', { timeZone: 'Asia/Ho_Chi_Minh' });
+    const localDateTime = new Date(
+      new Date().toLocaleString('en-US', { timeZone: 'Asia/Ho_Chi_Minh' })
+    );
+
     const signaturePayload = JSON.stringify({
       user_id: data.user_id,
       usage_id: data.usage_id,
       type: data.type,
-      timestamp: now.toISOString(),
+      timestamp: localDateTime.toISOString(), // lưu UTC tương ứng của local time
     });
 
-    // Sinh hash SHA-256
     const hash = crypto.createHash('sha256').update(signaturePayload).digest('hex');
 
-    // Lưu chữ ký với hash
     const signature = this.signatureRepo.create({
       ...data,
       signature_data: hash,
-      signed_at: now,
+      signed_at: localDateTime, // -> lưu thời gian tương ứng với giờ VN
     });
     const savedSignature = await this.signatureRepo.save(signature);
 
-    // Cập nhật thời gian check-in / check-out trong usage_record
     const usageRecord = await this.usageRepo.findOne({ where: { usage_id: data.usage_id } });
-
     if (usageRecord) {
-      if (data.type === 'checkin') {
-        usageRecord.checkin_time = now;
-      } else if (data.type === 'checkout') {
-        usageRecord.checkout_time = now;
+      if (data.type === SignatureType.CHECKIN) {
+        usageRecord.check_in_time = localTime; // Cập nhật thời gian check-in theo giờ VN
+      } else if (data.type === SignatureType.CHECKOUT) {
+        usageRecord.check_out_time = localTime;
       }
       await this.usageRepo.save(usageRecord);
     }
@@ -65,5 +67,17 @@ export class DigitalSignatureRepository {
   // Lấy chữ ký theo user_id
   async findByUser(user_id: string): Promise<DigitalSignature[]> {
     return this.signatureRepo.find({ where: { user_id } });
+  }
+
+  async findCheckinSignature(usageId: string) {
+    return this.signatureRepo.findOne({
+      where: { usage_id: usageId, type: SignatureType.CHECKIN },
+    });
+  }
+
+  async findCheckoutSignature(usageId: string) {
+    return this.signatureRepo.findOne({
+      where: { usage_id: usageId, type: SignatureType.CHECKOUT },
+    });
   }
 }
