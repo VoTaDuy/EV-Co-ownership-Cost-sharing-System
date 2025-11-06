@@ -4,8 +4,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -23,32 +23,38 @@ public class CustomFilterSecurity {
     CustomUserDetailService customUserDetailService;
     @Autowired
     CustomJwtFilter customJwtFilter;
+
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity httpSecurity) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder = httpSecurity.getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder.userDetailsService(customUserDetailService).passwordEncoder(passwordEncoder());
         return authenticationManagerBuilder.build();
-
-
     }
+
     @Bean
     public SecurityFilterChain customFilterSercurity(HttpSecurity http) throws Exception {
         http
                 .csrf(customizer -> customizer.disable())
-                .authorizeHttpRequests(request -> request.requestMatchers(
-                                "api/login/sign_in/**",
-                                "api/login/register/**",
-                                "user/{userId}/profile",
-                                "/api/login/forgot-password")
-                        .permitAll()
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/login/sign_in/**",
+                                "/api/login/register/**",
+                                "/api/login/forgot-password"
+                        ).permitAll()
+
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/user/{userId}/profile"
+                        ).permitAll()
                         .anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.addFilterBefore(customJwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+
     @Bean
     public ModelMapper modelMapper(){
         return new ModelMapper();
@@ -58,5 +64,4 @@ public class CustomFilterSecurity {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }

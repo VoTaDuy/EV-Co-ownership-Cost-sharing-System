@@ -7,39 +7,56 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails; // <-- Thêm import
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource; // <-- Thêm import
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 @Component
 public class CustomJwtFilter extends OncePerRequestFilter {
+
     @Autowired
     JwtUtilHelper jwtUtilHelper;
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = request.getHeader("Authorization");
-        if (token != null){
-            if (jwtUtilHelper.verifyToken(token)){
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken("","",new ArrayList<>());
-                SecurityContext securityContext = SecurityContextHolder.getContext();
-                securityContext.setAuthentication(usernamePasswordAuthenticationToken);
-            }
-        }
-        filterChain.doFilter(request,response);
+    @Autowired
+    private CustomUserDetailService customUserDetailService;
 
-    }
-    private String getTokenFromHeader(HttpServletRequest request){
-        String header = request.getHeader("Authorization");
-        String Token = null;
-        if( StringUtils.hasText(header) && header.startsWith("Bearer ")) {
-            Token = header.substring(7);
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+
+        try {
+            String header = request.getHeader("Authorization");
+            String token = null;
+            String email = null;
+
+            if (header != null && header.startsWith("Bearer ")) {
+                token = header.substring(7);
+                email = jwtUtilHelper.getSubject(token);
+            }
+
+            if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+
+                UserDetails userDetails = this.customUserDetailService.loadUserByUsername(email);
+
+                UsernamePasswordAuthenticationToken authenticationToken =
+                        new UsernamePasswordAuthenticationToken(
+                                userDetails,
+                                null,
+                                userDetails.getAuthorities()
+                        );
+
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            }
+
+        } catch (Exception e) {
+            System.err.println("Lỗi trong CustomJwtFilter: " + e.getMessage());
         }
-        return Token;
+
+        filterChain.doFilter(request, response);
     }
 }

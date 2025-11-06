@@ -30,7 +30,7 @@ public class LoginController {
         ResponseData responseData = new ResponseData();
 
         if (users != null) {
-            String token = jwtUtilHelper.generateToken(users.getPassword());
+            String token = jwtUtilHelper.generateToken(users.getEmail());
             Map<String,Object> data = new HashMap<>();
             boolean isDeleted = users.isDeleted();
             data.put("userId" , users.getUser_id());

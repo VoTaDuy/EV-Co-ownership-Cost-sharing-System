@@ -1,42 +1,48 @@
 package com.example.EV_Co_ownership.User_and_ownership_service.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
 public class Users {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int user_id;
 
-    @Column(name = "email")
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id")
-    private Roles roles;
-
-    @Column(name = "password")
+    @Column(nullable = false)
     private String password;
 
     @Column(name = "is_verified")
-    private boolean is_verified;
+    private boolean isVerified;
 
     @Column(name = "is_deleted")
-    private boolean isDeleted = false;
+    private boolean isDeleted;
 
     @Column(name = "created_at")
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
-    public int getUsers_id() {
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id")
+    private Roles roles;
+
+    @Column(name = "password_reset_token")
+    private String passwordResetToken;
+
+    @Column(name = "reset_token_expiry")
+    private LocalDateTime resetTokenExpiry;
+
+    public int getUser_id() {
         return user_id;
     }
 
-    public void setUsers_id(int users_id) {
-        this.user_id = users_id;
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 
     public String getEmail() {
@@ -55,6 +61,42 @@ public class Users {
         this.password = password;
     }
 
+    public boolean isVerified() {
+        return isVerified;
+    }
+
+    public void setVerified(boolean verified) {
+        isVerified = verified;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setIs_verified(boolean verified) {
+        isVerified = verified;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public LocalDateTime getCreated_at() {
+        return createdAt;
+    }
+
+    public void setCreated_at(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public Roles getRoles() {
         return roles;
     }
@@ -63,31 +105,19 @@ public class Users {
         this.roles = roles;
     }
 
-    public boolean isIs_verified() {
-        return is_verified;
+    public String getPasswordResetToken() {
+        return passwordResetToken;
     }
 
-    public void setIs_verified(boolean is_verified) {
-        this.is_verified = is_verified;
+    public void setPasswordResetToken(String passwordResetToken) {
+        this.passwordResetToken = passwordResetToken;
     }
 
-    public boolean isDeleted() { return isDeleted; }
-
-    public void setDeleted(boolean deleted) { isDeleted = deleted; }
-
-    public int getUser_id() {
-        return user_id;
+    public LocalDateTime getResetTokenExpiry() {
+        return resetTokenExpiry;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
-    }
-
-    public LocalDateTime getCreated_at() {
-        return created_at;
-    }
-
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
+    public void setResetTokenExpiry(LocalDateTime resetTokenExpiry) {
+        this.resetTokenExpiry = resetTokenExpiry;
     }
 }
