@@ -34,6 +34,4 @@ public class ReportController {
             return new ResponseEntity<>(responseData, HttpStatus.FAILED_DEPENDENCY);
         }
     }
-
-
 }

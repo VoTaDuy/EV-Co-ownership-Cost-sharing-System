@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface HistoryServiceImp {
     List<HistoryDTO> getAllHistory();
-
-
+    List<HistoryDTO> getHistoryByUserId(String userId);
     String convertHistoryListToString(LocalDateTime startTime, LocalDateTime endTime);
 }

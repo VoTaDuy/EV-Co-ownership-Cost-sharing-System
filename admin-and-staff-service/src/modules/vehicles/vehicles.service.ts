@@ -55,11 +55,12 @@ export class VehiclesService {
   /**
    * Xóa vehicle
    */
-  async delete(id: string): Promise<void> {
+  async delete(id: string): Promise<boolean> {
     const result = await this.vehicleRepo.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException(`Vehicle with id ${id} not found`);
     }
+    return true;
   }
 
   /**

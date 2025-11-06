@@ -11,7 +11,7 @@ import {
   UploadedFile,
   UploadedFiles,
 } from '@nestjs/common';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { AnyFilesInterceptor, FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { VehiclesService } from './vehicles.service';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { CreateVehicleDto, UpdateVehicleDto } from './vehicles.dto';
@@ -24,19 +24,28 @@ export class VehiclesController {
   ) {}
 
   @Post()
-  @UseInterceptors(FileInterceptor('image'))
+  @UseInterceptors(AnyFilesInterceptor())
   async createVehicle(
-    @UploadedFile() image: Express.Multer.File,
+    @UploadedFiles() files: Express.Multer.File[],
     @Body() dto: CreateVehicleDto,
   ) {
-    if (image) {
-      const uploadedUrl = await this.cloudinaryService.uploadImage(image);
-      dto.image_url = uploadedUrl;
+    // 1. Tách file ảnh đại diện
+    const imageFile = files.find((f) => f.fieldname === 'image');
+
+    // 2. Tách file ảnh spec (có thể có 0-nhiều)
+    const specFiles = files.filter((f) => f.fieldname === 'spec_images');
+
+    // 3. Upload
+    if (imageFile) {
+      dto.image_url = await this.cloudinaryService.uploadImage(imageFile);
+    }
+    if (specFiles.length) {
+      dto.spec_image_urls =
+        await this.cloudinaryService.uploadMultiple(specFiles);
     }
 
     return this.vehiclesService.create(dto);
   }
-
   // ✅ Upload nhiều ảnh (ảnh thông số kỹ thuật)
   @Post('upload-specs')
   @UseInterceptors(FilesInterceptor('spec_images'))
@@ -72,7 +81,7 @@ export class VehiclesController {
   }
 
   // ✅ Cập nhật ảnh xe (nếu cần tách riêng)
-  @Put(':id/images')
+  @Put(':id/image')
   updateImages(
     @Param('id') id: string,
     @Body() body: { image_url: string; spec_image_urls?: string[] },

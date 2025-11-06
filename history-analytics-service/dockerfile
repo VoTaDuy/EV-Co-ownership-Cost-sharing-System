@@ -18,6 +18,8 @@ FROM eclipse-temurin:21-jre-alpine
 # -------- 6️⃣ Set working directory --------
 WORKDIR /app
 
+ENV SPRING_PROFILES_ACTIVE=docker
+
 # -------- 7️⃣ Copy file jar từ builder stage --------
 COPY --from=builder /app/target/*.jar app.jar
 
@@ -26,3 +28,5 @@ EXPOSE 8083
 
 # -------- 9️⃣ Chạy ứng dụng --------
 ENTRYPOINT ["java", "-jar", "app.jar"]
+
+

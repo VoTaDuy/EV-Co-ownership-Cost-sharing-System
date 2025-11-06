@@ -8,9 +8,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Unique,
+  OneToMany,
 } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { Vehicle } from '../vehicles/vehicles.entity';
+import { ContractsTemplate } from '../contracts-template/contracts-template.entity';
 
 @Entity('ownership_groups')
 @Unique(['vehicle_id']) // 🔒 đảm bảo 1 xe chỉ có 1 nhóm
@@ -41,4 +43,7 @@ export class OwnershipGroup {
   generateId() {
     if (!this.group_id) this.group_id = uuidv4();
   }
+
+  @OneToMany(() => ContractsTemplate, (contract) => contract.group)
+  contracts!: ContractsTemplate[];
 }

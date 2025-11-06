@@ -1,11 +1,9 @@
 package com.example.EV_Co_ownership.User_and_ownership_service.Controller;
 
-
 import com.example.EV_Co_ownership.User_and_ownership_service.Entity.Users;
 import com.example.EV_Co_ownership.User_and_ownership_service.Payloads.Request.RegisterRequest;
 import com.example.EV_Co_ownership.User_and_ownership_service.Payloads.ResponseData;
 import com.example.EV_Co_ownership.User_and_ownership_service.Service.LoginService;
-import com.example.EV_Co_ownership.User_and_ownership_service.Service.UserService;
 import com.example.EV_Co_ownership.User_and_ownership_service.Utils.JwtUtilHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,7 +40,7 @@ public class LoginController {
             responseData.setData(data);
             responseData.setSuccess(true);
         }else {
-            responseData.setData("email or password is not correct");
+            responseData.setData("Email or password is not correct");
             responseData.setSuccess(false);
         }
         return new ResponseEntity<>(responseData, HttpStatus.OK);
@@ -67,6 +65,31 @@ public class LoginController {
             responseData.setData(e.getMessage());
             responseData.setSuccess(false);
             return new ResponseEntity<>(responseData, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> body) {
+        ResponseData responseData = new ResponseData();
+        String email = body.get("email");
+
+        if (email == null || email.isBlank()) {
+            responseData.setData("Email không được để trống.");
+            responseData.setSuccess(false);
+            return new ResponseEntity<>(responseData, HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+            loginService.handleForgotPassword(email);
+            responseData.setData("Nếu email của bạn tồn tại, một liên kết khôi phục đã được gửi.");
+            responseData.setSuccess(true);
+            return new ResponseEntity<>(responseData, HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseData.setData("Đã xảy ra lỗi máy chủ nội bộ khi xử lý yêu cầu.");
+            responseData.setSuccess(false);
+            return new ResponseEntity<>(responseData, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
