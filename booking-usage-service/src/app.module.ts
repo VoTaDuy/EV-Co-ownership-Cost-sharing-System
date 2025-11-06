@@ -3,8 +3,9 @@ import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './config/database.module';
 import { BookingModule } from './booking/booking.module';
 import { UsageModule } from './usage/usage.module';
-import { DigitalSignatureModule } from './digital_signature/digital-signature.module';
+import { DigitalSignatureModule } from './digital-signature/digital-signature.module';
 import { ConflictLogModule } from './conflict_log/conflict-log.module';
+import { AlertModule } from './alert/alert.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ConflictLogModule } from './conflict_log/conflict-log.module';
     UsageModule,
     DigitalSignatureModule,
     ConflictLogModule,
+    AlertModule,
   ],
 })
 export class AppModule {}
