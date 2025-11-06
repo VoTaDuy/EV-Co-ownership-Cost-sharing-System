@@ -20,11 +20,10 @@ export class CloudinaryService {
   }
 
   async uploadMultiple(files: Express.Multer.File[]): Promise<string[]> {
-    const urls: string[] = [];
-    for (const file of files) {
-      const url = await this.uploadImage(file);
-      urls.push(url);
-    }
-    return urls;
+    // Nếu files = undefined → trả về mảng rỗng, tránh lỗi
+    if (!files?.length) return [];
+
+    const uploadPromises = files.map((file) => this.uploadImage(file));
+    return Promise.all(uploadPromises);
   }
 }

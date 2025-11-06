@@ -1,4 +1,4 @@
-package com.example.EV_Co_ownership.User_and_ownership_service.System;
+package com.example.EV.Co_ownership.Cost_sharing.System;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

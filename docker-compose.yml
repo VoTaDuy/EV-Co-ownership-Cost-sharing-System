@@ -96,7 +96,6 @@ services:
       - microservices-network
 
   # === Payment & Costsharing (Spring Boot) ===
-  # === Payment & Costsharing (Spring Boot) ===
   payment-service:
     build:
       context: ./payment-cosstsharing-service
@@ -154,6 +153,8 @@ services:
       DATABASE_PASSWORD: 123456
       DATABASE_NAME: postgres
       PORT: 3000
+    env_file:
+      - ./admin-and-staff-service/.env
     ports:
       - "3001:3000"
     networks:
