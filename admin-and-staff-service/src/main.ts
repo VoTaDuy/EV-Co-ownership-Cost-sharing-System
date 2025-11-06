@@ -11,6 +11,11 @@ async function bootstrap() {
       transform: true,
     }),
   );
+  // ✅ FIX CORS - CHO PHÉP TẤT CẢ ORIGINS (dev only)
+  app.enableCors({
+    origin: true, // Cho phép tất cả origins
+    credentials: true, // Cho phép cookies/auth
+  });
   await app.listen(3000);
 }
 void bootstrap();

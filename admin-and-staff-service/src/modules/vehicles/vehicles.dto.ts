@@ -11,9 +11,6 @@ import {
 } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 
-/**
- * DTO dùng khi tạo mới xe
- */
 export class CreateVehicleDto {
   @IsString()
   @IsNotEmpty({ message: 'Tên xe không được để trống' })
@@ -47,14 +44,8 @@ export class CreateVehicleDto {
   is_active?: boolean = true;
 }
 
-/**
- * DTO dùng khi cập nhật thông tin xe
- */
 export class UpdateVehicleDto extends PartialType(CreateVehicleDto) {}
 
-/**
- * DTO trả về khi lấy thông tin xe
- */
 export class VehicleResponseDto {
   @IsUUID()
   vehicle_id: string;

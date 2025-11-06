@@ -8,10 +8,12 @@ import {
   Param,
   Patch,
   UseInterceptors,
-  UploadedFile,
   UploadedFiles,
 } from '@nestjs/common';
-import { AnyFilesInterceptor, FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import {
+  AnyFilesInterceptor,
+  FilesInterceptor,
+} from '@nestjs/platform-express';
 import { VehiclesService } from './vehicles.service';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { CreateVehicleDto, UpdateVehicleDto } from './vehicles.dto';

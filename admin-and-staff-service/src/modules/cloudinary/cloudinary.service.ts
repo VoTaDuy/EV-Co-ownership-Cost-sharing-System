@@ -10,7 +10,8 @@ export class CloudinaryService {
         { folder: 'vehicles' },
         (error, result?: UploadApiResponse) => {
           if (error) return reject(error);
-          if (!result) return reject(new Error('No result returned from Cloudinary.'));
+          if (!result)
+            return reject(new Error('No result returned from Cloudinary.'));
           resolve(result.secure_url);
         },
       );

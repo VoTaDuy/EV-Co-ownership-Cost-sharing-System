@@ -11,9 +11,6 @@ export class VehiclesService {
     private readonly vehicleRepo: Repository<Vehicle>,
   ) {}
 
-  /**
-   * Tạo mới một vehicle
-   */
   async create(data: CreateVehicleDto): Promise<Vehicle> {
     const vehicle = this.vehicleRepo.create({
       ...data,
@@ -23,16 +20,10 @@ export class VehiclesService {
     return await this.vehicleRepo.save(vehicle);
   }
 
-  /**
-   * Lấy tất cả vehicle
-   */
   async findAll(): Promise<Vehicle[]> {
     return await this.vehicleRepo.find();
   }
 
-  /**
-   * Lấy 1 vehicle theo id
-   */
   async findOne(id: string): Promise<Vehicle> {
     const vehicle = await this.vehicleRepo.findOne({
       where: { vehicle_id: id },
@@ -43,18 +34,12 @@ export class VehiclesService {
     return vehicle;
   }
 
-  /**
-   * Cập nhật thông tin vehicle
-   */
   async update(id: string, data: UpdateVehicleDto): Promise<Vehicle> {
     const vehicle = await this.findOne(id);
     Object.assign(vehicle, data, { updated_at: new Date() });
     return await this.vehicleRepo.save(vehicle);
   }
 
-  /**
-   * Xóa vehicle
-   */
   async delete(id: string): Promise<boolean> {
     const result = await this.vehicleRepo.delete(id);
     if (result.affected === 0) {
@@ -63,9 +48,6 @@ export class VehiclesService {
     return true;
   }
 
-  /**
-   * Cập nhật ảnh đại diện và ảnh thông số kỹ thuật
-   */
   async updateImages(
     id: string,
     image_url?: string,
