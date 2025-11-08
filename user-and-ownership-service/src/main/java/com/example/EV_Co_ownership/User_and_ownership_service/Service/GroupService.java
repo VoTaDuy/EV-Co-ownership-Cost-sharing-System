@@ -40,7 +40,6 @@ public class GroupService {
 
     @Transactional
     public Groups createGroup(CreateGroupRequest request) {
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserEmail = authentication.getName();
         Users creator = userRepository.findByEmail(currentUserEmail)
@@ -55,7 +54,7 @@ public class GroupService {
         GroupMembers firstMember = new GroupMembers(
                 creator,
                 savedGroup,
-                null, // tỷ lệ NULL
+                null,
                 LocalDateTime.now()
         );
         groupMembersRepository.save(firstMember);
@@ -65,7 +64,6 @@ public class GroupService {
 
     @Transactional
     public MemberDTO addOrUpdateMember(int groupId, int userIdToAdd, BigDecimal newRatio) {
-
         if (newRatio == null || newRatio.compareTo(BigDecimal.ZERO) < 0 || newRatio.compareTo(BigDecimal.valueOf(100)) > 0) {
             throw new RuntimeException("Tỷ lệ sở hữu phải từ 0% đến 100%");
         }
@@ -88,55 +86,55 @@ public class GroupService {
 
         List<GroupMembers> members = groupMembersRepository.findAllByGroupId(groupId);
 
-        GroupMembers targetMember = members.stream()
+        final GroupMembers finalTargetMember;
+
+        GroupMembers existingMember = members.stream()
                 .filter(m -> m.getUser().getUser_id() == userIdToAdd)
                 .findFirst()
                 .orElse(null);
 
-        if (targetMember == null) {
-            targetMember = new GroupMembers(userToAdd, group, newRatio, LocalDateTime.now());
-            members.add(targetMember);
+        if (existingMember == null) {
+            finalTargetMember = new GroupMembers(userToAdd, group, newRatio, LocalDateTime.now());
+            members.add(finalTargetMember);
         } else {
-            targetMember.setOwnershipRatio(newRatio);
+            existingMember.setOwnershipRatio(newRatio);
+            finalTargetMember = existingMember;
         }
 
-        List<GroupMembers> otherMembers = members.stream()
-                .filter(m -> m.getUser().getUser_id() != userIdToAdd)
+        List<GroupMembers> adjustableMembers = members.stream()
+                .filter(m -> !m.equals(finalTargetMember) && m.getOwnershipRatio() != null && m.getOwnershipRatio().compareTo(BigDecimal.ZERO) > 0)
                 .toList();
 
         BigDecimal remaining = BigDecimal.valueOf(100).subtract(newRatio);
-        BigDecimal totalOther = otherMembers.stream()
-                .map(m -> m.getOwnershipRatio() != null ? m.getOwnershipRatio() : BigDecimal.ZERO)
+        BigDecimal totalAdjustable = adjustableMembers.stream()
+                .map(GroupMembers::getOwnershipRatio)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        if (!otherMembers.isEmpty()) {
-            BigDecimal accumulated = BigDecimal.ZERO;
-            for (int i = 0; i < otherMembers.size(); i++) {
-                GroupMembers m = otherMembers.get(i);
-                BigDecimal adjusted;
-                if (totalOther.compareTo(BigDecimal.ZERO) == 0) {
-                    adjusted = remaining.divide(BigDecimal.valueOf(otherMembers.size()), 2, BigDecimal.ROUND_HALF_UP);
-                } else {
-                    adjusted = m.getOwnershipRatio().multiply(remaining).divide(totalOther, 2, BigDecimal.ROUND_HALF_UP);
-                }
-                if (i == otherMembers.size() - 1) {
-                    adjusted = remaining.subtract(accumulated);
-                }
-                m.setOwnershipRatio(adjusted);
-                accumulated = accumulated.add(adjusted);
+        BigDecimal accumulated = BigDecimal.ZERO;
+        for (int i = 0; i < adjustableMembers.size(); i++) {
+            GroupMembers m = adjustableMembers.get(i);
+            BigDecimal adjusted;
+            if (totalAdjustable.compareTo(BigDecimal.ZERO) == 0) {
+                adjusted = remaining.divide(BigDecimal.valueOf(adjustableMembers.size()), 2, BigDecimal.ROUND_HALF_UP);
+            } else {
+                adjusted = m.getOwnershipRatio().multiply(remaining).divide(totalAdjustable, 2, BigDecimal.ROUND_HALF_UP);
             }
+            if (i == adjustableMembers.size() - 1) {
+                adjusted = remaining.subtract(accumulated);
+            }
+            m.setOwnershipRatio(adjusted);
+            accumulated = accumulated.add(adjusted);
         }
 
-        members.add(targetMember);
         groupMembersRepository.saveAll(members);
 
         Optional<Profiles> profileOpt = profileRepository.findProfileByUserId(userToAdd.getUser_id());
         String fullName = profileOpt.map(Profiles::getFull_name).orElse(userToAdd.getEmail());
 
         return new MemberDTO(
-                targetMember.getUser().getUser_id(),
+                finalTargetMember.getUser().getUser_id(),
                 fullName,
-                targetMember.getOwnershipRatio()
+                finalTargetMember.getOwnershipRatio()
         );
     }
 }
