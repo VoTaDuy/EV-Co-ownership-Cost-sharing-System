@@ -8,7 +8,7 @@ public interface PollsServiceImp {
     List<PollsDTO> getAllPolls();
     PollsDTO getPollById(int poll_id);
     PollsDTO createPolls(PollsDTO dto);
-    PollsDTO updatePolls(int poll_id,PollsDTO dto, int created_by);
+    PollsDTO updatePolls(int poll_id, PollsDTO dto, String created_by);
     void deletePollById(int poll_id);
-    PollsDTO closePoll(int poll_id, int created_by);
+    PollsDTO closePoll(int poll_id, String created_by);
 }

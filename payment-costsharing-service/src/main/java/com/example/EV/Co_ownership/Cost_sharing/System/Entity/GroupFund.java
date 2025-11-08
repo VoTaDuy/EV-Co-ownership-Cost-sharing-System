@@ -12,9 +12,8 @@ public class GroupFund {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int fund_id;
 
-    @ManyToOne
-    @JoinColumn(name = "group_id")
-    private GroupTable group_id;
+    @Column(name = "group_id")
+    private String  groupId;
 
     @Column(name = "fund_name")
     private String fund_name;
@@ -23,7 +22,7 @@ public class GroupFund {
     private BigDecimal balance;
 
     @Column(name = "created_by")
-    private int created_by;
+    private String created_by;
 
     @Column(name = "created_at")
     private LocalDateTime created_at;
@@ -39,12 +38,12 @@ public class GroupFund {
         this.fund_id = fund_id;
     }
 
-    public GroupTable getGroup_id() {
-        return group_id;
+    public String getGroupId() {
+        return groupId;
     }
 
-    public void setGroup_id(GroupTable group_id) {
-        this.group_id = group_id;
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
     public String getFund_name() {
@@ -63,11 +62,11 @@ public class GroupFund {
         this.balance = balance;
     }
 
-    public int getCreated_by() {
+    public String getCreated_by() {
         return created_by;
     }
 
-    public void setCreated_by(int created_by) {
+    public void setCreated_by(String created_by) {
         this.created_by = created_by;
     }
 

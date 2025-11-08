@@ -17,10 +17,10 @@ public interface PollVotesRepository extends JpaRepository<PollVotes, Integer> {
     List<PollVotes> findByPoll(Polls poll);
 
     @Query("SELECT v FROM poll_votes v WHERE v.user_id = :userId")
-    List<PollVotes> findByUser_id(@Param("userId") int userId);
+    List<PollVotes> findByUser_id(@Param("userId") String userId);
 
     @Query("SELECT v FROM poll_votes v WHERE v.poll = :poll AND v.user_id = :userId")
-    Optional<PollVotes> findByPollAndUser_id(@Param("poll") Polls poll, @Param("userId") int user_id);
+    Optional<PollVotes> findByPollAndUser_id(@Param("poll") Polls poll, @Param("userId") String user_id);
 
     @Query("SELECT v.vote_value, COUNT(v) FROM poll_votes v WHERE v.poll = :poll GROUP BY v.vote_value")
     List<Object[]> countVotesByValue(Polls poll);

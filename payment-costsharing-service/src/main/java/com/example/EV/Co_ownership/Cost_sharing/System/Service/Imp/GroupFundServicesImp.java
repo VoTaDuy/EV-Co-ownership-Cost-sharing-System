@@ -10,7 +10,7 @@ public interface GroupFundServicesImp {
 
     GroupFund getFundById(int id);
 
-    List<GroupFund> getFundsByGroupId(int groupId);
+    List<GroupFund> getFundsByGroupId(String groupId);
 
     GroupFund createFund(GroupFund fund);
 

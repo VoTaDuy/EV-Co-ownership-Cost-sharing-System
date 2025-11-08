@@ -5,10 +5,10 @@ import java.time.LocalDateTime;
 
 public class GroupFundDTO {
     private int fund_id;
-    private int group_id;
+    private String group_id;
     private String fund_name;
     private BigDecimal balance;
-    private int created_by;
+    private String created_by;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
 
@@ -20,11 +20,11 @@ public class GroupFundDTO {
         this.fund_id = fund_id;
     }
 
-    public int getGroup_id() {
+    public String getGroup_id() {
         return group_id;
     }
 
-    public void setGroup_id(int group_id) {
+    public void setGroup_id(String group_id) {
         this.group_id = group_id;
     }
 
@@ -44,11 +44,11 @@ public class GroupFundDTO {
         this.balance = balance;
     }
 
-    public int getCreated_by() {
+    public String getCreated_by() {
         return created_by;
     }
 
-    public void setCreated_by(int created_by) {
+    public void setCreated_by(String created_by) {
         this.created_by = created_by;
     }
 

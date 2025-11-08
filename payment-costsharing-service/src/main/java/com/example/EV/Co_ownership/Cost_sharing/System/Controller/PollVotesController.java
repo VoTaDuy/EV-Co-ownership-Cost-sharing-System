@@ -21,7 +21,7 @@ public class PollVotesController {
     public ResponseEntity<?> createVote(@RequestBody Map<String, Object> request) {
         try {
             int pollId = (int) request.get("pollId");
-            int userId = (int) request.get("userId");
+            String userId = (String) request.get("userId");
             String voteValueStr = ((String) request.get("voteValue")).toUpperCase();
             PollVoteValue voteValue = PollVoteValue.valueOf(voteValueStr);
 
@@ -47,7 +47,7 @@ public class PollVotesController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<?> getVotesByUser(@PathVariable int userId) {
+    public ResponseEntity<?> getVotesByUser(@PathVariable String userId) {
         return ResponseEntity.ok(pollVotesService.getVotesByUser(userId));
     }
 
