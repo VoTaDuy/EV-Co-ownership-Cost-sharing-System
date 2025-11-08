@@ -17,6 +17,20 @@ public class Routes {
     @Value("${history.service.url}")
     private String historyServiceUrl; // ví dụ http://localhost:8083
 
+    @Value("${admin.service.url}")
+    private String adminServiceUrl;
+
+    @Bean
+    public RouterFunction<ServerResponse> adminContractsTemplate() {
+        return RouterFunctions.route(RequestPredicates.path("/admin/**"), request -> {
+            String pathAfter = request.path().replaceFirst("/admin", "");
+            String url = adminServiceUrl + "/admin" + pathAfter;
+            return HandlerFunctions.http(url).handle(request);
+        });
+    }
+
+
+
     @Bean
     public RouterFunction<ServerResponse> historyService() {
         RouterFunction<ServerResponse> getRoute = route(RequestPredicates.GET("/api/reports/**"), request -> {
@@ -33,6 +47,7 @@ public class Routes {
 
         return getRoute.and(postRoute); // ghép nhiều route
     }
+
 
 
 

@@ -19,10 +19,7 @@ public class ReportController {
     private GenimiServiceImp genimiServiceImp;
 
 
-    @GetMapping("/hey-hey")
-    public  String returnNew(){
-        return "anh duy";
-    }
+
     @PostMapping("/generate")
     public ResponseEntity<?> generateReport(@RequestBody Map<String,String> request) {
         ResponseData responseData = new ResponseData();
