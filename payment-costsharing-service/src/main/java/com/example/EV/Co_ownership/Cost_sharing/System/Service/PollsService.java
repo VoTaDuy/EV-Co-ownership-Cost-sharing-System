@@ -92,7 +92,7 @@ public class PollsService implements PollsServiceImp {
     }
 
     @Override
-    public PollsDTO updatePolls(int poll_id, PollsDTO dto, int created_by) {
+    public PollsDTO updatePolls(int poll_id, PollsDTO dto, String created_by) {
         Optional<Polls> optionalPoll = pollsRepository.findById(poll_id);
         if (optionalPoll.isEmpty()) {
             return null;
@@ -137,7 +137,7 @@ public class PollsService implements PollsServiceImp {
     }
 
     @Override
-    public PollsDTO closePoll(int poll_id, int created_by) {
+    public PollsDTO closePoll(int poll_id, String created_by) {
         Polls polls = pollsRepository.findById(poll_id).orElse(null);
         if (polls == null) {
             return null;

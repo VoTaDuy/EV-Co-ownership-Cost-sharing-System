@@ -47,6 +47,10 @@ public class CustomFilterSecurity {
                                 HttpMethod.GET,
                                 "/user/{userId}/profile"
                         ).permitAll()
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/user/get"
+                        ).permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));

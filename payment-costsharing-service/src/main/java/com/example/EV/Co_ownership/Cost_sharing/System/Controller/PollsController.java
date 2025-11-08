@@ -63,7 +63,7 @@ public class PollsController {
     @PutMapping("/update")
     public ResponseEntity<?> updatePoll(
             @RequestParam int poll_id,
-            @RequestParam int created_by,
+            @RequestParam String created_by,
             @RequestBody PollsDTO dto) {
 
         ResponseData responseData = new ResponseData();
@@ -106,7 +106,7 @@ public class PollsController {
     @PutMapping("/close")
     public ResponseEntity<?> closePoll(
             @RequestParam int poll_id,
-            @RequestParam int created_by) {
+            @RequestParam String created_by) {
         ResponseData responseData = new ResponseData();
 
         try {

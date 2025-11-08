@@ -12,4 +12,5 @@ import java.util.List;
 public interface VehicleCostRepository extends JpaRepository<VehicleCost, Integer> {
     @Query("SELECT v FROM vehicle_cost v WHERE v.cost_id = :cost_id")
     VehicleCost getVehicleCostById(int cost_id);
+    
 }

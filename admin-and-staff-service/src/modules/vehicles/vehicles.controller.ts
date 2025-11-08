@@ -18,7 +18,7 @@ import { VehiclesService } from './vehicles.service';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { CreateVehicleDto, UpdateVehicleDto } from './vehicles.dto';
 
-@Controller('vehicles')
+@Controller('admin/vehicles')
 export class VehiclesController {
   constructor(
     private readonly vehiclesService: VehiclesService,

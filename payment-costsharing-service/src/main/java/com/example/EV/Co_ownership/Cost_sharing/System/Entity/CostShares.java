@@ -13,7 +13,7 @@ public class CostShares {
     private int share_id;
 
     @Column(name = "user_id")
-    private int user_id;
+    private String user_id;
 
     @Column(name = "share_percentage")
     private BigDecimal share_percentage;
@@ -39,11 +39,11 @@ public class CostShares {
         this.share_id = share_id;
     }
 
-    public int getUser_id() {
+    public String getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(int user_id) {
+    public void setUser_id(String user_id) {
         this.user_id = user_id;
     }
 

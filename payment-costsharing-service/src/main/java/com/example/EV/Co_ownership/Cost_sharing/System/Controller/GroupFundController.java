@@ -5,12 +5,15 @@ import com.example.EV.Co_ownership.Cost_sharing.System.Entity.GroupFund;
 
 import com.example.EV.Co_ownership.Cost_sharing.System.Service.GroupFundService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/groupfunds")
+@CrossOrigin(origins = "http://localhost:3000")
+
 public class GroupFundController {
 
     @Autowired
@@ -27,8 +30,9 @@ public class GroupFundController {
     }
 
     @GetMapping("/group/{groupId}")
-    public List<GroupFund> getFundsByGroupId(@PathVariable int groupId) {
-        return groupFundService.getFundsByGroupId(groupId);
+    public ResponseEntity<List<GroupFund>> getFundsByGroup(@PathVariable("groupId") String groupId) {
+        List<GroupFund> funds = groupFundService.getFundsByGroupId(groupId);
+        return ResponseEntity.ok(funds);
     }
 
     @PostMapping("/create")
