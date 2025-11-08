@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 
 public class VehicleCostDTO {
     private int cost_id;
-    private int group_id;
-    private int vehicle_id;
+    private String group_id;
+    private String vehicle_id;
     private String cost_name;
     private BigDecimal amount;
     private VehicleCostStatus status;
@@ -23,19 +23,19 @@ public class VehicleCostDTO {
         this.cost_id = cost_id;
     }
 
-    public int getGroup_id() {
+    public String getGroup_id() {
         return group_id;
     }
 
-    public void setGroup_id(int group_id) {
+    public void setGroup_id(String group_id) {
         this.group_id = group_id;
     }
 
-    public int getVehicle_id() {
+    public String getVehicle_id() {
         return vehicle_id;
     }
 
-    public void setVehicle_id(int vehicle_id) {
+    public void setVehicle_id(String vehicle_id) {
         this.vehicle_id = vehicle_id;
     }
 

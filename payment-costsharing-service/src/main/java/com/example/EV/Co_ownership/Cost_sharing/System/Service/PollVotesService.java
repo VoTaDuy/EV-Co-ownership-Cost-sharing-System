@@ -23,7 +23,7 @@ public class PollVotesService {
     @Autowired
     private PollsRepository pollsRepository;
 
-    public PollVotes createVote(int pollId, int userId, PollVoteValue value) {
+    public PollVotes createVote(int pollId, String userId, PollVoteValue value) {
         Polls poll = pollsRepository.findById(pollId)
                 .orElseThrow(() -> new RuntimeException("Poll không tồn tại!"));
 
@@ -50,7 +50,7 @@ public class PollVotesService {
         return pollVotesRepository.findByPoll(poll);
     }
 
-    public List<PollVotes> getVotesByUser(int userId) {
+    public List<PollVotes> getVotesByUser(String userId) {
         return pollVotesRepository.findByUser_id(userId);
     }
 

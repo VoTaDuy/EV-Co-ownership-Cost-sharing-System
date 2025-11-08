@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 public class CostSharesDTO {
     private int share_id;
     private int cost_id;
-    private int user_id;
+    private String user_id;
     private BigDecimal share_percentage;
     private BigDecimal amount_due;
     private BigDecimal settled_amount;
@@ -29,11 +29,11 @@ public class CostSharesDTO {
         this.cost_id = cost_id;
     }
 
-    public int getUser_id() {
+    public String getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(int user_id) {
+    public void setUser_id(String user_id) {
         this.user_id = user_id;
     }
 
