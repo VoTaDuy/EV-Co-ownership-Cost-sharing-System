@@ -20,11 +20,23 @@ public class Routes {
     @Value("${admin.service.url}")
     private String adminServiceUrl;
 
+    @Value("${booking.service.url}")
+    private String bookingServiceUrl;
+
     @Bean
     public RouterFunction<ServerResponse> adminContractsTemplate() {
         return RouterFunctions.route(RequestPredicates.path("/admin/**"), request -> {
             String pathAfter = request.path().replaceFirst("/admin", "");
             String url = adminServiceUrl + "/admin" + pathAfter;
+            return HandlerFunctions.http(url).handle(request);
+        });
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> bookingService(){
+        return RouterFunctions.route(RequestPredicates.path("/booking/**"),request -> {
+            String pathAfter = request.path().replaceFirst("/booking", "");
+            String url = bookingServiceUrl + "/booking" + pathAfter;
             return HandlerFunctions.http(url).handle(request);
         });
     }
