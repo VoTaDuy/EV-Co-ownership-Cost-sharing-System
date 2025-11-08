@@ -14,7 +14,7 @@ import {
 } from './ownership-groups.dto';
 import { EventPattern, Payload } from '@nestjs/microservices';
 
-@Controller('ownership-groups')
+@Controller('admin/ownership-groups')
 export class OwnershipGroupsController {
   constructor(
     private readonly ownershipGroupsService: OwnershipGroupsService,
@@ -46,9 +46,9 @@ export class OwnershipGroupsController {
   }
 
   //RabbitMQ
-  @EventPattern('create_ownership_group')
+  @EventPattern('create_ownership_group_queue') // PHẢI KHỚP với queue trong main.ts
   async handleCreateOwnershipGroup(@Payload() data: CreateOwnershipGroupDto) {
-    console.log('📩 Received ownership group:', data);
+    console.log('NHẬN ĐƯỢC TỪ RABBITMQ:', data);
     return this.ownershipGroupsService.create(data);
   }
 }

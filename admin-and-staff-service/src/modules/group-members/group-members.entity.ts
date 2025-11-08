@@ -13,9 +13,6 @@ export class GroupMember {
   member_id: string;
 
   @Column({ type: 'varchar' })
-  user_id: string;
-
-  @Column({ type: 'varchar' })
   group_id: string;
 
   @Column({ type: 'varchar', nullable: true })

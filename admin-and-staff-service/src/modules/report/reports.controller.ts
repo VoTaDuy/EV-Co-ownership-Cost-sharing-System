@@ -10,7 +10,7 @@ import {
 import { ReportService } from './reports.service';
 import { CreateReportDto, UpdateReportDto } from './reports.dto';
 
-@Controller('reports')
+@Controller('admin/reports')
 export class ReportController {
   constructor(private readonly reportService: ReportService) {}
 

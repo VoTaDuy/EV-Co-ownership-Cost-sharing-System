@@ -10,7 +10,7 @@ import {
 import { EContactsService } from './e-contract.service';
 import { CreateEContactDto, UpdateEContactDto } from './e-contract.dto';
 
-@Controller('e-contacts')
+@Controller('admin/e-contacts')
 export class EContactsController {
   constructor(private readonly service: EContactsService) {}
 
