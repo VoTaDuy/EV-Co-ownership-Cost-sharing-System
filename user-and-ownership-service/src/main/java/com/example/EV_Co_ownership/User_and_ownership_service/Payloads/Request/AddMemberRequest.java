@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public class AddMemberRequest {
 
     private int groupId;
-    private String userEmail;
+    private int userId;
     private BigDecimal ownershipRatio;
 
     public int getGroupId() {
@@ -16,12 +16,12 @@ public class AddMemberRequest {
         this.groupId = groupId;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public BigDecimal getOwnershipRatio() {

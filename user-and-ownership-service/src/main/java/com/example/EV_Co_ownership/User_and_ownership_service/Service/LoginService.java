@@ -5,7 +5,6 @@ import com.example.EV_Co_ownership.User_and_ownership_service.Entity.Users;
 import com.example.EV_Co_ownership.User_and_ownership_service.Payloads.Request.RegisterRequest;
 import com.example.EV_Co_ownership.User_and_ownership_service.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -13,11 +12,9 @@ import java.util.UUID;
 
 @Service
 public class LoginService {
-    @Autowired
-    UserRepository userRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    UserRepository userRepository;
 
     @Autowired
     private EmailService emailService;
@@ -28,7 +25,8 @@ public class LoginService {
             System.out.println("User not found");
             return null;
         }
-        if (passwordEncoder.matches(password, user.getPassword())) {
+
+        if (password.equals(user.getPassword())) {
             System.out.println("User logged in");
             return user;
         } else {
@@ -41,15 +39,19 @@ public class LoginService {
         if (userRepository.findByEmail(registerRequest.getEmail()).isPresent()){
             throw new RuntimeException("Email already exists");
         }
+
         Users user = new Users();
         user.setEmail(registerRequest.getEmail());
-        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+
+        user.setPassword(registerRequest.getPassword());
+
         Roles role = new Roles();
         role.setRole_id(registerRequest.getRole_id());
         user.setRoles(role);
         user.setIs_verified(false);
         user.setCreated_at(LocalDateTime.now());
         user.setDeleted(false);
+
         try {
             userRepository.save(user);
             return true;
@@ -60,7 +62,6 @@ public class LoginService {
     }
 
     public void handleForgotPassword(String email) {
-
         Users user = userRepository.findByEmail(email).orElse(null);
 
         if (user == null) {
