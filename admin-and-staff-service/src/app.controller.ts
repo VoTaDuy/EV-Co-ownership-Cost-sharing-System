@@ -1,12 +1,13 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Logger } from '@nestjs/common';
+import { EventPattern, Payload } from '@nestjs/microservices';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  private readonly logger = new Logger(AppController.name);
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @EventPattern('booking_created')
+  handleBookingCreated(@Payload() data: any) {
+    this.logger.log('Received booking event:', data);
+    // Xử lý logic: cập nhật admin dashboard, gửi thông báo, v.v.
   }
 }

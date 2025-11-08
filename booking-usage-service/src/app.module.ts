@@ -6,6 +6,7 @@ import { UsageModule } from './usage/usage.module';
 import { DigitalSignatureModule } from './digital-signature/digital-signature.module';
 import { ConflictLogModule } from './conflict_log/conflict-log.module';
 import { AlertModule } from './alert/alert.module';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -19,5 +20,6 @@ import { AlertModule } from './alert/alert.module';
     ConflictLogModule,
     AlertModule,
   ],
+  providers: [AppService],
 })
 export class AppModule {}

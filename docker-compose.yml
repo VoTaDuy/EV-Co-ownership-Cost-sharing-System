@@ -51,7 +51,7 @@ services:
   # === PostgreSQL cho Admin & Staff service ===
   postgres:
     image: postgres:17
-    container_name: ev-postgres
+    container_name: postgresql-admin
     restart: always
     environment:
       POSTGRES_USER: postgres
@@ -125,7 +125,7 @@ services:
     environment:
       DB_HOST: mysql-booking
       DB_PORT: 3306
-      DB_USER: booking_user
+      DB_USER: mysql-booking
       DB_PASS: 123456
       DB_NAME: booking_usage_service
       PORT: 5001
@@ -192,6 +192,20 @@ services:
       - history-service
     ports:
       - "8085:8085"
+    networks:
+      - microservices-network
+
+  # === rabbitmq ===
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
     networks:
       - microservices-network
 

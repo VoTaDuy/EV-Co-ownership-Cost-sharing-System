@@ -12,6 +12,7 @@ import {
   CreateOwnershipGroupDto,
   UpdateOwnershipGroupDto,
 } from './ownership-groups.dto';
+import { EventPattern, Payload } from '@nestjs/microservices';
 
 @Controller('ownership-groups')
 export class OwnershipGroupsController {
@@ -42,5 +43,12 @@ export class OwnershipGroupsController {
   @Delete(':id')
   delete(@Param('id') id: string) {
     return this.ownershipGroupsService.delete(id);
+  }
+
+  //RabbitMQ
+  @EventPattern('create_ownership_group')
+  async handleCreateOwnershipGroup(@Payload() data: CreateOwnershipGroupDto) {
+    console.log('📩 Received ownership group:', data);
+    return this.ownershipGroupsService.create(data);
   }
 }

@@ -13,6 +13,8 @@ import { OwnershipGroupsController } from './modules/ownership-groups/ownership-
 import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
 import { ReportModule } from './modules/report/reports.module';
 import { ContractsTemplateModule } from './modules/contracts-template/contracts-template.module';
+import { GroupMembersModule } from './modules/group-members/group-members.module';
+import { EContactsModule } from './modules/e-contract/e-contract.module';
 
 @Module({
   imports: [
@@ -37,6 +39,8 @@ import { ContractsTemplateModule } from './modules/contracts-template/contracts-
     CloudinaryModule,
     ReportModule,
     ContractsTemplateModule,
+    GroupMembersModule,
+    EContactsModule,
   ],
   controllers: [AppController, OwnershipGroupsController],
   providers: [AppService, OwnershipGroupsService],

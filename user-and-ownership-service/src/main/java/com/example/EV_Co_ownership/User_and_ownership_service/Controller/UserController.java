@@ -3,6 +3,7 @@ package com.example.EV_Co_ownership.User_and_ownership_service.Controller;
 import com.example.EV_Co_ownership.User_and_ownership_service.DTO.ProfileDTO;
 import com.example.EV_Co_ownership.User_and_ownership_service.Entity.Profiles;
 import com.example.EV_Co_ownership.User_and_ownership_service.Entity.Users;
+import com.example.EV_Co_ownership.User_and_ownership_service.Messaging.OwnershipProducer;
 import com.example.EV_Co_ownership.User_and_ownership_service.Payloads.ResponseData;
 import com.example.EV_Co_ownership.User_and_ownership_service.Service.ProfileService;
 import com.example.EV_Co_ownership.User_and_ownership_service.Service.UserService;
@@ -13,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @CrossOrigin("*")
 @RestController
