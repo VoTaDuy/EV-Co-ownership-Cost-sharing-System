@@ -7,19 +7,19 @@ import { UpdateBookingDto } from './dto/update-booking.dto';
 import { BookingIdDto } from './dto/booking-Id.dto';
 
 @ApiTags('booking')
-@Controller('bookings')
+@Controller('booking')
 export class BookingController {
   constructor(private readonly bookingService: BookingService) {}
 
   
-  @Post()
+  @Post(`create-booking`)
   @ApiOperation({ summary: 'Tạo booking (đặt lịch xe) mới' })
   async createBooking(@Body() data: CreateBookingDto) {
     return this.bookingService.createBooking(data);
   }
 
   
-  @Get()
+  @Get(`get-all-bookings`)
   @ApiOperation({ summary: 'Lấy danh sách booking (đặt lịch xe) đang khả dụng' })
   async getAllBookings() {
     return this.bookingService.getAllBookings();

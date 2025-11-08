@@ -6,7 +6,7 @@ import { UserSignatureDto } from './dto/user-signature.dto';
 import { IdSignatureDto } from './dto/id-signature.dto';
 
 @ApiTags('digital-signature')
-@Controller('digital-signature')
+@Controller('booking/digital-signature')
 export class DigitalSignatureController {
   constructor(private readonly signatureService: DigitalSignatureService) {}
 

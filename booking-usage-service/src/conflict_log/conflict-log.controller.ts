@@ -7,17 +7,17 @@ import { GetConflictByIdDto } from './dto/get-conflict-by-id.dto';
 import { GetConflictsByBookingDto } from './dto/get-conflict-by-booking.dto';
 
 @ApiTags('conflict-log')
-@Controller('conflict-log')
+@Controller('booking/conflict-log')
 export class ConflictLogController {
   constructor(private readonly conflictService: ConflictLogService) {}
 
-  @Post()
+  @Post(`create-conflict-log`)
   @ApiOperation({ summary: 'Tạo một conflict log mới (thường do hệ thống tự động tạo)' })
   async createConflict(@Body() body: { booking_id: string; description: string }) {
     return this.conflictService.createConflict(body.booking_id, body.description);
   }
 
-@Get()
+@Get('get-all-conflicts-logs')
   @ApiOperation({ summary: 'Lấy tất cả conflict logs' })
   async getAll() {
     return this.conflictService.getAllConflicts();
@@ -29,7 +29,7 @@ export class ConflictLogController {
     return this.conflictService.getConflictById(params.conflict_id);
   }
 
-  @Get('booking/:booking_id')
+  @Get(':booking_id')
   @ApiOperation({ summary: 'Lấy danh sách conflict theo booking_id' })
   async getByBooking(@Param() params: GetConflictsByBookingDto) {
     return this.conflictService.getConflictsByBooking(params.booking_id);
