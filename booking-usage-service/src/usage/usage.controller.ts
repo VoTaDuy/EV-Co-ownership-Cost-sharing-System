@@ -39,7 +39,7 @@ export class UsageController {
       return this.usageService.getAllUsage(query);
     }
 
-  @Get(':id')
+  @Get(':usage_id')
     @ApiOperation({ summary: 'Lấy bản ghi cụ thể theo ID' })
     @ApiResponse({
       status: 200,
@@ -51,7 +51,7 @@ export class UsageController {
       return this.usageService.getUsageById(params.usage_id);
     }
 
-  @Put(':id') 
+  @Put(':usage_id') 
   @ApiOperation({ summary: 'Cập nhật thông tin bản ghi usage' })
   @ApiBody({ type: UpdateUsageDto })
   @ApiResponse({
@@ -72,7 +72,7 @@ export class UsageController {
     return this.usageService.updateUsage(params.usage_id, data);
   }
 
-  @Delete(':id')
+  @Delete(':usage_id')
   @ApiOperation({ summary: 'Xóa bản ghi sử dụng xe theo ID' })
   @ApiResponse({ status: 200, description: 'Xóa thành công' })
   @ApiResponse({ status: 404, description: 'Không tìm thấy usage record' })

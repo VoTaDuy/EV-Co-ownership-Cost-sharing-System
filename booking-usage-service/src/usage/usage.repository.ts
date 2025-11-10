@@ -61,6 +61,7 @@ export class UsageRepository {
 
   // Xóa bản ghi
   async deleteUsage(id: string): Promise<void> {
-    await this.usageRepo.delete(id);
+    if (!id) throw new Error('Usage ID is required');
+    await this.usageRepo.delete({ usage_id: id });
   }
 }
