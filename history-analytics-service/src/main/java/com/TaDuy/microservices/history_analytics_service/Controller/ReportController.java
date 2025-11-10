@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 @CrossOrigin("*")
@@ -26,14 +27,21 @@ public class ReportController {
 
         try {
             String prompt = request.get("prompt");
-            LocalDateTime startTime = LocalDateTime.parse(request.get("startTime"));
-            LocalDateTime endTime = LocalDateTime.parse(request.get("endTime"));
-            Object result = genimiServiceImp.generateReport(prompt, startTime, endTime);
+            String startTimeStr = request.get("startTime");
+            String endTimeStr = request.get("endTime");
+
+            // Sử dụng định dạng ISO hoặc định dạng bạn gửi
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            LocalDateTime startTime = LocalDateTime.parse(startTimeStr, formatter);
+            LocalDateTime endTime = LocalDateTime.parse(endTimeStr, formatter);
+
+            Object result = genimiServiceImp.generateReport(prompt, startTimeStr, endTimeStr);
             responseData.setData(result);
             return new ResponseEntity<>(responseData, HttpStatus.OK);
-        }catch (Exception e){
+        } catch (Exception e) {
             responseData.setDesc(e.getMessage());
             return new ResponseEntity<>(responseData, HttpStatus.FAILED_DEPENDENCY);
         }
     }
+
 }

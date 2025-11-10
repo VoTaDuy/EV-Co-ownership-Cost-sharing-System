@@ -1,24 +1,42 @@
 package com.TaDuy.microservices.history_analytics_service.DTO;
 
-import java.time.LocalDateTime;
-
 public class HistoryDTO {
-    private String history_id;
+    private String id;
+    private String usageId;
+    private String bookingId;
     private String userId;
     private String vehicleId;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-    private Double distanceKm;
-    private Double usageCost;
-    private Double fuelUsed;
-    private LocalDateTime recordedAt;
+    private String startDate;       // giữ nguyên kiểu String vì Mongo lưu dạng text
+    private String endDate;
+    private String checkInTime;
+    private String checkOutTime;
+    private String vehicleCondition;
+    private Double distance;
+    private String recordTime;      // cũng là String trong Mongo
 
-    public String getHistory_id() {
-        return history_id;
+
+    public String getId() {
+        return id;
     }
 
-    public void setHistory_id(String history_id) {
-        this.history_id = history_id;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getUsageId() {
+        return usageId;
+    }
+
+    public void setUsageId(String usageId) {
+        this.usageId = usageId;
+    }
+
+    public String getBookingId() {
+        return bookingId;
+    }
+
+    public void setBookingId(String bookingId) {
+        this.bookingId = bookingId;
     }
 
     public String getUserId() {
@@ -37,51 +55,59 @@ public class HistoryDTO {
         this.vehicleId = vehicleId;
     }
 
-    public LocalDateTime getStartTime() {
-        return startTime;
+    public String getStartDate() {
+        return startDate;
     }
 
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
     }
 
-    public LocalDateTime getEndTime() {
-        return endTime;
+    public String getEndDate() {
+        return endDate;
     }
 
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 
-    public Double getDistanceKm() {
-        return distanceKm;
+    public String getCheckInTime() {
+        return checkInTime;
     }
 
-    public void setDistanceKm(Double distanceKm) {
-        this.distanceKm = distanceKm;
+    public void setCheckInTime(String checkInTime) {
+        this.checkInTime = checkInTime;
     }
 
-    public Double getUsageCost() {
-        return usageCost;
+    public String getCheckOutTime() {
+        return checkOutTime;
     }
 
-    public void setUsageCost(Double usageCost) {
-        this.usageCost = usageCost;
+    public void setCheckOutTime(String checkOutTime) {
+        this.checkOutTime = checkOutTime;
     }
 
-    public Double getFuelUsed() {
-        return fuelUsed;
+    public String getVehicleCondition() {
+        return vehicleCondition;
     }
 
-    public void setFuelUsed(Double fuelUsed) {
-        this.fuelUsed = fuelUsed;
+    public void setVehicleCondition(String vehicleCondition) {
+        this.vehicleCondition = vehicleCondition;
     }
 
-    public LocalDateTime getRecordedAt() {
-        return recordedAt;
+    public Double getDistance() {
+        return distance;
     }
 
-    public void setRecordedAt(LocalDateTime recordedAt) {
-        this.recordedAt = recordedAt;
+    public void setDistance(Double distance) {
+        this.distance = distance;
+    }
+
+    public String getRecordTime() {
+        return recordTime;
+    }
+
+    public void setRecordTime(String recordTime) {
+        this.recordTime = recordTime;
     }
 }

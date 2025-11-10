@@ -8,5 +8,8 @@ import java.util.List;
 public interface HistoryServiceImp {
     List<HistoryDTO> getAllHistory();
     List<HistoryDTO> getHistoryByUserId(String userId);
-    String convertHistoryListToString(LocalDateTime startTime, LocalDateTime endTime);
+    String convertHistoryListToString(String startTime, String endTime);
+
+
+    String convertUserHistoryToString(String userId, String startTime, String endTime);
 }

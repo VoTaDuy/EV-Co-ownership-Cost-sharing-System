@@ -38,9 +38,8 @@ public class HistoryController {
 
     @GetMapping("/get")
     public ResponseEntity<?> getAllHistory(){
-        ResponseData responseData = new ResponseData();
-        responseData.setDesc("dciuu m");
-        return new ResponseEntity<>(responseData,HttpStatus.OK);
+        historyServiceImp.getAllHistory();
+        return new ResponseEntity<>(historyServiceImp,HttpStatus.OK);
     }
 
     public ResponseEntity<?> getPromptFromHistory(){

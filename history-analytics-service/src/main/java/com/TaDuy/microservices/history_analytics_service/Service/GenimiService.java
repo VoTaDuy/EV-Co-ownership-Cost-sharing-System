@@ -44,7 +44,7 @@ public class GenimiService implements GenimiServiceImp {
 
 
     @Override
-    public String generateReport(String prompt, LocalDateTime startTime, LocalDateTime endTime) {
+    public String generateReport(String prompt, String startTime, String endTime) {
         String url = genimiConfig.getUrl() + "?key=" + genimiConfig.getApiKey();
 
         String historyText = historyServiceImp.convertHistoryListToString(startTime, endTime);

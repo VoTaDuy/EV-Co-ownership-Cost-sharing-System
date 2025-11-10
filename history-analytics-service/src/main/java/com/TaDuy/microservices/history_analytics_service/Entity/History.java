@@ -1,41 +1,73 @@
 package com.TaDuy.microservices.history_analytics_service.Entity;
 
-
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.time.LocalDateTime;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Data
 @Document(collection = "history")
 public class History {
+
     @Id
-    private String history_id;
+    private String id;
+
+    @Field("usage_id")
+    private String usageId;
+
+    @Field("booking_id")
+    private String bookingId;
+
+    @Field("user_id")
     private String userId;
+
+    @Field("vehicle_id")
     private String vehicleId;
-    private String groupId;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-    private Double distanceKm;
-    private Double usageCost;
-    private Double fuelUsed;
-    private LocalDateTime recordedAt;
 
-    public String getGroupId() {
-        return groupId;
+    @Field("start_date")
+    private String startDate;
+
+    @Field("end_date")
+    private String endDate;
+
+    @Field("check_in_time")
+    private String checkInTime;
+
+    @Field("check_out_time")
+    private String checkOutTime;
+
+    @Field("vehicle_condition")
+    private String vehicleCondition;
+
+    @Field("distance")
+    private Double distance;
+
+    @Field("record_time")
+    private String recordTime;
+
+
+    public String getId() {
+        return id;
     }
 
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getHistory_id() {
-        return history_id;
+    public String getUsageId() {
+        return usageId;
     }
 
-    public void setHistory_id(String history_id) {
-        this.history_id = history_id;
+    public void setUsageId(String usageId) {
+        this.usageId = usageId;
+    }
+
+    public String getBookingId() {
+        return bookingId;
+    }
+
+    public void setBookingId(String bookingId) {
+        this.bookingId = bookingId;
     }
 
     public String getUserId() {
@@ -54,51 +86,59 @@ public class History {
         this.vehicleId = vehicleId;
     }
 
-    public LocalDateTime getStartTime() {
-        return startTime;
+    public String getStartDate() {
+        return startDate;
     }
 
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
     }
 
-    public LocalDateTime getEndTime() {
-        return endTime;
+    public String getEndDate() {
+        return endDate;
     }
 
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 
-    public Double getDistanceKm() {
-        return distanceKm;
+    public String getCheckInTime() {
+        return checkInTime;
     }
 
-    public void setDistanceKm(Double distanceKm) {
-        this.distanceKm = distanceKm;
+    public void setCheckInTime(String checkInTime) {
+        this.checkInTime = checkInTime;
     }
 
-    public Double getUsageCost() {
-        return usageCost;
+    public String getCheckOutTime() {
+        return checkOutTime;
     }
 
-    public void setUsageCost(Double usageCost) {
-        this.usageCost = usageCost;
+    public void setCheckOutTime(String checkOutTime) {
+        this.checkOutTime = checkOutTime;
     }
 
-    public Double getFuelUsed() {
-        return fuelUsed;
+    public String getVehicleCondition() {
+        return vehicleCondition;
     }
 
-    public void setFuelUsed(Double fuelUsed) {
-        this.fuelUsed = fuelUsed;
+    public void setVehicleCondition(String vehicleCondition) {
+        this.vehicleCondition = vehicleCondition;
     }
 
-    public LocalDateTime getRecordedAt() {
-        return recordedAt;
+    public Double getDistance() {
+        return distance;
     }
 
-    public void setRecordedAt(LocalDateTime recordedAt) {
-        this.recordedAt = recordedAt;
+    public void setDistance(Double distance) {
+        this.distance = distance;
+    }
+
+    public String getRecordTime() {
+        return recordTime;
+    }
+
+    public void setRecordTime(String recordTime) {
+        this.recordTime = recordTime;
     }
 }
