@@ -14,7 +14,7 @@ import java.util.Map;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/user/login")
 public class LoginController {
 
     @Autowired

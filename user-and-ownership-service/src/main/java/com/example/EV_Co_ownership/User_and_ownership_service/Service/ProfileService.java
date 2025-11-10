@@ -6,28 +6,30 @@ import com.example.EV_Co_ownership.User_and_ownership_service.Repository.Profile
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class ProfileService {
 
     @Autowired
     private ProfileRepository profileRepository;
 
-    public Profiles getProfileByUserId(int userId) {
+    // Lấy profile theo user UUID
+    public Profiles getProfileByUserId(UUID userId) {
         return profileRepository.findProfileByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("Profile not found for user: " + userId));
     }
 
-    public Profiles updateProfile(int userId, ProfileDTO profileDTO) {
+    // Cập nhật profile
+    public Profiles updateProfile(UUID userId, ProfileDTO profileDTO) {
         Profiles profile = getProfileByUserId(userId);
 
-        profile.setProfiles_id(profileDTO.getProfiles_id());
-        profile.setUsers_id(profileDTO.getUser_id());
-        profile.setFull_name(profileDTO.getFull_name());
-        profile.setPhone_number(profileDTO.getPhone_number());
-        profile.setAddress(profileDTO.getAddress());
-        profile.setDriver_license_number(profileDTO.getDriver_license_number());
-        profile.setDriver_license_expiry(profileDTO.getDriver_license_expiry());
-        profile.setLicense_image_url(profileDTO.getLicense_image_url());
+        if (profileDTO.getFull_name() != null) profile.setFull_name(profileDTO.getFull_name());
+        if (profileDTO.getPhone_number() != null) profile.setPhone_number(profileDTO.getPhone_number());
+        if (profileDTO.getAddress() != null) profile.setAddress(profileDTO.getAddress());
+        if (profileDTO.getDriver_license_number() != null) profile.setDriver_license_number(profileDTO.getDriver_license_number());
+        if (profileDTO.getDriver_license_expiry() != null) profile.setDriver_license_expiry(profileDTO.getDriver_license_expiry());
+        if (profileDTO.getLicense_image_url() != null) profile.setLicense_image_url(profileDTO.getLicense_image_url());
 
         return profileRepository.save(profile);
     }

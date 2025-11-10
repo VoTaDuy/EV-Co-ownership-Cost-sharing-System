@@ -1,9 +1,9 @@
 package com.example.EV_Co_ownership.User_and_ownership_service.Controller;
 
 import com.example.EV_Co_ownership.User_and_ownership_service.DTO.ProfileDTO;
+import com.example.EV_Co_ownership.User_and_ownership_service.DTO.UserDTO;
 import com.example.EV_Co_ownership.User_and_ownership_service.Entity.Profiles;
 import com.example.EV_Co_ownership.User_and_ownership_service.Entity.Users;
-import com.example.EV_Co_ownership.User_and_ownership_service.Messaging.OwnershipProducer;
 import com.example.EV_Co_ownership.User_and_ownership_service.Payloads.ResponseData;
 import com.example.EV_Co_ownership.User_and_ownership_service.Service.ProfileService;
 import com.example.EV_Co_ownership.User_and_ownership_service.Service.UserService;
@@ -15,12 +15,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+import java.util.UUID;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/user/users")
 public class UserController {
+
     @Autowired
     private UserService userService;
 
@@ -28,32 +29,55 @@ public class UserController {
     private ProfileService profileService;
 
     @GetMapping("/get")
-    public ResponseEntity<?> getAllUsers(){
+    public ResponseEntity<?> getAllUsers() {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
+
     @GetMapping("/crsf-token")
     public CsrfToken getCsrfToken(HttpServletRequest request) {
         return (CsrfToken) request.getAttribute("_csrf");
     }
 
-    @DeleteMapping("/{userId}/delete_user")
-    public ResponseEntity<?> deleteUser(@PathVariable Integer userId) {
-        ResponseData reponseData = new ResponseData();
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUserById(@PathVariable UUID id) {
         try {
-            Users users= userService.removeUserById(userId);
-            reponseData.setData(users);
-            return new ResponseEntity<>(reponseData, HttpStatus.OK);
+            Users user = userService.getUserById(id);
+            return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
-            System.out.println(e.getMessage());
-            return new ResponseEntity<>(reponseData, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return new ResponseEntity<>(reponseData, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable UUID id, @RequestBody UserDTO userDTO) {
+        try {
+            Users updatedUser = userService.updateUser(id, userDTO);
+            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("/{id}/delete_user")
+    public ResponseEntity<?> deleteUser(@PathVariable UUID id) {
+        ResponseData responseData = new ResponseData();
+        try {
+            Users user = userService.removeUserById(id);
+            responseData.setData(user);
+            return new ResponseEntity<>(responseData, HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(responseData, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(responseData, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/{userId}/profile")
-    public ResponseEntity<?> getProfileByUserId(@PathVariable int userId) {
+    public ResponseEntity<?> getProfileByUserId(@PathVariable UUID userId) {
         try {
             Profiles profile = profileService.getProfileByUserId(userId);
             return new ResponseEntity<>(profile, HttpStatus.OK);
@@ -63,7 +87,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}/profile")
-    public ResponseEntity<?> updateProfile(@PathVariable int userId, @RequestBody ProfileDTO profileDTO) {
+    public ResponseEntity<?> updateProfile(@PathVariable UUID userId, @RequestBody ProfileDTO profileDTO) {
         try {
             Profiles updatedProfile = profileService.updateProfile(userId, profileDTO);
             return new ResponseEntity<>(updatedProfile, HttpStatus.OK);

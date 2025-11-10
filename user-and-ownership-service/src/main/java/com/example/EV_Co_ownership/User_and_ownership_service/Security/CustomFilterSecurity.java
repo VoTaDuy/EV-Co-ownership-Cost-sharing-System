@@ -38,18 +38,18 @@ public class CustomFilterSecurity {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(
                                 HttpMethod.POST,
-                                "/login/sign_in/**",
-                                "/register/**",
-                                "/forgot-password"
+                                "/user/login/sign_in/**",
+                                "/user/register/**",
+                                "/user/forgot-password"
                         ).permitAll()
 
                         .requestMatchers(
                                 HttpMethod.GET,
-                                "/user/{userId}/profile"
+                                "/user/users/{userId}/profile"
                         ).permitAll()
                         .requestMatchers(
                                 HttpMethod.GET,
-                                "/user/get"
+                                "/user/users/get"
                         ).permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
