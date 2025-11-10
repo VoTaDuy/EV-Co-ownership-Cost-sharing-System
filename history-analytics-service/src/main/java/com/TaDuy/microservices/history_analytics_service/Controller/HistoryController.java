@@ -22,18 +22,18 @@ public class HistoryController {
     HistoryServiceImp historyServiceImp;
 
     @GetMapping("/get/{userId}")
-    public ResponseEntity<?> getHistoryByUserId(@PathVariable    String userId){
+    public ResponseEntity<?> getHistoryByUserId(@PathVariable  String userId){
         List<HistoryDTO> historyDTOList  =historyServiceImp.getHistoryByUserId(userId);
 
         return new ResponseEntity<>(historyDTOList ,HttpStatus.OK);
     };
 
 
-    @GetMapping("/get/{groupId}")
-    public ResponseEntity<?> getHistoryByGroupId(){
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+//    @GetMapping("/get/{groupId}")
+//    public ResponseEntity<?> getHistoryByGroupId(){
+//
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 
 
     @GetMapping("/get")

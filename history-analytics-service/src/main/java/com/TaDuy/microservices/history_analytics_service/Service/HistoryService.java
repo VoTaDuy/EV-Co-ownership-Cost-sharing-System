@@ -18,7 +18,6 @@ public class HistoryService implements HistoryServiceImp {
     @Autowired
     private RestTemplate restTemplate;
 
-    private static final String USER_SERVICE_URL = "http://localhost:8085/users";
 
     @Autowired
     HistoryRepository historyRepository;
@@ -49,17 +48,28 @@ public class HistoryService implements HistoryServiceImp {
     }
 
     @Override
-    public List<HistoryDTO>  getHistoryByUserId(String userId) {
-        String url = USER_SERVICE_URL + "/" + userId;
-        try {
-            ResponseEntity<UserDTO> response = restTemplate.getForEntity(url, UserDTO.class);
-            UserDTO userDTO = response.getBody();
-            if (userDTO != null) return findHistories(userId);
-        }catch (Exception e){
-            System.out.println("khong tim thay userId" + userId);
-            System.out.println(e.getMessage());
+    public List<HistoryDTO> getHistoryByUserId(String userId) {
+        List<History> historyList = historyRepository.findHistoryByUserId(userId);
+        List<HistoryDTO> historyDTOList = new ArrayList<>();
+
+        for (History history : historyList) {
+            HistoryDTO dto = new HistoryDTO();
+            dto.setId(history.getId());
+            dto.setUsageId(history.getUsageId());
+            dto.setBookingId(history.getBookingId());
+            dto.setUserId(history.getUserId());
+            dto.setVehicleId(history.getVehicleId());
+            dto.setStartDate(history.getStartDate());
+            dto.setEndDate(history.getEndDate());
+            dto.setCheckInTime(history.getCheckInTime());
+            dto.setCheckOutTime(history.getCheckOutTime());
+            dto.setVehicleCondition(history.getVehicleCondition());
+            dto.setDistance(history.getDistance());
+            dto.setRecordTime(history.getRecordTime());
+            historyDTOList.add(dto);
         }
-        return List.of();
+
+        return historyDTOList;
     }
 
 
@@ -127,32 +137,6 @@ public class HistoryService implements HistoryServiceImp {
         return sb.toString();
     }
 
-
-
-
-    private List<HistoryDTO> findHistories(String userId){
-        List<History> historyList = historyRepository.findHistoryByUserId(userId);
-        List<HistoryDTO> historyDTOList = new ArrayList<>();
-
-        for (History history : historyList) {
-            HistoryDTO dto = new HistoryDTO();
-            dto.setId(history.getId());
-            dto.setUsageId(history.getUsageId());
-            dto.setBookingId(history.getBookingId());
-            dto.setUserId(history.getUserId());
-            dto.setVehicleId(history.getVehicleId());
-            dto.setStartDate(history.getStartDate());
-            dto.setEndDate(history.getEndDate());
-            dto.setCheckInTime(history.getCheckInTime());
-            dto.setCheckOutTime(history.getCheckOutTime());
-            dto.setVehicleCondition(history.getVehicleCondition());
-            dto.setDistance(history.getDistance());
-            dto.setRecordTime(history.getRecordTime());
-            historyDTOList.add(dto);
-        }
-
-        return historyDTOList;
-    }
 }
 
 
