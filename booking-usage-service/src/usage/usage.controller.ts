@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Delete, Body, Put, Param } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Body, Put, Param, Query } from '@nestjs/common';
 import { UsageService } from './usage.service';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody, } from '@nestjs/swagger';
 import { UsageRecord } from './usage.entity';
 import { CreateUsageDto } from './dto/create-usage.dto';
 import { UsageIdDto } from './dto/usage-id.dto';
 import { UpdateUsageDto } from './dto/update-usage.dto';
+import { GetAllUsageDto } from './dto/get-all-usage.dto';
 
 
 @ApiTags('usage')
@@ -28,15 +29,15 @@ export class UsageController {
   }
 
   @Get('get-all-usage')
-  @ApiOperation({ summary: 'Lấy danh sách tất cả các bản ghi sử dụng' })
-  @ApiResponse({
-    status: 200,
-    description: 'Danh sách usage record',
-    type: [UsageRecord],
-  })
-  async getAllUsage() {
-    return this.usageService.getAllUsage();
-  }
+    @ApiOperation({ summary: 'Lấy danh sách tất cả các bản ghi sử dụng' })
+    @ApiResponse({
+      status: 200,
+      description: 'Danh sách usage record (có thể lọc và phân trang)',
+      type: [UsageRecord],
+    })
+    async getAllUsage(@Query() query: GetAllUsageDto) {
+      return this.usageService.getAllUsage(query);
+    }
 
   @Get(':id')
     @ApiOperation({ summary: 'Lấy bản ghi cụ thể theo ID' })

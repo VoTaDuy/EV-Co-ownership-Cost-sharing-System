@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UsageRecord } from './usage.entity';
+import { GetAllUsageDto } from './dto/get-all-usage.dto';
 
 @Injectable()
 export class UsageRepository {
@@ -17,8 +18,18 @@ export class UsageRepository {
   }
 
   // Lấy tất cả bản ghi
-  async findAll(): Promise<UsageRecord[]> {
-    return this.usageRepo.find();
+  async findAll(query?: GetAllUsageDto): Promise<UsageRecord[]> {
+    const { user_id, booking_id, page = 1, limit = 20 } = query || {};
+    const where: any = {};
+    if (user_id) where.user_id = user_id;
+    if (booking_id) where.booking_id = booking_id;
+
+    return this.usageRepo.find({
+      where,
+      skip: (page - 1) * limit,
+      take: limit,
+      order: { record_time: 'DESC' },
+    });
   }
 
   // Lấy bản ghi theo ID

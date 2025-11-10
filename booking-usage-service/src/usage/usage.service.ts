@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { UsageRepository } from './usage.repository';
 import { UsageRecord } from './usage.entity';
+import { GetAllUsageDto } from './dto/get-all-usage.dto';
 
 @Injectable()
 export class UsageService {
@@ -10,8 +11,8 @@ export class UsageService {
     return this.usageRepository.createUsage(data);
   }
 
-  async getAllUsage(): Promise<UsageRecord[]> {
-    return this.usageRepository.findAll();
+  async getAllUsage(query: GetAllUsageDto): Promise<UsageRecord[]> {
+    return this.usageRepository.findAll(query);
   }
 
   async getUsageById(id: string): Promise<UsageRecord> {
