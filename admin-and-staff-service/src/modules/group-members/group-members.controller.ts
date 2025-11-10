@@ -13,7 +13,7 @@ import {
 } from './group-members.dto';
 import { GroupMembersService } from './group-members.service';
 
-@Controller('group-members')
+@Controller('admin/group-members')
 export class GroupMembersController {
   constructor(private readonly service: GroupMembersService) {}
 

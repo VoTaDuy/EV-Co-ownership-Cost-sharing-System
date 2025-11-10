@@ -9,10 +9,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class PollsDTO {
     private int id;
-    private int group_id;
+    private String group_id;
     private int cost_id;
     private String description;
-    private int created_by;
+    private String created_by;
     private LocalDateTime created_at;
     private LocalDateTime expires_at;
     private PollStatus status;
@@ -25,11 +25,11 @@ public class PollsDTO {
         this.id = id;
     }
 
-    public int getGroup_id() {
+    public String getGroup_id() {
         return group_id;
     }
 
-    public void setGroup_id(int group_id) {
+    public void setGroup_id(String group_id) {
         this.group_id = group_id;
     }
 
@@ -49,11 +49,11 @@ public class PollsDTO {
         this.description = description;
     }
 
-    public int getCreated_by() {
+    public String getCreated_by() {
         return created_by;
     }
 
-    public void setCreated_by(int created_by) {
+    public void setCreated_by(String created_by) {
         this.created_by = created_by;
     }
 
@@ -80,6 +80,4 @@ public class PollsDTO {
     public void setStatus(PollStatus status) {
         this.status = status;
     }
-
-
 }

@@ -15,10 +15,10 @@ public class VehicleCost {
 
 
     @Column(name = "group_id")
-    private int group_id;
+    private String group_id;
 
     @Column(name = "vehicle_id")
-    private int vehicle_id;
+    private String vehicle_id;
 
     @Column(name = "cost_name")
     private String cost_name;
@@ -43,20 +43,19 @@ public class VehicleCost {
         this.cost_id = cost_id;
     }
 
-
-    public int getGroup_id() {
+    public String getGroup_id() {
         return group_id;
     }
 
-    public void setGroup_id(int group_id) {
+    public void setGroup_id(String group_id) {
         this.group_id = group_id;
     }
 
-    public int getVehicle_id() {
+    public String getVehicle_id() {
         return vehicle_id;
     }
 
-    public void setVehicle_id(int vehicle_id) {
+    public void setVehicle_id(String vehicle_id) {
         this.vehicle_id = vehicle_id;
     }
 

@@ -15,7 +15,7 @@ import {
   UpdateServiceTaskDto,
 } from './service-tasks.dto';
 
-@Controller('service-tasks')
+@Controller('admin/service-tasks')
 export class ServiceTasksController {
   constructor(private readonly serviceTasksService: ServiceTasksService) {}
 

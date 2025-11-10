@@ -5,7 +5,7 @@ import { AlertType } from './alert.entity';
 import { ApiTags, ApiOperation, ApiQuery, ApiParam } from '@nestjs/swagger';
 
 @ApiTags('Alerts')
-@Controller('alerts')
+@Controller('booking/alerts')
 export class AlertController {
   constructor(private readonly alertService: AlertService) {}
 

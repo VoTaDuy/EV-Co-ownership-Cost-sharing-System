@@ -10,7 +10,7 @@ import {
 import { ContractsTemplateService } from './contracts-template.service';
 import { ContractsTemplate } from './contracts-template.entity';
 
-@Controller('contracts-template')
+@Controller('admin/contracts-template')
 export class ContractsTemplateController {
   constructor(private readonly contractsService: ContractsTemplateService) {}
 

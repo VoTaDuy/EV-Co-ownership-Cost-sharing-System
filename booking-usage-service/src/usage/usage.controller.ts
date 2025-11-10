@@ -8,11 +8,11 @@ import { UpdateUsageDto } from './dto/update-usage.dto';
 
 
 @ApiTags('usage')
-@Controller('usage')
+@Controller('booking/usage')
 export class UsageController {
   constructor(private readonly usageService: UsageService) {}
 
-  @Post()
+  @Post('create-usage')
   @ApiOperation({ summary: 'Tạo bản ghi nhận sử dụng xe mới' })
   @ApiBody({ type: CreateUsageDto })
   @ApiResponse({
@@ -27,7 +27,7 @@ export class UsageController {
     return this.usageService.createUsage(usageData);
   }
 
-  @Get()
+  @Get('get-all-usage')
   @ApiOperation({ summary: 'Lấy danh sách tất cả các bản ghi sử dụng' })
   @ApiResponse({
     status: 200,

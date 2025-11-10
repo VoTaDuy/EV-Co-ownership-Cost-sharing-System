@@ -2,7 +2,7 @@
 ### 🚗 Hệ thống quản lý **Đồng sở hữu & Chia sẻ chi phí xe điện**
 
 ---
-## 🌐 Frontend
+## 🌐 Frontenddd
 
 Frontend của dự án được triển khai bằng **React / Next.js + TypeScript** và kết nối với **API Gateway** của hệ thống.  
 

@@ -1,32 +1,17 @@
-# -------- 1️⃣ Stage 1: Build stage --------
-FROM maven:3.9.9-eclipse-temurin-21 AS builder
-
-# -------- 2️⃣ Set working directory --------
+## STAGE 1: BUILD
+FROM maven:3.9.5-eclipse-temurin-21 AS build
 WORKDIR /app
-
-# -------- 3️⃣ Copy pom.xml và tải dependencies trước (cache layer) --------
+# Copy source code và file build project (pom.xml)
 COPY pom.xml .
-RUN mvn dependency:go-offline -B
-
-# -------- 4️⃣ Copy source code và build project --------
 COPY src ./src
+# Build file jar
 RUN mvn clean package -DskipTests
 
-# -------- 5️⃣ Stage 2: Runtime stage (image nhẹ hơn) --------
-FROM eclipse-temurin:21-jre-alpine
-
-# -------- 6️⃣ Set working directory --------
+## STAGE 2: RUN
+FROM eclipse-temurin:21-jdk-alpine
 WORKDIR /app
-
-ENV SPRING_PROFILES_ACTIVE=docker
-
-# -------- 7️⃣ Copy file jar từ builder stage --------
-COPY --from=builder /app/target/*.jar app.jar
-
-# -------- 8️⃣ Expose cổng ứng dụng --------
+# Copy file jar từ Stage 1
+COPY --from=build /app/target/*.jar app.jar
+# ... các lệnh khác
 EXPOSE 8083
-
-# -------- 9️⃣ Chạy ứng dụng --------
-ENTRYPOINT ["java", "-jar", "app.jar"]
-
-
+ENTRYPOINT ["java","-jar","app.jar"]
