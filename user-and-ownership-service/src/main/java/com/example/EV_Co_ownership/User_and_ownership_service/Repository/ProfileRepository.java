@@ -7,10 +7,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface ProfileRepository extends JpaRepository<Profiles, Integer> {
+public interface ProfileRepository extends JpaRepository<Profiles, UUID> {
 
     @Query("SELECT p FROM Profiles p WHERE p.user_id = :userId")
-    Optional<Profiles> findProfileByUserId(@Param("userId") int userId);
+    Optional<Profiles> findProfileByUserId(@Param("userId") UUID userId);
 }

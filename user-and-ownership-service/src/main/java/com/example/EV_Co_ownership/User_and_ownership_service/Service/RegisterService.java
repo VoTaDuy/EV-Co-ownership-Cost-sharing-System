@@ -6,6 +6,7 @@ import com.example.EV_Co_ownership.User_and_ownership_service.Payloads.Request.R
 import com.example.EV_Co_ownership.User_and_ownership_service.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.example.EV_Co_ownership.User_and_ownership_service.DTO.UserDTO.*;
 
 import java.time.LocalDateTime;
 
@@ -28,8 +29,8 @@ public class RegisterService {
         role.setRole_id(registerRequest.getRole_id());
         user.setRoles(role);
 
-        user.setIs_verified(false);
-        user.setCreated_at(LocalDateTime.now());
+        user.setVerified(false);
+        user.setCreatedAt(LocalDateTime.now());
         user.setDeleted(false);
 
         try {

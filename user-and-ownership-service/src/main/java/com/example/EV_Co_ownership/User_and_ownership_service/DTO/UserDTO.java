@@ -1,9 +1,11 @@
 package com.example.EV_Co_ownership.User_and_ownership_service.DTO;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class UserDTO {
-    private int user_id;
+
+    private UUID user_id;
     private String email;
     private int role_id;
     private String password;
@@ -11,11 +13,11 @@ public class UserDTO {
     private boolean isDeleted = false;
     private LocalDateTime created_at;
 
-    public int getUser_id() {
+    public UUID getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(int user_id) {
+    public void setUser_id(UUID user_id) {
         this.user_id = user_id;
     }
 
