@@ -45,12 +45,9 @@ public class CustomFilterSecurity {
                                 "/user/register/**",
                                 "/user/forgot-password"
                         ).permitAll()
-
                         .requestMatchers(
                                 HttpMethod.GET,
-                                "/user/users/{userId}/profile",
-                                "/user/users/get",
-                                "/user/users/profiles"
+                                "/user/users/**"
                         ).permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session

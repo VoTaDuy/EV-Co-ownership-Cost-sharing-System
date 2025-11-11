@@ -10,6 +10,7 @@ import {
 import {
   CreateGroupMemberDto,
   UpdateGroupMemberDto,
+  AddGroupMemberDto,
 } from './group-members.dto';
 import { GroupMembersService } from './group-members.service';
 
@@ -32,6 +33,11 @@ export class GroupMembersController {
     return this.service.findOne(id);
   }
 
+  @Get('group/:group_id')
+  findMemberByGroupId(@Param('group_id') id: string) {
+    return this.service.findMember(id);
+  }
+
   @Put(':id')
   update(@Param('id') id: string, @Body() dto: UpdateGroupMemberDto) {
     return this.service.update(id, dto);
@@ -40,5 +46,14 @@ export class GroupMembersController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.service.remove(id);
+  }
+
+  // 🔥 Route thêm member vào group
+  @Post('/:group_id/add')
+  addMemberToGroup(
+    @Param('group_id') group_id: string,
+    @Body() dto: AddGroupMemberDto,
+  ) {
+    return this.service.addMemberToGroup(group_id, dto);
   }
 }
