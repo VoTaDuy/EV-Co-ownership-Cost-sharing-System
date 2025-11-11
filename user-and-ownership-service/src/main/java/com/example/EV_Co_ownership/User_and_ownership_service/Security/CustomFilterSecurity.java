@@ -15,6 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @EnableWebSecurity
 public class CustomFilterSecurity {
@@ -35,6 +37,7 @@ public class CustomFilterSecurity {
     public SecurityFilterChain customFilterSercurity(HttpSecurity http) throws Exception {
         http
                 .csrf(customizer -> customizer.disable())
+                .cors(withDefaults())
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(
                                 HttpMethod.POST,
@@ -45,11 +48,9 @@ public class CustomFilterSecurity {
 
                         .requestMatchers(
                                 HttpMethod.GET,
-                                "/user/users/{userId}/profile"
-                        ).permitAll()
-                        .requestMatchers(
-                                HttpMethod.GET,
-                                "/user/users/get"
+                                "/user/users/{userId}/profile",
+                                "/user/users/get",
+                                "/user/users/profiles"
                         ).permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session

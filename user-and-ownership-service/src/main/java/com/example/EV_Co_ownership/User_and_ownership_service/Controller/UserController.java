@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @CrossOrigin("*")
@@ -37,6 +38,20 @@ public class UserController {
     public CsrfToken getCsrfToken(HttpServletRequest request) {
         return (CsrfToken) request.getAttribute("_csrf");
     }
+
+    @GetMapping("/profiles")
+    public ResponseEntity<?> getAllProfiles() {
+        try {
+            List<Profiles> profiles = profileService.getAllProfiles();
+            if (profiles == null) {
+                return new ResponseEntity<>(List.of(), HttpStatus.OK);
+            }
+            return new ResponseEntity<>(profiles, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Lỗi server nội bộ: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable UUID id) {
