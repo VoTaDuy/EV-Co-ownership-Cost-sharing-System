@@ -1,12 +1,9 @@
 package com.TaDuy.microservices.history_analytics_service.Service;
-
 import com.TaDuy.microservices.history_analytics_service.DTO.HistoryDTO;
-import com.TaDuy.microservices.history_analytics_service.DTO.UserDTO;
 import com.TaDuy.microservices.history_analytics_service.Entity.History;
 import com.TaDuy.microservices.history_analytics_service.Repository.HistoryRepository;
 import com.TaDuy.microservices.history_analytics_service.Service.Imp.HistoryServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -136,7 +133,6 @@ public class HistoryService implements HistoryServiceImp {
         }
         return sb.toString();
     }
-
 }
 
 

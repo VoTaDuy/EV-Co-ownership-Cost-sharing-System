@@ -7,8 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin("*")
@@ -19,29 +20,43 @@ public class ReportController {
     @Autowired
     private GenimiServiceImp genimiServiceImp;
 
+    private boolean isValidDate(String input) {
+        List<DateTimeFormatter> formatters = List.of(
+                DateTimeFormatter.ofPattern("dd/MM/yyyy"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        );
 
+        for (DateTimeFormatter f : formatters) {
+            try {
+                LocalDate.parse(input, f);
+                return true;
+            } catch (Exception ignored) {}
+        }
+        return false;
+    }
 
     @PostMapping("/generate")
-    public ResponseEntity<?> generateReport(@RequestBody Map<String,String> request) {
+    public ResponseEntity<?> generateReport(@RequestBody Map<String, String> request) {
         ResponseData responseData = new ResponseData();
 
         try {
             String prompt = request.get("prompt");
-            String startTimeStr = request.get("startTime");
-            String endTimeStr = request.get("endTime");
+            String startTime = request.get("startTime");
+            String endTime = request.get("endTime");
 
-            // Sử dụng định dạng ISO hoặc định dạng bạn gửi
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            LocalDateTime startTime = LocalDateTime.parse(startTimeStr, formatter);
-            LocalDateTime endTime = LocalDateTime.parse(endTimeStr, formatter);
+            if (!isValidDate(startTime) || !isValidDate(endTime)) {
+                throw new IllegalArgumentException("Sai định dạng ngày (dd/MM/yyyy hoặc yyyy-MM-dd)");
+            }
 
-            Object result = genimiServiceImp.generateReport(prompt, startTimeStr, endTimeStr);
+            Object result = genimiServiceImp.generateReport(prompt, startTime, endTime);
             responseData.setData(result);
+            responseData.setSuccess(true);
             return new ResponseEntity<>(responseData, HttpStatus.OK);
+
         } catch (Exception e) {
             responseData.setDesc(e.getMessage());
-            return new ResponseEntity<>(responseData, HttpStatus.FAILED_DEPENDENCY);
+            responseData.setSuccess(false);
+            return new ResponseEntity<>(responseData, HttpStatus.BAD_REQUEST);
         }
     }
-
 }
