@@ -13,7 +13,7 @@ import { GetAllUsageDto } from './dto/get-all-usage.dto';
 export class UsageController {
   constructor(private readonly usageService: UsageService) {}
 
-  @Post('create-usage')
+  @Post('')
   @ApiOperation({ summary: 'Tạo bản ghi nhận sử dụng xe mới' })
   @ApiBody({ type: CreateUsageDto })
   @ApiResponse({
@@ -28,7 +28,7 @@ export class UsageController {
     return this.usageService.createUsage(usageData);
   }
 
-  @Get('get-all-usage')
+  @Get('')
     @ApiOperation({ summary: 'Lấy danh sách tất cả các bản ghi sử dụng' })
     @ApiResponse({
       status: 200,

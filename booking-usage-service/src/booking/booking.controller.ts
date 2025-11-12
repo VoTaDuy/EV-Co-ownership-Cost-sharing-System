@@ -12,14 +12,14 @@ export class BookingController {
   constructor(private readonly bookingService: BookingService) {}
 
   
-  @Post(`create-booking`)
+  @Post(`create`)
   @ApiOperation({ summary: 'Tạo booking (đặt lịch xe) mới' })
   async createBooking(@Body() data: CreateBookingDto) {
     return this.bookingService.createBookingWithCheckConflict(data);
   }
 
   
-  @Get(`get-all-bookings`)
+  @Get()
   @ApiOperation({ summary: 'Lấy danh sách booking (đặt lịch xe) đang khả dụng' })
   async getAllBookings() {
     return this.bookingService.getAllBookings();
