@@ -15,6 +15,9 @@ export class ConflictLog {
   conflict_id: string;
 
   @Column({ type: 'varchar', length: 255 })
+  user_id: string;
+
+  @Column({ type: 'varchar', length: 255 })
   booking_id: string;
 
   @Column({ type: 'varchar', length: 255, nullable: true })

@@ -8,9 +8,10 @@ export class ConflictLogService {
   constructor(private readonly conflictRepo: ConflictLogRepository) {}
 
   // Tạo mới conflict log
-  async createConflict(booking_id: string, description: string): Promise<ConflictLog> {
+  async createConflict(user_id: string, booking_id: string, description: string): Promise<ConflictLog> {
     const conflict = {
       conflict_id: uuidv4(),
+      user_id,
       booking_id,
       description,
       resolution_status: ResolutionStatus.UNRESOLVED,
@@ -28,9 +29,9 @@ export class ConflictLogService {
     return this.conflictRepo.findById(id);
   }
 
-  // Lấy theo booking_id
-  async getConflictsByBooking(booking_id: string): Promise<ConflictLog[]> {
-    return this.conflictRepo.findByBooking(booking_id);
+  // Lấy theo user ID
+  async getConflictsByUser(user_id: string): Promise<ConflictLog[]> {
+    return this.conflictRepo.findByUser(user_id);
   }
 
   // Cập nhật trạng thái conflict

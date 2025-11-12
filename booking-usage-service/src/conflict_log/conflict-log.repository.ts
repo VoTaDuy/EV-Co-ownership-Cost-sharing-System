@@ -27,8 +27,8 @@ export class ConflictLogRepository {
   }
 
   // Lấy conflict theo booking_id
-  async findByBooking(booking_id: string): Promise<ConflictLog[]> {
-    return this.conflictRepo.find({ where: { booking_id } });
+  async findByUser(user_id: string): Promise<ConflictLog[]> {
+    return this.conflictRepo.find({ where: { user_id} });
   }
 
   // Cập nhật trạng thái conflict
