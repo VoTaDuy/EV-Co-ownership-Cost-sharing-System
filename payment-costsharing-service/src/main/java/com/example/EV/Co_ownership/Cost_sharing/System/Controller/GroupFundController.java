@@ -1,52 +1,77 @@
 package com.example.EV.Co_ownership.Cost_sharing.System.Controller;
 
-
-import com.example.EV.Co_ownership.Cost_sharing.System.Entity.GroupFund;
-
+import com.example.EV.Co_ownership.Cost_sharing.System.DTO.CreateFundRequest;
+import com.example.EV.Co_ownership.Cost_sharing.System.DTO.DepositRequest;
+import com.example.EV.Co_ownership.Cost_sharing.System.DTO.FundTransactionDTO;
+import com.example.EV.Co_ownership.Cost_sharing.System.DTO.GroupFundDTO;
 import com.example.EV.Co_ownership.Cost_sharing.System.Service.GroupFundService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/api/groupfunds")
+@RequestMapping("/api/funds")
+@RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
-
 public class GroupFundController {
 
-    @Autowired
-    private GroupFundService groupFundService;
+    private final GroupFundService fundService;
 
-    @GetMapping("/all")
-    public List<GroupFund> getAllFunds() {
-        return groupFundService.getAllFunds();
+    @GetMapping
+    public List<GroupFundDTO> getAll(@RequestParam(required = false) String groupId) {
+        if (groupId != null && !groupId.isBlank()) {
+            return fundService.getAll(groupId);
+        }
+        return fundService.getAll(groupId);
     }
 
     @GetMapping("/{id}")
-    public GroupFund getFundById(@PathVariable int id) {
-        return groupFundService.getFundById(id);
+    public GroupFundDTO getById(@PathVariable Integer id) {
+        return fundService.getById(id);
     }
 
-    @GetMapping("/group/{groupId}")
-    public ResponseEntity<List<GroupFund>> getFundsByGroup(@PathVariable("groupId") String groupId) {
-        List<GroupFund> funds = groupFundService.getFundsByGroupId(groupId);
-        return ResponseEntity.ok(funds);
+    @GetMapping("/{id}/transactions")
+    public List<FundTransactionDTO> getTransactions(@PathVariable Integer id) {
+        return fundService.getTransactions(id);
     }
 
-    @PostMapping("/create")
-    public GroupFund createFund(@RequestBody GroupFund fund) {
-        return groupFundService.createFund(fund);
+    @PostMapping
+    public GroupFundDTO create(@RequestBody CreateFundRequest request,
+                               @RequestHeader("userId") String userId) {
+        return fundService.create(request, userId);
     }
 
-    @PutMapping("/{id}")
-    public GroupFund updateFund(@PathVariable int id, @RequestBody GroupFund fund) {
-        return groupFundService.updateFund(id, fund);
+    @PostMapping("/{id}/deposit")
+    public ResponseEntity<Map<String, String>> deposit(
+            @PathVariable Integer id,
+            @RequestBody DepositRequest request,
+            @RequestHeader("userId") String userId) {
+
+        String paymentUrl = fundService.initiateDeposit(id, request, userId);
+        return ResponseEntity.ok(Map.of("paymentUrl", paymentUrl));
     }
+
+    @PostMapping("/callback")
+    public ResponseEntity<String> callback(@RequestBody Map<String, String> payload) {
+        String orderId = payload.get("orderId");
+        String status = payload.get("resultCode");
+        if (status == null) status = payload.get("vnp_ResponseCode");
+        String txId = payload.get("transId");
+        String response = payload.toString();
+
+        fundService.handleDepositCallback(orderId, status, txId, response);
+        return ResponseEntity.ok("OK");
+    }
+
 
     @DeleteMapping("/{id}")
-    public void deleteFund(@PathVariable int id) {
-        groupFundService.deleteFund(id);
+    public ResponseEntity<Void> deleteFund(
+            @PathVariable Integer id,
+            @RequestHeader("userId") String userId) {
+        fundService.deleteFund(id, userId);
+        return ResponseEntity.noContent().build();
     }
 }

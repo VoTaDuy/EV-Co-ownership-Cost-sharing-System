@@ -2,100 +2,54 @@ package com.example.EV.Co_ownership.Cost_sharing.System.Entity;
 
 import com.example.EV.Co_ownership.Cost_sharing.System.Enum.VehicleCostStatus;
 import jakarta.persistence.*;
-import org.springframework.stereotype.Component;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Entity (name = "vehicle_cost")
+@Entity
+@Table(name = "vehicle_cost")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class VehicleCost {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int cost_id;
+    @Column(name = "cost_id")
+    private Integer costId;
 
+    @Column(name = "group_id", nullable = false, length = 255)
+    private String groupId;
 
-    @Column(name = "group_id")
-    private String group_id;
+    @ManyToOne
+    @JoinColumn(name = "fund_id")
+    private GroupFund fund;
 
-    @Column(name = "vehicle_id")
-    private String vehicle_id;
+    @Column(name = "vehicle_id", length = 255)
+    private String vehicleId;
 
-    @Column(name = "cost_name")
-    private String cost_name;
+    @Column(name = "cost_name", nullable = false, length = 255)
+    private String costName;
 
-    @Column(name = "amount")
+    @Column(nullable = false)
     private BigDecimal amount;
 
-    @Column (name = "status")
-    private VehicleCostStatus status;
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "ENUM('pending','paid','cancelled') DEFAULT 'pending'")
+    private VehicleCostStatus status = VehicleCostStatus.pending;
 
-    @Column(name = "created_at")
-    private LocalDateTime created_at;
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
 
+    @UpdateTimestamp
     @Column(name = "updated_at")
-    private LocalDateTime updated_at;
-
-    public int getCost_id() {
-        return cost_id;
-    }
-
-    public void setCost_id(int cost_id) {
-        this.cost_id = cost_id;
-    }
-
-    public String getGroup_id() {
-        return group_id;
-    }
-
-    public void setGroup_id(String group_id) {
-        this.group_id = group_id;
-    }
-
-    public String getVehicle_id() {
-        return vehicle_id;
-    }
-
-    public void setVehicle_id(String vehicle_id) {
-        this.vehicle_id = vehicle_id;
-    }
-
-    public String getCost_name() {
-        return cost_name;
-    }
-
-    public void setCost_name(String cost_name) {
-        this.cost_name = cost_name;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
-
-    public VehicleCostStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(VehicleCostStatus status) {
-        this.status = status;
-    }
-
-    public LocalDateTime getCreated_at() {
-        return created_at;
-    }
-
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
-    }
-
-    public LocalDateTime getUpdated_at() {
-        return updated_at;
-    }
-
-    public void setUpdated_at(LocalDateTime updated_at) {
-        this.updated_at = updated_at;
-    }
+    private LocalDateTime updatedAt;
 }
