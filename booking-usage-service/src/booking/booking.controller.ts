@@ -15,7 +15,7 @@ export class BookingController {
   @Post(`create-booking`)
   @ApiOperation({ summary: 'Tạo booking (đặt lịch xe) mới' })
   async createBooking(@Body() data: CreateBookingDto) {
-    return this.bookingService.createBooking(data);
+    return this.bookingService.createBookingWithCheckConflict(data);
   }
 
   

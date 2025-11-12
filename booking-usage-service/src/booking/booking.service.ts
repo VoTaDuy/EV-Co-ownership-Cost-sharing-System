@@ -13,41 +13,48 @@ export class BookingService {
     private readonly UsageRepository: UsageRepository,
   ) {}
 
-  //Tạo booking mới
+  //Tạo booking
   async createBooking(data: Partial<Booking>): Promise<Booking> {
-  if (!data.vehicle_id || !data.start_date || !data.end_date || !data.check_in_time || !data.check_out_time) {
-      throw new Error('Thiếu thông tin bắt buộc: vehicle_id, start_date, end_date, check_in_time, check_out_time');
+      if (!data.vehicle_id || !data.start_date || !data.end_date || !data.check_in_time || !data.check_out_time) {
+        throw new Error('Thiếu thông tin bắt buộc: vehicle_id, start_date, end_date, check_in_time, check_out_time');
+      }
+
+      const booking = await this.bookingRepository.createBooking(data);
+      return booking;
     }
 
-    const existingBookings = await this.bookingRepository.findByVehicleAndDate(
-      data.vehicle_id,
-      data.start_date,
-      data.end_date,
-    );
+  // Kiểm tra conflict (trả về true/false)
+    async checkBookingConflict(vehicle_id: string, start_date: Date, end_date: Date): Promise<boolean> {
+      const existingBookings = await this.bookingRepository.findByVehicleAndDate(vehicle_id, start_date, end_date);
 
-    const hasConflict = existingBookings.some((b) => {
-      const newStart = new Date(data.start_date!);
-      const newEnd = new Date(data.end_date!);
-      const existingStart = new Date(b.start_date!);
-      const existingEnd = new Date(b.end_date!);
+      return existingBookings.some((b) => {
+        const newStart = new Date(start_date);
+        const newEnd = new Date(end_date);
+        const existingStart = new Date(b.start_date!);
+        const existingEnd = new Date(b.end_date!);
 
-      // Kiểm tra nếu 2 khoảng thời gian giao nhau
-      return newStart <= existingEnd && newEnd >= existingStart;
-    });
-
-    // Đầu tiên tạo booking
-    const booking = await this.bookingRepository.createBooking(data);
-
-    // Sau đó mới tạo conflict nếu có trùng
-    if (hasConflict) {
-      await this.conflictLogService.createConflict(
-        booking.booking_id,
-        `Phát hiện trùng lịch đặt xe cho vehicle_id ${booking.vehicle_id}`,
-      );
+        return newStart <= existingEnd && newEnd >= existingStart;
+      });
     }
 
-    return booking;
-  }
+    // Tạo conflict log nếu có trùng
+    async createConflictIfExists(booking: Booking): Promise<void> {
+      const hasConflict = await this.checkBookingConflict(booking.vehicle_id, booking.start_date!, booking.end_date!);
+      if (hasConflict) {
+        await this.conflictLogService.createConflict(
+          booking.booking_id,
+          `Phát hiện trùng lịch đặt xe cho vehicle_id ${booking.vehicle_id}`,
+        );
+      }
+    }
+
+    // Hàm tiện lợi: tạo booking + kiểm tra conflict liền mạch
+    async createBookingWithCheckConflict(data: Partial<Booking>): Promise<Booking> {
+      const booking = await this.createBooking(data);       // chỉ tạo booking
+      await this.createConflictIfExists(booking);           // kiểm tra và tạo conflict nếu cần
+      return booking;
+    }
+
 
   //Lấy tất cả booking
   async getAllBookings(): Promise<Booking[]> {
