@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { DigitalSignatureRepository } from './digital-signature.repository';
 import { DigitalSignature } from './digital-signature.entity';
 import { UsageRepository } from '../usage/usage.repository';
@@ -6,6 +6,7 @@ import { BookingRepository } from '../booking/booking.repository';
 import { AlertService } from '../alert/alert.service';
 import { AlertType } from '../alert/alert.entity';
 import { SignatureType } from './digital-signature.entity'; 
+import { HttpUserService } from '../common/http-user.service';
 
 const LATE_THRESHOLD = 15; // phút
 
@@ -16,11 +17,21 @@ export class DigitalSignatureService {
     private readonly usageRepo: UsageRepository,
     private readonly bookingRepo: BookingRepository,
     private readonly alertService: AlertService,
+    private readonly httpUserService: HttpUserService,
   ) {}
 
   // Tạo chữ ký số
   async createSignature(data: Partial<DigitalSignature>): Promise<DigitalSignature> {
     const signature = await this.signatureRepo.createSignature(data);
+
+    if (!data.user_id) {
+            throw new Error('Thiếu user_id');
+          }
+    
+    const user = await this.httpUserService.getUserById(data.user_id!);
+    if (!user) {
+      throw new NotFoundException(`User ${data.user_id} không tồn tại`);
+    }
 
     // Lấy usage + booking
     const usage = await this.usageRepo.findById(signature.usage_id);
