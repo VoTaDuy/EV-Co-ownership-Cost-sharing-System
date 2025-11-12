@@ -1,122 +1,131 @@
 package com.example.EV.Co_ownership.Cost_sharing.System.Service;
 
+import com.example.EV.Co_ownership.Cost_sharing.System.DTO.CreateCostRequest;
 import com.example.EV.Co_ownership.Cost_sharing.System.DTO.VehicleCostDTO;
+import com.example.EV.Co_ownership.Cost_sharing.System.Entity.FundTransaction;
+import com.example.EV.Co_ownership.Cost_sharing.System.Entity.GroupFund;
 import com.example.EV.Co_ownership.Cost_sharing.System.Entity.VehicleCost;
+import com.example.EV.Co_ownership.Cost_sharing.System.Enum.TransactionType;
+import com.example.EV.Co_ownership.Cost_sharing.System.Enum.VehicleCostStatus;
+import com.example.EV.Co_ownership.Cost_sharing.System.Exception.NotFoundException;
+import com.example.EV.Co_ownership.Cost_sharing.System.Repository.FundTransactionRepository;
+import com.example.EV.Co_ownership.Cost_sharing.System.Repository.GroupFundRepository;
 import com.example.EV.Co_ownership.Cost_sharing.System.Repository.VehicleCostRepository;
 import com.example.EV.Co_ownership.Cost_sharing.System.Service.Imp.VehicleCostServiceImp;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
 
 @Service
+@RequiredArgsConstructor
+@Transactional
 public class VehicleCostService implements VehicleCostServiceImp {
 
-    @Autowired
-    VehicleCostRepository vehicleCostRepository;
+    private final VehicleCostRepository costRepo;
+    private final GroupFundRepository fundRepo;
+    private final FundTransactionRepository txRepo;
 
     @Override
-    public VehicleCostDTO getVehicleCostById(int cost_id) {
-
-        VehicleCost vehicleCost = vehicleCostRepository.getVehicleCostById(cost_id);
-        if (vehicleCost == null) {
-            return null;
-        }
-        VehicleCostDTO vehicleCostDTO = new VehicleCostDTO();
-        vehicleCostDTO.setCost_id(vehicleCost.getCost_id());
-        vehicleCostDTO.setCost_name(vehicleCost.getCost_name());
-        vehicleCostDTO.setVehicle_id(vehicleCost.getVehicle_id());
-        vehicleCostDTO.setGroup_id(vehicleCost.getGroup_id());
-        vehicleCostDTO.setAmount(vehicleCost.getAmount());
-        vehicleCostDTO.setStatus(vehicleCost.getStatus());
-        vehicleCostDTO.setCreated_at(vehicleCost.getCreated_at());
-        vehicleCostDTO.setUpdated_at(vehicleCost.getUpdated_at());
-        return vehicleCostDTO;
+    public List<VehicleCostDTO> getAllByGroup(String groupId) {
+        return costRepo.findByGroupId(groupId).stream()
+                .map(this::toDTO)
+                .toList();
     }
 
     @Override
-    public List<VehicleCostDTO> getAllVehicleCost() {
-        List<VehicleCost> entityList = vehicleCostRepository.findAll();
-        List<VehicleCostDTO> vehicleCostDTOList = new ArrayList<>();
-
-        for (VehicleCost vehicleCost : entityList) {
-            VehicleCostDTO vehicleCostDTO = new VehicleCostDTO();
-            vehicleCostDTO.setCost_id(vehicleCost.getCost_id());
-            vehicleCostDTO.setCost_name(vehicleCost.getCost_name());
-            vehicleCostDTO.setVehicle_id(vehicleCost.getVehicle_id());
-            vehicleCostDTO.setGroup_id(vehicleCost.getGroup_id());
-            vehicleCostDTO.setAmount(vehicleCost.getAmount());
-            vehicleCostDTO.setStatus(vehicleCost.getStatus());
-            vehicleCostDTO.setCreated_at(vehicleCost.getCreated_at());
-            vehicleCostDTO.setUpdated_at(vehicleCost.getUpdated_at());
-            vehicleCostDTOList.add(vehicleCostDTO);
-        }
-        return vehicleCostDTOList;
-    }
-
-
-    @Override
-    public VehicleCostDTO createVehicleCost(VehicleCostDTO dto) {
-        VehicleCost vehicleCost = new VehicleCost();
-        vehicleCost.setCost_name(dto.getCost_name());
-        vehicleCost.setVehicle_id(dto.getVehicle_id());
-        vehicleCost.setGroup_id(dto.getGroup_id());
-        vehicleCost.setAmount(dto.getAmount());
-        vehicleCost.setStatus(dto.getStatus());
-        vehicleCost.setCreated_at(dto.getCreated_at());
-        vehicleCost.setUpdated_at(dto.getUpdated_at());
-
-        VehicleCost saved = vehicleCostRepository.save(vehicleCost);
-
-        VehicleCostDTO savedDTO = new VehicleCostDTO();
-        savedDTO.setCost_id(saved.getCost_id());
-        savedDTO.setCost_name(saved.getCost_name());
-        savedDTO.setVehicle_id(saved.getVehicle_id());
-        savedDTO.setGroup_id(saved.getGroup_id());
-        savedDTO.setAmount(saved.getAmount());
-        savedDTO.setStatus(saved.getStatus());
-        savedDTO.setCreated_at(saved.getCreated_at());
-        savedDTO.setUpdated_at(saved.getUpdated_at());
-        return savedDTO;
+    public List<VehicleCostDTO> getAllByFund(Integer fundId) {
+        return costRepo.findByFund_FundId(fundId).stream()
+                .map(this::toDTO)
+                .toList();
     }
 
     @Override
-    public VehicleCostDTO updateVehicleCost(int cost_id, VehicleCostDTO dto) {
-        Optional<VehicleCost> optional = vehicleCostRepository.findById(cost_id);
-        if (optional.isEmpty()) {
-            return null;
+    public VehicleCostDTO create(CreateCostRequest request, String userId) {
+        VehicleCost cost = new VehicleCost();
+        cost.setGroupId(request.groupId());
+        cost.setVehicleId(request.vehicleId());
+        cost.setCostName(request.costName());
+        cost.setAmount(request.amount());
+
+        if (request.fundId() != null) {
+            GroupFund fund = fundRepo.findById(request.fundId())
+                    .orElseThrow(() -> new NotFoundException("Quỹ không tồn tại: " + request.fundId()));
+            cost.setFund(fund);
         }
-        VehicleCost vehicleCost = optional.get();
-        vehicleCost.setCost_name(dto.getCost_name());
-        vehicleCost.setVehicle_id(dto.getVehicle_id());
-        vehicleCost.setGroup_id(dto.getGroup_id());
-        vehicleCost.setAmount(dto.getAmount());
-        vehicleCost.setStatus(dto.getStatus());
-        vehicleCost.setUpdated_at(dto.getUpdated_at());
 
-        VehicleCost updated = vehicleCostRepository.save(vehicleCost);
+        cost = costRepo.save(cost);
 
-        VehicleCostDTO updatedDTO = new VehicleCostDTO();
-        updatedDTO.setCost_id(updated.getCost_id());
-        updatedDTO.setCost_name(updated.getCost_name());
-        updatedDTO.setVehicle_id(updated.getVehicle_id());
-        updatedDTO.setGroup_id(updated.getGroup_id());
-        updatedDTO.setAmount(updated.getAmount());
-        updatedDTO.setStatus(updated.getStatus());
-        updatedDTO.setCreated_at(updated.getCreated_at());
-        updatedDTO.setUpdated_at(updated.getUpdated_at());
-        return updatedDTO;
+        // Ghi log giao dịch nếu dùng quỹ
+        if (request.fundId() != null && cost.getStatus() == VehicleCostStatus.paid) {
+            logFundTransfer(cost, userId);
+        }
+
+        return toDTO(cost);
     }
 
     @Override
-    public boolean deleteVehicleCost(int cost_id) {
-        if (!vehicleCostRepository.existsById(cost_id)) {
-            return false;
+    public VehicleCostDTO getById(Integer costId) {
+        return costRepo.findById(costId)
+                .map(this::toDTO)
+                .orElseThrow(() -> new NotFoundException("Chi phí không tồn tại: " + costId));
+    }
+
+    @Override
+    public VehicleCostDTO updateStatus(Integer costId, String status, String userId) {
+        VehicleCost cost = costRepo.findById(costId)
+                .orElseThrow(() -> new NotFoundException("Chi phí không tồn tại: " + costId));
+
+        VehicleCostStatus newStatus = VehicleCostStatus.valueOf(status.toLowerCase());
+        cost.setStatus(newStatus);
+
+        // Nếu chuyển sang "paid" và có dùng quỹ → trừ tiền
+        if (newStatus == VehicleCostStatus.paid && cost.getFund() != null) {
+            GroupFund fund = cost.getFund();
+            if (fund.getBalance().compareTo(cost.getAmount()) < 0) {
+                throw new IllegalStateException("Số dư quỹ không đủ để thanh toán chi phí này.");
+            }
+            fund.setBalance(fund.getBalance().subtract(cost.getAmount()));
+            fundRepo.save(fund);
+
+            logFundTransfer(cost, userId);
         }
-        vehicleCostRepository.deleteById(cost_id);
-        return true;
+
+        cost = costRepo.save(cost);
+        return toDTO(cost);
+    }
+
+    @Override
+    public void delete(Integer costId) {
+        VehicleCost cost = costRepo.findById(costId)
+                .orElseThrow(() -> new NotFoundException("Chi phí không tồn tại: " + costId));
+        costRepo.delete(cost);
+    }
+
+    private void logFundTransfer(VehicleCost cost, String userId) {
+        FundTransaction tx = new FundTransaction();
+        tx.setFund(cost.getFund());
+        tx.setCost(cost);
+        tx.setTransactionType(TransactionType.transfer);
+        tx.setAmount(cost.getAmount());
+        tx.setDescription("Thanh toán chi phí xe: " + cost.getCostName());
+        tx.setPerformedBy(userId);
+        tx.setStatus("success");
+        txRepo.save(tx);
+    }
+
+    private VehicleCostDTO toDTO(VehicleCost cost) {
+        return new VehicleCostDTO(
+                cost.getCostId(),
+                cost.getGroupId(),
+                cost.getFund() != null ? cost.getFund().getFundId() : null,
+                cost.getVehicleId(),
+                cost.getCostName(),
+                cost.getAmount(),
+                cost.getStatus().name(),
+                cost.getCreatedAt(),
+                cost.getUpdatedAt()
+        );
     }
 }

@@ -1,17 +1,15 @@
 package com.example.EV.Co_ownership.Cost_sharing.System.Service.Imp;
 
+import com.example.EV.Co_ownership.Cost_sharing.System.DTO.CreateCostRequest;
 import com.example.EV.Co_ownership.Cost_sharing.System.DTO.VehicleCostDTO;
-import com.example.EV.Co_ownership.Cost_sharing.System.Entity.VehicleCost;
 
 import java.util.List;
 
 public interface VehicleCostServiceImp {
-    VehicleCostDTO getVehicleCostById(int cost_id);
-    List<VehicleCostDTO> getAllVehicleCost();
-
-    VehicleCostDTO createVehicleCost(VehicleCostDTO dto);
-
-    VehicleCostDTO updateVehicleCost(int cost_id, VehicleCostDTO dto);
-
-    boolean deleteVehicleCost(int cost_id);
+    List<VehicleCostDTO> getAllByGroup(String groupId);
+    List<VehicleCostDTO> getAllByFund(Integer fundId);
+    VehicleCostDTO create(CreateCostRequest request, String userId);
+    VehicleCostDTO getById(Integer costId);
+    VehicleCostDTO updateStatus(Integer costId, String status, String userId);
+    void delete(Integer costId);
 }
