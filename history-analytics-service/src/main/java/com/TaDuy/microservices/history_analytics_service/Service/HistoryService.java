@@ -1,17 +1,12 @@
 package com.TaDuy.microservices.history_analytics_service.Service;
-
 import com.TaDuy.microservices.history_analytics_service.DTO.HistoryDTO;
-import com.TaDuy.microservices.history_analytics_service.DTO.UserDTO;
 import com.TaDuy.microservices.history_analytics_service.Entity.History;
 import com.TaDuy.microservices.history_analytics_service.Repository.HistoryRepository;
 import com.TaDuy.microservices.history_analytics_service.Service.Imp.HistoryServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,93 +15,123 @@ public class HistoryService implements HistoryServiceImp {
     @Autowired
     private RestTemplate restTemplate;
 
-    private static final String USER_SERVICE_URL = "http://localhost:8085/users";
 
     @Autowired
     HistoryRepository historyRepository;
 
     @Override
     public List<HistoryDTO> getAllHistory() {
-        List<History> historyList= historyRepository.findAll();
-        List<HistoryDTO> historyDTOList= new ArrayList<>();
-        for (History history : historyList){
-            HistoryDTO historyDTO = new HistoryDTO();
-            historyDTO.setHistory_id(history.getHistory_id());
-            historyDTO.setVehicleId(history.getVehicleId());
-            historyDTO.setUserId(history.getUserId());
-            historyDTO.setDistanceKm(history.getDistanceKm());
-            historyDTO.setStartTime(history.getStartTime());
-            historyDTO.setEndTime(history.getEndTime());
-            historyDTO.setUsageCost(history.getUsageCost());
-            historyDTO.setFuelUsed(history.getFuelUsed());
-            historyDTO.setRecordedAt(history.getRecordedAt());
-            historyDTOList.add(historyDTO);
+        List<History> historyList = historyRepository.findAll();
+        List<HistoryDTO> historyDTOList = new ArrayList<>();
+
+        for (History history : historyList) {
+            HistoryDTO dto = new HistoryDTO();
+            dto.setId(history.getId());
+            dto.setUsageId(history.getUsageId());
+            dto.setBookingId(history.getBookingId());
+            dto.setUserId(history.getUserId());
+            dto.setVehicleId(history.getVehicleId());
+            dto.setStartDate(history.getStartDate());
+            dto.setEndDate(history.getEndDate());
+            dto.setCheckInTime(history.getCheckInTime());
+            dto.setCheckOutTime(history.getCheckOutTime());
+            dto.setVehicleCondition(history.getVehicleCondition());
+            dto.setDistance(history.getDistance());
+            dto.setRecordTime(history.getRecordTime());
+            historyDTOList.add(dto);
         }
+
         return historyDTOList;
     }
 
     @Override
-    public List<HistoryDTO>  getHistoryByUserId(String userId) {
-        String url = USER_SERVICE_URL + "/" + userId;
-        try {
-            ResponseEntity<UserDTO> response = restTemplate.getForEntity(url, UserDTO.class);
-            UserDTO userDTO = response.getBody();
-            if (userDTO != null) return findHistories(userId);
-        }catch (Exception e){
-            System.out.println("khong tim thay userId" + userId);
-            System.out.println(e.getMessage());
+    public List<HistoryDTO> getHistoryByUserId(String userId) {
+        List<History> historyList = historyRepository.findHistoryByUserId(userId);
+        List<HistoryDTO> historyDTOList = new ArrayList<>();
+
+        for (History history : historyList) {
+            HistoryDTO dto = new HistoryDTO();
+            dto.setId(history.getId());
+            dto.setUsageId(history.getUsageId());
+            dto.setBookingId(history.getBookingId());
+            dto.setUserId(history.getUserId());
+            dto.setVehicleId(history.getVehicleId());
+            dto.setStartDate(history.getStartDate());
+            dto.setEndDate(history.getEndDate());
+            dto.setCheckInTime(history.getCheckInTime());
+            dto.setCheckOutTime(history.getCheckOutTime());
+            dto.setVehicleCondition(history.getVehicleCondition());
+            dto.setDistance(history.getDistance());
+            dto.setRecordTime(history.getRecordTime());
+            historyDTOList.add(dto);
         }
-        return List.of();
+
+        return historyDTOList;
     }
 
 
     @Override
-    public String convertHistoryListToString(LocalDateTime startTime, LocalDateTime endTime) {
-        List<History> historyList  = historyRepository.findByRecordedAtBetween(startTime, endTime);
-        if (historyList.isEmpty()){
-            return "no history in this time";
+    public String convertHistoryListToString(String startTimeStr, String endTimeStr) {
+        List<History> historyList = historyRepository.findByRecordTimeBetween(startTimeStr, endTimeStr);
+
+        if (historyList.isEmpty()) {
+            return "No history records in this time range.";
         }
 
         StringBuilder sb = new StringBuilder();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        sb.append("History Report \n");
-        sb.append(String.format("Từ: %s -> Đến: %s\n\n",
-                startTime.format(dateTimeFormatter),
-                endTime.format(dateTimeFormatter)));
+        sb.append("History Report\n");
+        sb.append(String.format("From: %s -> To: %s\n\n", startTimeStr, endTimeStr));
+
         int index = 1;
-        for (History h : historyList){
-            sb.append(String.format("%d. UserID: %s | VehicleID: %s | Distance: %.2f km | Cost: %.2f | Fuel: %.2f :\n",
+        for (History h : historyList) {
+            sb.append(String.format(
+                    "%d. UsageID: %s | BookingID: %s | UserID: %s | VehicleID: %s\n" +
+                            "   Start Date: %s | End Date: %s | Check-in: %s | Check-out: %s | Distance: %.2f km\n" +
+                            "   Vehicle Condition: %s\n\n",
                     index++,
-                    h.getUserId(),
-                    h.getVehicleId(),
-                    h.getDistanceKm(),
-                    h.getStartTime() != null ? h.getStartTime().format(dateTimeFormatter) :"N/A",
-                    h.getEndTime() != null ? h.getEndTime().format(dateTimeFormatter): "N/A",
-                    h.getUsageCost(),
-                    h.getFuelUsed())
-            );
+                    h.getUsageId() != null ? h.getUsageId() : "N/A",
+                    h.getBookingId() != null ? h.getBookingId() : "N/A",
+                    h.getUserId() != null ? h.getUserId() : "N/A",
+                    h.getVehicleId() != null ? h.getVehicleId() : "N/A",
+                    h.getStartDate() != null ? h.getStartDate() : "N/A",
+                    h.getEndDate() != null ? h.getEndDate() : "N/A",
+                    h.getCheckInTime() != null ? h.getCheckInTime() : "N/A",
+                    h.getCheckOutTime() != null ? h.getCheckOutTime() : "N/A",
+                    h.getDistance() != null ? h.getDistance() : 0.0,
+                    h.getVehicleCondition() != null ? h.getVehicleCondition() : "N/A"
+            ));
         }
+
         return sb.toString();
     }
-
-    private List<HistoryDTO> findHistories(String userId){
-        List<History> historyList = historyRepository.findHistoryByUserId(userId);
-        List<HistoryDTO> historyDTOList= new ArrayList<>();
-        for (History history : historyList){
-            HistoryDTO historyDTO = new HistoryDTO();
-            historyDTO.setHistory_id(history.getHistory_id());
-            historyDTO.setVehicleId(history.getVehicleId());
-            historyDTO.setUserId(history.getUserId());
-            historyDTO.setDistanceKm(history.getDistanceKm());
-            historyDTO.setStartTime(history.getStartTime());
-            historyDTO.setEndTime(history.getEndTime());
-            historyDTO.setUsageCost(history.getUsageCost());
-            historyDTO.setFuelUsed(history.getFuelUsed());
-            historyDTO.setRecordedAt(history.getRecordedAt());
-            historyDTOList.add(historyDTO);
+    @Override
+    public String convertUserHistoryToString(String userId, String startTime, String endTime) {
+        List<History> historyList = historyRepository.findByUserIdAndRecordTimeBetween(userId, startTime, endTime);
+        if (historyList.isEmpty()) {
+            return "No history records for user " + userId + " in this time range.";
         }
-        return historyDTOList;
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("History for user ").append(userId).append("\n");
+        sb.append(String.format("From: %s -> To: %s\n\n", startTime, endTime));
+
+        int index = 1;
+        for (History h : historyList) {
+            sb.append(String.format(
+                    "%d. UsageID: %s | BookingID: %s | VehicleID: %s\n" +
+                            "   Start: %s | End: %s | Distance: %.2f km | Vehicle Condition: %s\n\n",
+                    index++,
+                    h.getUsageId() != null ? h.getUsageId() : "N/A",
+                    h.getBookingId() != null ? h.getBookingId() : "N/A",
+                    h.getVehicleId() != null ? h.getVehicleId() : "N/A",
+                    h.getStartDate() != null ? h.getStartDate() : "N/A",
+                    h.getEndDate() != null ? h.getEndDate() : "N/A",
+                    h.getDistance() != null ? h.getDistance() : 0.0,
+                    h.getVehicleCondition() != null ? h.getVehicleCondition() : "N/A"
+            ));
+        }
+        return sb.toString();
     }
 }
 

@@ -6,6 +6,7 @@ import com.example.EV_Co_ownership.User_and_ownership_service.Repository.Profile
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -14,13 +15,15 @@ public class ProfileService {
     @Autowired
     private ProfileRepository profileRepository;
 
-    // Lấy profile theo user UUID
+    public List<Profiles> getAllProfiles() {
+        return profileRepository.findAll();
+    }
+
     public Profiles getProfileByUserId(UUID userId) {
         return profileRepository.findProfileByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("Profile not found for user: " + userId));
     }
 
-    // Cập nhật profile
     public Profiles updateProfile(UUID userId, ProfileDTO profileDTO) {
         Profiles profile = getProfileByUserId(userId);
 

@@ -1,5 +1,7 @@
 package com.example.EV_Co_ownership.User_and_ownership_service.DTO;
 
+import com.fasterxml.jackson.annotation.JsonProperty; // <-- THÊM IMPORT NÀY
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -9,10 +11,11 @@ public class UserDTO {
     private String email;
     private int role_id;
     private String password;
-    private boolean is_verified;
+    private boolean isVerified;
     private boolean isDeleted = false;
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
+    @JsonProperty("user_id")
     public UUID getUser_id() {
         return user_id;
     }
@@ -21,6 +24,7 @@ public class UserDTO {
         this.user_id = user_id;
     }
 
+    @JsonProperty("email")
     public String getEmail() {
         return email;
     }
@@ -29,6 +33,7 @@ public class UserDTO {
         this.email = email;
     }
 
+    @JsonProperty("role_id")
     public int getRole_id() {
         return role_id;
     }
@@ -37,6 +42,7 @@ public class UserDTO {
         this.role_id = role_id;
     }
 
+    @JsonProperty("password")
     public String getPassword() {
         return password;
     }
@@ -45,14 +51,16 @@ public class UserDTO {
         this.password = password;
     }
 
-    public boolean isIs_verified() {
-        return is_verified;
+    @JsonProperty("is_verified")
+    public boolean isVerified() {
+        return isVerified;
     }
 
-    public void setIs_verified(boolean is_verified) {
-        this.is_verified = is_verified;
+    public void setVerified(boolean verified) {
+        isVerified = verified;
     }
 
+    @JsonProperty("isDeleted")
     public boolean isDeleted() {
         return isDeleted;
     }
@@ -61,11 +69,12 @@ public class UserDTO {
         isDeleted = deleted;
     }
 
-    public LocalDateTime getCreated_at() {
-        return created_at;
+    @JsonProperty("created_at")
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

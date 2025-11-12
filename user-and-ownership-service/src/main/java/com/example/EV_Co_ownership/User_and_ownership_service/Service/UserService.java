@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -25,18 +26,29 @@ public class UserService {
     @Autowired
     private ModelMapper modelMapper;
 
-    // Lấy tất cả user active
-    public List<Users> getAllUsers() {
-        return userRepository.findAllActive();
+    public List<UserDTO> getAllUsers() {
+        List<Users> users = userRepository.findAllActive();
+
+        return users.stream()
+                .map(this::convertUserToDTO)
+                .collect(Collectors.toList());
     }
 
-    // Lấy user theo UUID
+    private UserDTO convertUserToDTO(Users user) {
+        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+        if (user.getRoles() != null) {
+            userDTO.setRole_id(user.getRoles().getRole_id());
+        }
+        userDTO.setVerified(user.isVerified());
+        userDTO.setCreatedAt(user.getCreatedAt());
+        return userDTO;
+    }
+
     public Users getUserById(UUID id) {
         return userRepository.findByIdAndIsDeletedFalse(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
     }
 
-    // Tạo mới user từ DTO
     public Users createUser(UserDTO userDTO) {
         Users user = modelMapper.map(userDTO, Users.class);
 
@@ -49,15 +61,13 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    // Cập nhật user
     public Users updateUser(UUID id, UserDTO userDTO) {
         Users user = getUserById(id);
-
         if (userDTO.getEmail() != null && !userDTO.getEmail().isEmpty()) {
             user.setEmail(userDTO.getEmail());
         }
         if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
-            user.setPassword(userDTO.getPassword()); // TODO: Hash password
+            user.setPassword(userDTO.getPassword());
         }
         if (userDTO.getRole_id() != 0) {
             Roles role = rolesRepository.findById(userDTO.getRole_id())
@@ -65,13 +75,12 @@ public class UserService {
             user.setRoles(role);
         }
 
-        user.setVerified(userDTO.isIs_verified());
+        user.setVerified(userDTO.isVerified());
         user.setDeleted(userDTO.isDeleted());
 
         return userRepository.save(user);
     }
 
-    // Soft delete
     public Users removeUserById(UUID id) {
         Users user = getUserById(id);
         user.setDeleted(true);
