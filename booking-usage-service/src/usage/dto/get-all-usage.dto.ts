@@ -3,15 +3,15 @@ import { IsOptional, IsString, IsInt, Min } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class GetAllUsageDto {
-  @ApiPropertyOptional({ description: 'Lọc theo user_id', example: 'user-1234' })
+  @ApiPropertyOptional({ description: 'Lọc theo user_id', example: '1234' })
   @IsOptional()
   @IsString()
-  user_id?: string;
+  user_id?: number;
 
-  @ApiPropertyOptional({ description: 'Lọc theo booking_id', example: 'bkg-550e...' })
+  @ApiPropertyOptional({ description: 'Lọc theo booking_id', example: '23' })
   @IsOptional()
   @IsString()
-  booking_id?: string;
+  booking_id?: number;
 
   @ApiPropertyOptional({ description: 'Số trang (pagination)', example: 1 })
   @IsOptional()

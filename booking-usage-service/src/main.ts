@@ -10,7 +10,7 @@ async function bootstrap() {
 
   // Bật CORS
   app.enableCors({
-    origin: 'http://localhost:3000', // frontend URL
+    origin: ['http://localhost:3000', 'http://localhost:5001'], // FE + Swagger UI
     credentials: true,
   });
 

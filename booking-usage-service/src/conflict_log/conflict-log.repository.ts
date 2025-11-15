@@ -22,20 +22,20 @@ export class ConflictLogRepository {
   }
 
   // Lấy conflict theo ID
-  async findById(id: string): Promise<ConflictLog | null> {
+  async findById(id: number): Promise<ConflictLog | null> {
     return this.conflictRepo.findOne({ where: { conflict_id: id } });
   }
 
   // Lấy conflict theo booking_id
-  async findByUser(user_id: string): Promise<ConflictLog[]> {
+  async findByUser(user_id: number): Promise<ConflictLog[]> {
     return this.conflictRepo.find({ where: { user_id} });
   }
 
   // Cập nhật trạng thái conflict
   async updateStatus(
-    conflict_id: string,
+    conflict_id: number,
     status: string,
-    resolved_by?: string,
+    resolved_by?: number,
   ): Promise<ConflictLog | null> {
     const conflict = await this.conflictRepo.findOne({ where: { conflict_id } });
     if (!conflict) return null;

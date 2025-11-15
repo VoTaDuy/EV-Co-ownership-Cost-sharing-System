@@ -60,22 +60,22 @@ export class DigitalSignatureRepository {
   }
 
   // Lấy chữ ký theo ID
-  async findById(id: string): Promise<DigitalSignature | null> {
+  async findById(id: number): Promise<DigitalSignature | null> {
     return this.signatureRepo.findOne({ where: { signature_id: id } });
   }
 
   // Lấy chữ ký theo user_id
-  async findByUser(user_id: string): Promise<DigitalSignature[]> {
+  async findByUser(user_id: number): Promise<DigitalSignature[]> {
     return this.signatureRepo.find({ where: { user_id } });
   }
 
-  async findCheckinSignature(usageId: string) {
+  async findCheckinSignature(usageId: number) {
     return this.signatureRepo.findOne({
       where: { usage_id: usageId, type: SignatureType.CHECKIN },
     });
   }
 
-  async findCheckoutSignature(usageId: string) {
+  async findCheckoutSignature(usageId: number) {
     return this.signatureRepo.findOne({
       where: { usage_id: usageId, type: SignatureType.CHECKOUT },
     });

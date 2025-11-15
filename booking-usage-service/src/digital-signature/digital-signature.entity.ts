@@ -9,14 +9,13 @@ export enum SignatureType {
 @Unique(['usage_id', 'type']) // 👈 Thêm dòng này
 @Entity({ name: 'digital_signature' })
 export class DigitalSignature {
-  @PrimaryGeneratedColumn('uuid')
-  signature_id: string;
+  @PrimaryGeneratedColumn()
+  signature_id: number;
 
-  @Column()
-  user_id: string;
-
-  @Column()
-  usage_id: string;
+  @Column({ type: 'int' })
+  user_id: number;
+  @Column({ type: 'int' })
+  usage_id: number;
 
   @Column({
     type: 'enum',

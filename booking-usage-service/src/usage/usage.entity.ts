@@ -4,17 +4,17 @@ import { DigitalSignature } from '../digital-signature/digital-signature.entity'
 
 @Entity({ name: 'usage_record' })
 export class UsageRecord {
-  @PrimaryGeneratedColumn('uuid')
-  usage_id: string;
+  @PrimaryGeneratedColumn()
+  usage_id: number;
 
-  @Column()
-  booking_id: string;
+  @Column({ type: 'int' })
+  booking_id: number;
 
-  @Column()
-  user_id: string;
+  @Column({ type: 'int' })
+  user_id: number;
 
-  @Column()
-  vehicle_id: string;
+  @Column({ type: 'int' })
+  vehicle_id: number;
 
   @Column({ type: 'date' })
   start_date: Date;

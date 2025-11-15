@@ -33,18 +33,18 @@ export class UsageRepository {
   }
 
   // Lấy bản ghi theo ID
-  async findById(id: string): Promise<UsageRecord | null> {
+  async findById(id: number): Promise<UsageRecord | null> {
     return this.usageRepo.findOne({ where: { usage_id: id } });
   }
 
   // Lấy bản ghi usage theo booking_id
-  async findByBookingId(bookingId: string): Promise<UsageRecord | null> {
+  async findByBookingId(bookingId: number): Promise<UsageRecord | null> {
     return this.usageRepo.findOne({
       where: { booking_id: bookingId },
     });
   }
 
-  async updateUsage(id: string, data: Partial<UsageRecord>): Promise<UsageRecord> {
+  async updateUsage(id: number, data: Partial<UsageRecord>): Promise<UsageRecord> {
     const formatted = { ...data };
     if (formatted.check_in_time && !formatted.check_in_time.includes(':'))
       formatted.check_in_time = `${formatted.check_in_time}:00`;
@@ -60,7 +60,7 @@ export class UsageRepository {
   }
 
   // Xóa bản ghi
-  async deleteUsage(id: string): Promise<void> {
+  async deleteUsage(id: number): Promise<void> {
     if (!id) throw new Error('Usage ID is required');
     await this.usageRepo.delete({ usage_id: id });
   }

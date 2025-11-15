@@ -13,7 +13,7 @@ export class ConflictLogController {
 
   @Post()
   @ApiOperation({ summary: 'Tạo một conflict log mới (thường do hệ thống tự động tạo)' })
-  async createConflict(@Body() body: { user_id: string, booking_id: string; description: string }) {
+  async createConflict(@Body() body: { user_id: number, booking_id: number; description: string }) {
     return this.conflictService.createConflict(body.user_id, body.booking_id, body.description);
   }
 
@@ -37,7 +37,7 @@ export class ConflictLogController {
 
   @Patch(':id/status')
   @ApiOperation({ summary: 'Cập nhật trạng thái conflict (resolve, reject, ...)' })
-  async updateStatus(@Param('id') conflict_id: string, @Body() body: UpdateConflictStatusDto) {
+  async updateStatus(@Param('id') conflict_id: number, @Body() body: UpdateConflictStatusDto) {
     return this.conflictService.updateConflictStatus(conflict_id, body.status, body.resolved_by);
   }
 }

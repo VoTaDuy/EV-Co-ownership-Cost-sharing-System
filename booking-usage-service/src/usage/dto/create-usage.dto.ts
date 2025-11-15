@@ -10,24 +10,24 @@ import {
 export class CreateUsageDto {
   @ApiProperty({
     description: 'ID của booking liên quan',
-    example: 'ed0c0207-9159-43f0-915d-9c8e1873afc8',
+    example: '123',
   })
   @IsUUID()
-  booking_id: string;
+  booking_id: number;
 
   @ApiProperty({
     description: 'ID của người dùng (co-owner) thực hiện checkin/checkout',
-    example: 'user-1234',
+    example: '134',
   })
   @IsString()
-  user_id: string;
+  user_id: number;
 
   @ApiProperty({
     description: 'ID của xe được sử dụng',
-    example: 'vehicle-5678',
+    example: '146',
   })
   @IsString()
-  vehicle_id: string;
+  vehicle_id: number;
 
   @ApiProperty({
     description: 'Ngày bắt đầu sử dụng xe (ISO 8601)',

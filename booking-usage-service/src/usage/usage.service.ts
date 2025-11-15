@@ -15,25 +15,25 @@ export class UsageService {
     return this.usageRepository.findAll(query);
   }
 
-  async getUsageById(id: string): Promise<UsageRecord> {
+  async getUsageById(id: number): Promise<UsageRecord> {
     const usage = await this.usageRepository.findById(id);
     if (!usage) throw new NotFoundException(`Usage record ${id} không tồn tại`);
     return usage;
   }
 
-  async getUsageByBookingId(bookingId: string): Promise<UsageRecord> {
+  async getUsageByBookingId(bookingId: number): Promise<UsageRecord> {
     const usage = await this.usageRepository.findByBookingId(bookingId);
     if (!usage) throw new NotFoundException(`Không tìm thấy usage cho booking ${bookingId}`);
     return usage;
   }
 
-  async updateUsage(id: string, data: Partial<UsageRecord>): Promise<UsageRecord> {
+  async updateUsage(id: number, data: Partial<UsageRecord>): Promise<UsageRecord> {
     const existing = await this.getUsageById(id);
     if (!existing) throw new NotFoundException('Không tìm thấy usage record');
     return this.usageRepository.updateUsage(id, data);
   }
 
-  async deleteUsage(id: string): Promise<void> {
+  async deleteUsage(id: number): Promise<void> {
     const existing = await this.getUsageById(id);
     if (!existing) throw new NotFoundException('Không tìm thấy usage record');
     await this.usageRepository.deleteUsage(id);

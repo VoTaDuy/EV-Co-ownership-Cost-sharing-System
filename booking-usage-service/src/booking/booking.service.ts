@@ -24,18 +24,8 @@ export class BookingService {
         throw new Error('Thiếu user_id');
       }
 
-      const user = await this.httpUserService.getUserById(data.user_id!);
-      if (!user) {
-        throw new NotFoundException(`User ${data.user_id} không tồn tại`);
-      }
-
       if (!data.vehicle_id) {
         throw new Error('Thiếu vehicle_id');
-      }
-
-      const vehicle = await this.httpAdminService.getVehicleById(data.vehicle_id!);
-      if (!vehicle) {
-        throw new NotFoundException(`Vehicle ${data.vehicle_id} không tồn tại`);
       }
 
       if (!data.start_date || !data.end_date || !data.check_in_time || !data.check_out_time) {
@@ -51,7 +41,7 @@ export class BookingService {
     }
 
   // Kiểm tra conflict (trả về true/false)
-    async checkBookingConflict(vehicle_id: string, start_date: Date, end_date: Date): Promise<boolean> {
+    async checkBookingConflict(vehicle_id: number, start_date: Date, end_date: Date): Promise<boolean> {
       const existingBookings = await this.bookingRepository.findByVehicleAndDate(vehicle_id, start_date, end_date);
       return existingBookings.some((b) => {
         const newStart = new Date(start_date);
@@ -88,14 +78,14 @@ export class BookingService {
   }
 
   //Lấy booking theo ID
-  async getBookingById(id: string): Promise<Booking> {
+  async getBookingById(id: number): Promise<Booking> {
     const booking = await this.bookingRepository.findById(id);
     if (!booking) throw new NotFoundException(`Booking ${id} không tồn tại`);
     return booking;
   }
 
   //Cập nhật booking
-  async updateBooking(id: string, data: Partial<Booking>): Promise<Booking> {
+  async updateBooking(id: number, data: Partial<Booking>): Promise<Booking> {
   const existing = await this.getBookingById(id);
   if (!existing) throw new NotFoundException('Không tìm thấy booking');
 
@@ -122,7 +112,7 @@ export class BookingService {
   }
 
   //Xóa booking
-  async deleteBooking(id: string): Promise<void> {
+  async deleteBooking(id: number): Promise<void> {
     const existing = await this.getBookingById(id);
     if (!existing) throw new NotFoundException('Không tìm thấy booking');
     return this.bookingRepository.deleteBooking(id);

@@ -1,16 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConflictLogRepository } from './conflict-log.repository';
 import { ConflictLog, ResolutionStatus } from './conflict-log.entity';
-import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class ConflictLogService {
   constructor(private readonly conflictRepo: ConflictLogRepository) {}
 
   // Tạo mới conflict log
-  async createConflict(user_id: string, booking_id: string, description: string): Promise<ConflictLog> {
+  async createConflict(user_id: number, booking_id: number, description: string): Promise<ConflictLog> {
     const conflict = {
-      conflict_id: uuidv4(),
       user_id,
       booking_id,
       description,
@@ -25,20 +23,20 @@ export class ConflictLogService {
   }
 
   // Lấy theo ID
-  async getConflictById(id: string): Promise<ConflictLog | null> {
+  async getConflictById(id: number): Promise<ConflictLog | null> {
     return this.conflictRepo.findById(id);
   }
 
   // Lấy theo user ID
-  async getConflictsByUser(user_id: string): Promise<ConflictLog[]> {
+  async getConflictsByUser(user_id: number): Promise<ConflictLog[]> {
     return this.conflictRepo.findByUser(user_id);
   }
 
   // Cập nhật trạng thái conflict
   async updateConflictStatus(
-    conflict_id: string,
+    conflict_id: number,
     status: ResolutionStatus,
-    resolved_by?: string,
+    resolved_by?: number,
   ): Promise<ConflictLog> {
     const updated = await this.conflictRepo.updateStatus(conflict_id, status, resolved_by);
     if (!updated) {

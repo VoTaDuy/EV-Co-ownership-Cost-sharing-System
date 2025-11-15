@@ -9,11 +9,11 @@ export type AlertStatus = 'unread' | 'read' ;
 
 @Entity({ name: 'alert_log' })
 export class AlertLog {
-  @PrimaryGeneratedColumn('uuid')
-  alert_id: string;
+  @PrimaryGeneratedColumn()
+  alert_id: number;
 
-  @Column({ type: 'varchar', length: 255 })
-  user_id: string;
+  @Column({ type: 'int' })
+  user_id: number;
 
   @Column({ type: 'enum', enum: AlertType })
   alert_type: AlertType;

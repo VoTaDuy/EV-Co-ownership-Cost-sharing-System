@@ -15,7 +15,7 @@ export class BookingRepository {
     const booking = this.bookingRepo.create(data);
     return this.bookingRepo.save(booking);
   }
-  async findByVehicleAndDate(vehicle_id: string, start_date: Date, end_date: Date): Promise<Booking[]> {
+  async findByVehicleAndDate(vehicle_id: number, start_date: Date, end_date: Date): Promise<Booking[]> {
     return this.bookingRepo.find({ where: { vehicle_id, start_date, end_date } });
   }
 
@@ -25,12 +25,12 @@ export class BookingRepository {
   }
 
   // Lấy booking theo ID
-  async findById(id: string): Promise<Booking | null> {
+  async findById(id: number): Promise<Booking | null> {
     return this.bookingRepo.findOne({ where: { booking_id: id } });
   }
 
   // Cập nhật booking
-  async updateBooking(id: string, updateData: Partial<Booking>): Promise<Booking> {
+  async updateBooking(id: number, updateData: Partial<Booking>): Promise<Booking> {
     await this.bookingRepo.update(id, updateData);
     const updatedBooking = await this.findById(id);
     if (!updatedBooking) {
@@ -41,7 +41,7 @@ export class BookingRepository {
 
 
   // Xóa booking
-  async deleteBooking(id: string): Promise<void> {
+  async deleteBooking(id: number): Promise<void> {
     await this.bookingRepo.delete(id);
   }
 }

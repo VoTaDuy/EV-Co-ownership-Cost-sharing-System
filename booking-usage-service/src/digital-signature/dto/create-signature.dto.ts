@@ -4,15 +4,15 @@ import { SignatureType } from '../digital-signature.entity';
 export class CreateSignatureDto {
   @ApiProperty({
     description: 'ID của người ký (user)',
-    example: 'user-1234',
+    example: '1',
   })
-  user_id: string;
+  user_id: number;
 
   @ApiProperty({
     description: 'ID của usage record liên quan',
-    example: 'usage-5678',
+    example: '1',
   })
-  usage_id: string;
+  usage_id: number;
 
   @ApiProperty({
     description: 'Loại chữ ký: check-in hoặc check-out',

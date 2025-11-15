@@ -3,13 +3,13 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class GetAllSignatureDto {
   @ApiProperty({ description: 'ID của chữ ký số' })
-  signature_id: string;
+  signature_id: number;
 
   @ApiProperty({ description: 'ID người dùng' })
-  user_id: string;
+  user_id: number;
 
   @ApiProperty({ description: 'ID bản ghi sử dụng (usage)' })
-  usage_id: string;
+  usage_id: number
 
   @ApiProperty({ description: 'Loại chữ ký (checkin/checkout)' })
   type: string;

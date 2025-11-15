@@ -11,14 +11,14 @@ export enum BookingStatus {
 
 @Entity({ name: 'booking' })
 export class Booking {
-  @PrimaryGeneratedColumn('uuid')
-  booking_id: string;
+  @PrimaryGeneratedColumn()
+  booking_id: number;
 
-  @Column()
-  user_id: string;
+  @Column({ type: 'int' })
+  user_id: number;
 
-  @Column()
-  vehicle_id: string;
+  @Column({ type: 'int' })
+  vehicle_id: number;
 
   @Column({
     type: 'enum',

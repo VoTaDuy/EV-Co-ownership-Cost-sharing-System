@@ -11,8 +11,8 @@ export class UpdateConflictStatusDto {
 
   @ApiProperty({
     description: 'ID của người thực hiện xử lý conflict (nếu có)',
-    example: 'staff-5678',
+    example: '678',
     required: false,
   })
-  resolved_by?: string;
+  resolved_by?: number;
 }

@@ -11,17 +11,17 @@ export enum ResolutionStatus {
 
 @Entity({ name: 'conflict_log' })
 export class ConflictLog {
-  @PrimaryColumn({ type: 'varchar', length: 255 })
-  conflict_id: string;
+  @PrimaryColumn({ type: 'int', generated: 'increment' })
+  conflict_id: number;
 
-  @Column({ type: 'varchar', length: 255 })
-  user_id: string;
+  @Column({ type: 'int' })
+  user_id: number;
 
-  @Column({ type: 'varchar', length: 255 })
-  booking_id: string;
+  @Column({ type: 'int' })
+  booking_id: number;
 
-  @Column({ type: 'varchar', length: 255, nullable: true })
-  resolved_by: string;
+  @Column({ type: 'int', nullable: true })
+  resolved_by: number;
 
   @Column({
     type: 'enum',

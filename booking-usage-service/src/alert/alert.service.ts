@@ -20,7 +20,7 @@ export class AlertService {
   }
 
   // Lấy alert theo user_id
-  async getAlertsByUser(user_id: string): Promise<AlertLog[]> {
+  async getAlertsByUser(user_id: number): Promise<AlertLog[]> {
     return this.alertRepo.find({
       where: { user_id },
       order: { created_at: 'DESC' },
@@ -28,12 +28,12 @@ export class AlertService {
   }
 
   // Đánh dấu alert là đã đọc
-  async markAlertAsRead(alert_id: string): Promise<void> {
+  async markAlertAsRead(alert_id: number): Promise<void> {
     await this.alertRepo.update(alert_id, { status: 'read' });
   }
 
   // Dùng cho hệ thống cảnh báo tự động (DigitalSignatureService)
-  async createAlert(user_id: string, alert_type: AlertType, message: string): Promise<AlertLog> {
+  async createAlert(user_id: number, alert_type: AlertType, message: string): Promise<AlertLog> {
     const alert = this.alertRepo.create({ user_id, alert_type, message });
     return this.alertRepo.save(alert);
   }

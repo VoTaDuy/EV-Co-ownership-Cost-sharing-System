@@ -10,7 +10,7 @@ export class AlertRepository {
     private readonly repo: Repository<AlertLog>,
   ) {}
 
-  async createAlert(user_id: string, alert_type: AlertType, message: string): Promise<AlertLog> {
+  async createAlert(user_id: number, alert_type: AlertType, message: string): Promise<AlertLog> {
     const alert = this.repo.create({
       user_id,
       alert_type,
@@ -24,14 +24,14 @@ export class AlertRepository {
     return this.repo.find({ order: { created_at: 'DESC' } });
   }
 
-  async findByUser(user_id: string): Promise<AlertLog[]> {
+  async findByUser(user_id: number): Promise<AlertLog[]> {
     return this.repo.find({
       where: { user_id },
       order: { created_at: 'DESC' },
     });
   }
 
-  async markAsRead(alert_id: string): Promise<void> {
+  async markAsRead(alert_id: number): Promise<void> {
     await this.repo.update(alert_id, { status: 'read' });
   }
 

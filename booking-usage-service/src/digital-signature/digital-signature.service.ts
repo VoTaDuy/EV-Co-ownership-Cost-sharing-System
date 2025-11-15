@@ -71,12 +71,12 @@ export class DigitalSignatureService {
   }
 
   // Lấy chữ ký theo ID
-  async getSignatureById(id: string): Promise<DigitalSignature | null> {
+  async getSignatureById(id: number): Promise<DigitalSignature | null> {
     return this.signatureRepo.findById(id);
   }
 
   // Lấy chữ ký theo user_id
-  async getSignaturesByUser(user_id: string): Promise<DigitalSignature[]> {
+  async getSignaturesByUser(user_id: number): Promise<DigitalSignature[]> {
     return this.signatureRepo.findByUser(user_id);
   }
 }

@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 export class IdSignatureDto {
   @ApiProperty({
     description: 'ID của chữ ký số cần lấy',
-    example: 'sig-1234abcd',
+    example: '13',
   })
-  id: string;
+  id: number;
 }

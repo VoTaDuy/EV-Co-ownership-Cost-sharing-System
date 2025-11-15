@@ -15,7 +15,7 @@ export class HttpAdminService {
    * Lấy thông tin vehicle từ Admin Service
    * @param vehicle_id UUID của vehicle
    */
-  async getVehicleById(vehicle_id: string) {
+  async getVehicleById(vehicle_id: number) {
     try {
       const url = `${this.adminServiceUrl}/vehicles/${vehicle_id}`;
       const response = await firstValueFrom(this.httpService.get(url));
