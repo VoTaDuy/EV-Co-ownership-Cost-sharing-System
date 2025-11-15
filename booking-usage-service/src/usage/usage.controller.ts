@@ -22,13 +22,15 @@ export class UsageController {
     type: UsageRecord,
   })
   async createUsage(@Body() data: CreateUsageDto) {
-    const usageData: Partial<UsageRecord> = {
-  
+    const payload: Partial<UsageRecord> = {
+      ...(data as unknown as Partial<UsageRecord>),
+      start_date: data.start_date ? new Date(data.start_date) : undefined,
+      end_date: data.end_date ? new Date(data.end_date) : undefined,
     };
-    return this.usageService.createUsage(usageData);
+    return this.usageService.createUsage(payload);
   }
 
-  @Get('')
+  @Get('get-all')
     @ApiOperation({ summary: 'Lấy danh sách tất cả các bản ghi sử dụng' })
     @ApiResponse({
       status: 200,
