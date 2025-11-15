@@ -27,4 +27,24 @@ export class CloudinaryService {
     const uploadPromises = files.map((file) => this.uploadImage(file));
     return Promise.all(uploadPromises);
   }
+
+  async uploadPdf(file: Express.Multer.File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        {
+          folder: 'contracts',
+          resource_type: 'raw',
+          format: 'pdf', // ép thêm đuôi PDF
+        },
+        (error, result) => {
+          if (error) return reject(error);
+          if (!result)
+            return reject(new Error('No result returned from Cloudinary.'));
+          resolve(result.secure_url);
+        },
+      );
+
+      streamifier.createReadStream(file.buffer).pipe(uploadStream);
+    });
+  }
 }

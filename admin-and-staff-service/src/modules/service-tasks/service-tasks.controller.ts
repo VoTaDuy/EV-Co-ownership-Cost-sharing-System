@@ -30,24 +30,24 @@ export class ServiceTasksController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: number) {
     return this.serviceTasksService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateServiceTaskDto) {
+  update(@Param('id') id: number, @Body() dto: UpdateServiceTaskDto) {
     return this.serviceTasksService.update(id, dto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
     return this.serviceTasksService.delete(id);
   }
 
   // Cập nhật trạng thái (pending → in_progress → completed, v.v.)
   @Put(':id/status')
   updateStatus(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body('status') status: ServiceTask['status'],
   ) {
     return this.serviceTasksService.updateStatus(id, status);

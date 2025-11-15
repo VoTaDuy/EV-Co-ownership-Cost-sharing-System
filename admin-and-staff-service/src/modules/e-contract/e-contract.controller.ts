@@ -1,3 +1,4 @@
+// e-contracts/e-contract.controller.ts
 import {
   Controller,
   Get,
@@ -6,16 +7,36 @@ import {
   Delete,
   Param,
   Body,
+  UseInterceptors,
+  UploadedFiles,
+  BadRequestException,
 } from '@nestjs/common';
-import { EContactsService } from './e-contract.service';
-import { CreateEContactDto, UpdateEContactDto } from './e-contract.dto';
+import { EContractService } from './e-contract.service';
+import { CreateEContractDto, UpdateEContractDto } from './e-contract.dto';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { AnyFilesInterceptor } from '@nestjs/platform-express';
 
-@Controller('admin/e-contacts')
-export class EContactsController {
-  constructor(private readonly service: EContactsService) {}
+@Controller('admin/e-contracts')
+export class EContractController {
+  constructor(
+    private readonly service: EContractService,
+    private readonly cloudinaryService: CloudinaryService,
+  ) {}
 
   @Post()
-  create(@Body() dto: CreateEContactDto) {
+  @UseInterceptors(AnyFilesInterceptor())
+  async create(
+    @UploadedFiles() files: Express.Multer.File[],
+    @Body() dto: CreateEContractDto,
+  ) {
+    const pdfFile = files?.[0];
+    if (!pdfFile) throw new BadRequestException('PDF file is required');
+
+    const url = await this.cloudinaryService.uploadPdf(pdfFile);
+
+    // Gán URL sau khi DTO đã được validate
+    dto.contract_url = url;
+
     return this.service.create(dto);
   }
 
@@ -25,17 +46,17 @@ export class EContactsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: number) {
     return this.service.findOne(id);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateEContactDto) {
+  update(@Param('id') id: number, @Body() dto: UpdateEContractDto) {
     return this.service.update(id, dto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
     return this.service.remove(id);
   }
 }

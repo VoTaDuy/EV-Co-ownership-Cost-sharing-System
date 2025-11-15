@@ -19,12 +19,12 @@ public class ProfileService {
         return profileRepository.findAll();
     }
 
-    public Profiles getProfileByUserId(UUID userId) {
+    public Profiles getProfileByUserId(int userId) {
         return profileRepository.findProfileByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("Profile not found for user: " + userId));
     }
 
-    public Profiles updateProfile(UUID userId, ProfileDTO profileDTO) {
+    public Profiles updateProfile(int userId, ProfileDTO profileDTO) {
         Profiles profile = getProfileByUserId(userId);
 
         if (profileDTO.getFull_name() != null) profile.setFull_name(profileDTO.getFull_name());

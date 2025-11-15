@@ -4,40 +4,45 @@ import {
   Column,
   CreateDateColumn,
   ManyToOne,
-  OneToMany,
   Unique,
   JoinColumn,
+  Index,
 } from 'typeorm';
-import { EContact } from '../e-contract/e-contract.entity';
 import { OwnershipGroup } from '../ownership-groups/ownership-groups.entity';
 
 @Entity('group_members')
-@Unique(['group_id', 'user_id']) // 🔒 1 user chỉ 1 lần trong 1 group
+@Unique(['group_id', 'user_id']) // 1 user chỉ thuộc 1 group 1 lần
+@Index(['group_id'])
+@Index(['user_id'])
 export class GroupMember {
-  @PrimaryGeneratedColumn('uuid')
-  member_id: string;
+  // Auto-increment primary key
+  @PrimaryGeneratedColumn('increment')
+  member_id: number;
 
-  @Column({ type: 'uuid' })
-  group_id: string;
+  // Khóa ngoại: group_id → int (từ OwnershipGroup.group_id)
+  @Column({ type: 'int' })
+  group_id: number;
 
-  @Column({ type: 'uuid' })
-  user_id: string;
+  // user_id: giả sử là int (từ bảng users có id tự tăng)
+  @Column({ type: 'int' })
+  user_id: number;
 
-  @Column({ type: 'varchar', default: 'Co-owner' })
+  // Vai trò trong nhóm
+  @Column({ type: 'varchar', length: 50, default: 'Co-owner' })
   group_role: string;
 
+  // Tỷ lệ sở hữu (0 - 100 hoặc 0.0 - 1.0)
   @Column({ type: 'float', default: 0 })
   ownership_ratio: number;
 
+  // Thời gian tạo
   @CreateDateColumn()
   created_at: Date;
 
-  // 🔗 Quan hệ với OwnershipGroup
-  @ManyToOne(() => OwnershipGroup, (group) => group.members)
+  // Quan hệ với OwnershipGroup (group_id là FK)
+  @ManyToOne(() => OwnershipGroup, (group) => group.members, {
+    onDelete: 'CASCADE', // Xóa group → xóa tất cả member
+  })
   @JoinColumn({ name: 'group_id' })
   group: OwnershipGroup;
-
-  // 🔗 Quan hệ 1-n với EContact
-  @OneToMany(() => EContact, (contact) => contact.member)
-  contacts: EContact[];
 }

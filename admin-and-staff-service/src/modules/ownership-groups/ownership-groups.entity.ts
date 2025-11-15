@@ -4,35 +4,37 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
-  BeforeInsert,
   CreateDateColumn,
   UpdateDateColumn,
   Unique,
   OneToMany,
 } from 'typeorm';
-import { v4 as uuidv4 } from 'uuid';
+
 import { Vehicle } from '../vehicles/vehicles.entity';
-import { ContractsTemplate } from '../contracts-template/contracts-template.entity';
 import { GroupMember } from '../group-members/group-members.entity';
+import { EContract } from '../e-contract/e-contract.entity';
 
 @Entity('ownership_groups')
-@Unique(['vehicle_id']) // 🔒 đảm bảo 1 xe chỉ có 1 nhóm
+@Unique(['vehicle_id'])
 export class OwnershipGroup {
-  @PrimaryGeneratedColumn('uuid')
-  group_id: string;
+  // 🔥 ID tự tăng (INT)
+  @PrimaryGeneratedColumn()
+  group_id: number;
 
   @Column()
   group_name: string;
 
+  // 🔥 INT vì vehicle_id đã đổi sang INT
   @Column()
-  vehicle_id: string;
+  vehicle_id: number;
 
   @ManyToOne(() => Vehicle)
   @JoinColumn({ name: 'vehicle_id' })
   vehicle: Vehicle;
 
+  // Nếu user_id là UUID → giữ nguyên string
   @Column()
-  created_by: string;
+  created_by: number;
 
   @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;
@@ -40,16 +42,13 @@ export class OwnershipGroup {
   @UpdateDateColumn({ type: 'timestamp' })
   updated_at: Date;
 
-  @BeforeInsert()
-  generateId() {
-    if (!this.group_id) this.group_id = uuidv4();
-  }
-
-  // 🔗 Quan hệ 1-n với bảng group_members
-  @OneToMany(() => GroupMember, (member) => member.group, { cascade: true })
+  // Quan hệ 1-n đến GroupMember
+  @OneToMany(() => GroupMember, (member) => member.group, {
+    cascade: true,
+  })
   members: GroupMember[];
 
-  // 🔗 Quan hệ 1-n với bảng contracts_template
-  @OneToMany(() => ContractsTemplate, (contract) => contract.group)
-  contracts!: ContractsTemplate[];
+  // Quan hệ 1-n đến EContract
+  @OneToMany(() => EContract, (contract) => contract.ownership_group)
+  contracts: EContract[];
 }

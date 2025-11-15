@@ -18,9 +18,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-@CrossOrigin("*")
 @RestController
 @RequestMapping("/user/users")
+@CrossOrigin(origins = "http://localhost:3000")
+
 public class UserController {
 
     @Autowired
@@ -54,7 +55,7 @@ public class UserController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUserById(@PathVariable UUID id) {
+    public ResponseEntity<?> getUserById(@PathVariable int id) {
         try {
             Users user = userService.getUserById(id);
             return new ResponseEntity<>(user, HttpStatus.OK);
@@ -66,7 +67,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable UUID id, @RequestBody UserDTO userDTO) {
+    public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody UserDTO userDTO) {
         try {
             Users updatedUser = userService.updateUser(id, userDTO);
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);
@@ -78,7 +79,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}/delete_user")
-    public ResponseEntity<?> deleteUser(@PathVariable UUID id) {
+    public ResponseEntity<?> deleteUser(@PathVariable int id) {
         ResponseData responseData = new ResponseData();
         try {
             Users user = userService.removeUserById(id);
@@ -92,7 +93,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/profile")
-    public ResponseEntity<?> getProfileByUserId(@PathVariable UUID userId) {
+    public ResponseEntity<?> getProfileByUserId(@PathVariable int userId) {
         try {
             Profiles profile = profileService.getProfileByUserId(userId);
             return new ResponseEntity<>(profile, HttpStatus.OK);
@@ -102,7 +103,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}/profile")
-    public ResponseEntity<?> updateProfile(@PathVariable UUID userId, @RequestBody ProfileDTO profileDTO) {
+    public ResponseEntity<?> updateProfile(@PathVariable int userId, @RequestBody ProfileDTO profileDTO) {
         try {
             Profiles updatedProfile = profileService.updateProfile(userId, profileDTO);
             return new ResponseEntity<>(updatedProfile, HttpStatus.OK);

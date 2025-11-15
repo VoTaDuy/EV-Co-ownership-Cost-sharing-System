@@ -1,21 +1,30 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import {
-  IsUUID,
-  IsOptional,
-  IsNumber,
-  IsEnum,
-  Max,
+  IsInt,
   Min,
+  IsOptional,
+  IsEnum,
+  IsNumber,
+  Max,
+  IsDate,
+  IsString,
 } from 'class-validator';
+import { Expose } from 'class-transformer';
 
 /**
- * Dto tạo mới thành viên group (dùng khi tạo thủ công)
+ * ===================================================================
+ * CREATE GROUP MEMBER DTO
+ * Dùng khi tạo thành viên thủ công (cần cả group_id và user_id)
+ * ===================================================================
  */
 export class CreateGroupMemberDto {
-  @IsUUID()
-  group_id: string;
+  @IsInt({ message: 'group_id must be a valid integer' })
+  @Min(1, { message: 'group_id must be greater than 0' })
+  group_id: number;
 
-  @IsUUID()
-  user_id: string;
+  @IsInt({ message: 'user_id must be a valid integer' })
+  @Min(1, { message: 'user_id must be greater than 0' })
+  user_id: number;
 
   @IsOptional()
   @IsEnum(['Owner', 'Co-owner', 'Viewer'], {
@@ -24,38 +33,87 @@ export class CreateGroupMemberDto {
   group_role?: string;
 
   @IsOptional()
-  @IsNumber()
+  @IsNumber({}, { message: 'ownership_ratio must be a number' })
+  @Min(0, { message: 'ownership_ratio cannot be negative' })
+  @Max(100, { message: 'ownership_ratio cannot exceed 100' })
   ownership_ratio?: number;
 }
 
 /**
- * Dto cập nhật thông tin thành viên (vai trò hoặc tỷ lệ sở hữu)
- */
-export class UpdateGroupMemberDto {
-  @IsOptional()
-  @IsEnum(['Owner', 'Co-owner', 'Viewer'])
-  group_role?: string;
-
-  @IsOptional()
-  @IsNumber()
-  ownership_ratio?: number;
-}
-
-/**
- * Dto thêm thành viên vào group có sẵn (từ danh sách user)
- * Giống CreateGroupMemberDto nhưng rõ mục đích hơn
+ * ===================================================================
+ * ADD GROUP MEMBER DTO
+ * Dùng khi thêm user vào group có sẵn (group_id lấy từ param)
+ * ===================================================================
  */
 export class AddGroupMemberDto {
-  @IsUUID()
-  user_id: string;
+  @IsInt({ message: 'user_id must be a valid integer' })
+  @Min(1, { message: 'user_id must be greater than 0' })
+  user_id: number;
 
   @IsOptional()
-  @IsEnum(['Owner', 'Co-owner', 'Viewer'])
+  @IsEnum(['Owner', 'Co-owner', 'Viewer'], {
+    message: 'group_role must be one of: Owner, Co-owner, Viewer',
+  })
   group_role?: string;
 
   @IsOptional()
-  @IsNumber()
+  @IsNumber({}, { message: 'ownership_ratio must be a number' })
   @Min(0)
   @Max(100)
   ownership_ratio?: number;
+}
+
+/**
+ * ===================================================================
+ * UPDATE GROUP MEMBER DTO
+ * Dùng khi cập nhật role hoặc tỷ lệ sở hữu (theo member_id)
+ * ===================================================================
+ */
+export class UpdateGroupMemberDto {
+  @IsOptional()
+  @IsEnum(['Owner', 'Co-owner', 'Viewer'], {
+    message: 'group_role must be one of: Owner, Co-owner, Viewer',
+  })
+  group_role?: string;
+
+  @IsOptional()
+  @IsNumber({}, { message: 'ownership_ratio must be a number' })
+  @Min(0)
+  @Max(100)
+  ownership_ratio?: number;
+}
+
+/**
+ * ===================================================================
+ * GROUP MEMBER RESPONSE DTO
+ * Dùng khi trả về dữ liệu cho client
+ * ===================================================================
+ */
+export class GroupMemberResponseDto {
+  @IsInt()
+  @Min(1)
+  @Expose()
+  member_id: number;
+
+  @IsInt()
+  @Min(1)
+  @Expose()
+  group_id: number;
+
+  @IsInt()
+  @Min(1)
+  @Expose()
+  user_id: number;
+
+  @IsString()
+  @Expose()
+  group_role: string;
+
+  @IsNumber()
+  @Expose()
+  ownership_ratio: number;
+
+  @IsDate()
+  @Expose()
+  created_at: Date;
 }

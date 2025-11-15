@@ -23,7 +23,7 @@ export class ServiceTasksService {
     return await this.taskRepo.find({ relations: ['vehicle'] });
   }
 
-  async findOne(id: string): Promise<ServiceTask> {
+  async findOne(id: number): Promise<ServiceTask> {
     const task = await this.taskRepo.findOne({
       where: { task_id: id },
       relations: ['vehicle'],
@@ -32,19 +32,19 @@ export class ServiceTasksService {
     return task;
   }
 
-  async update(id: string, data: UpdateServiceTaskDto): Promise<ServiceTask> {
+  async update(id: number, data: UpdateServiceTaskDto): Promise<ServiceTask> {
     const task = await this.findOne(id);
     Object.assign(task, data);
     return await this.taskRepo.save(task);
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: number): Promise<void> {
     const result = await this.taskRepo.delete(id);
     if (result.affected === 0)
       throw new NotFoundException('Service task not found');
   }
 
-  async updateStatus(id: string, status: ServiceTask['status']) {
+  async updateStatus(id: number, status: ServiceTask['status']) {
     const task = await this.taskRepo.findOne({ where: { task_id: id } });
     if (!task) throw new NotFoundException(`Task ${id} not found`);
     task.status = status;

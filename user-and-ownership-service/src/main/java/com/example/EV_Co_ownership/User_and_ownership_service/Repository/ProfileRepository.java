@@ -10,8 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface ProfileRepository extends JpaRepository<Profiles, UUID> {
+public interface ProfileRepository extends JpaRepository<Profiles, Integer> {
 
-    @Query("SELECT p FROM Profiles p WHERE p.user_id = :userId")
-    Optional<Profiles> findProfileByUserId(@Param("userId") UUID userId);
+    Optional<Profiles> findProfileByUserId(int userId);
 }
