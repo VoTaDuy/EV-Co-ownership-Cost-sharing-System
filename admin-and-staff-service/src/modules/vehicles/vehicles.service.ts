@@ -24,7 +24,7 @@ export class VehiclesService {
     return await this.vehicleRepo.find();
   }
 
-  async findOne(id: string): Promise<Vehicle> {
+  async findOne(id: number): Promise<Vehicle> {
     const vehicle = await this.vehicleRepo.findOne({
       where: { vehicle_id: id },
     });
@@ -34,13 +34,13 @@ export class VehiclesService {
     return vehicle;
   }
 
-  async update(id: string, data: UpdateVehicleDto): Promise<Vehicle> {
+  async update(id: number, data: UpdateVehicleDto): Promise<Vehicle> {
     const vehicle = await this.findOne(id);
     Object.assign(vehicle, data, { updated_at: new Date() });
     return await this.vehicleRepo.save(vehicle);
   }
 
-  async delete(id: string): Promise<boolean> {
+  async delete(id: number): Promise<boolean> {
     const result = await this.vehicleRepo.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException(`Vehicle with id ${id} not found`);
@@ -49,7 +49,7 @@ export class VehiclesService {
   }
 
   async updateImages(
-    id: string,
+    id: number,
     image_url?: string,
     spec_image_urls?: string[],
   ): Promise<Vehicle> {

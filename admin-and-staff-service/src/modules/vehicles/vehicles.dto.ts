@@ -3,11 +3,11 @@ import {
   IsString,
   IsOptional,
   IsBoolean,
-  IsUUID,
   IsArray,
   IsNotEmpty,
   IsUrl,
   IsDateString,
+  IsInt,
 } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 
@@ -26,7 +26,7 @@ export class CreateVehicleDto {
 
   @IsUrl({}, { message: 'image_url phải là một URL hợp lệ' })
   @IsOptional()
-  image_url?: string; // Ảnh đại diện của xe
+  image_url?: string;
 
   @IsArray()
   @IsOptional()
@@ -37,7 +37,7 @@ export class CreateVehicleDto {
       message: 'Mỗi phần tử trong spec_image_urls phải là URL hợp lệ',
     },
   )
-  spec_image_urls?: string[]; // Danh sách ảnh thông số kỹ thuật
+  spec_image_urls?: string[];
 
   @IsBoolean()
   @IsOptional()
@@ -47,8 +47,8 @@ export class CreateVehicleDto {
 export class UpdateVehicleDto extends PartialType(CreateVehicleDto) {}
 
 export class VehicleResponseDto {
-  @IsUUID()
-  vehicle_id: string;
+  @IsInt()
+  vehicle_id: number;
 
   @IsString()
   vehicle_name: string;

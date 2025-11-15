@@ -31,17 +31,17 @@ export class OwnershipGroupsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: number) {
     return this.ownershipGroupsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateOwnershipGroupDto) {
+  update(@Param('id') id: number, @Body() dto: UpdateOwnershipGroupDto) {
     return this.ownershipGroupsService.update(id, dto);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string) {
+  delete(@Param('id') id: number) {
     return this.ownershipGroupsService.delete(id);
   }
 

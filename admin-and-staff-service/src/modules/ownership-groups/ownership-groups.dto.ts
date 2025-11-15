@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import { IsNotEmpty, IsUUID, IsString, IsDate } from 'class-validator';
+import { IsNotEmpty, IsString, IsInt, Min, IsDate } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 
 export class CreateOwnershipGroupDto {
@@ -7,31 +7,36 @@ export class CreateOwnershipGroupDto {
   @IsNotEmpty()
   group_name: string;
 
-  @IsUUID()
+  @IsInt()
+  @Min(1)
   @IsNotEmpty()
-  vehicle_id: string;
+  vehicle_id: number;
 
-  @IsString()
+  @IsInt()
   @IsNotEmpty()
-  created_by: string;
+  created_by: number; // hoặc đổi thành number nếu user_id là int
 }
 
 export class UpdateOwnershipGroupDto extends PartialType(
   CreateOwnershipGroupDto,
-) {}
+) {
+  // Không bao gồm group_id vì là auto-increment, không được update
+}
 
 export class OwnershipGroupResponseDto {
-  @IsUUID()
-  group_id: string;
+  @IsInt()
+  @Min(1)
+  group_id: number;
 
   @IsString()
   group_name: string;
 
-  @IsUUID()
-  vehicle_id: string;
+  @IsInt()
+  @Min(1)
+  vehicle_id: number;
 
-  @IsString()
-  created_by: string;
+  @IsInt()
+  created_by: number;
 
   @IsDate()
   created_at: Date;

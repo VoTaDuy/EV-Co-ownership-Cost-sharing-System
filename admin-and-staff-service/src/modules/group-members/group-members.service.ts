@@ -36,7 +36,7 @@ export class GroupMembersService {
     return await this.memberRepo.find({ relations: ['contacts'] });
   }
 
-  async findOne(id: string): Promise<GroupMember> {
+  async findOne(id: number): Promise<GroupMember> {
     const member = await this.memberRepo.findOne({
       where: { member_id: id },
       relations: ['contacts'],
@@ -45,7 +45,7 @@ export class GroupMembersService {
     return member;
   }
 
-  async findMember(id: string): Promise<GroupMember[]> {
+  async findMember(id: number): Promise<GroupMember[]> {
     const member = await this.memberRepo.find({
       where: { group_id: id },
       relations: ['contacts'],
@@ -54,18 +54,18 @@ export class GroupMembersService {
     return member;
   }
 
-  async update(id: string, dto: UpdateGroupMemberDto): Promise<GroupMember> {
+  async update(id: number, dto: UpdateGroupMemberDto): Promise<GroupMember> {
     const member = await this.findOne(id);
     Object.assign(member, dto);
     return await this.memberRepo.save(member);
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: number): Promise<void> {
     const member = await this.findOne(id);
     await this.memberRepo.remove(member);
   }
 
-  async addMemberToGroup(group_id: string, dto: AddGroupMemberDto) {
+  async addMemberToGroup(group_id: number, dto: AddGroupMemberDto) {
     // 1️⃣ Kiểm tra group tồn tại
     const group = await this.groupRepo.findOne({
       where: { group_id },

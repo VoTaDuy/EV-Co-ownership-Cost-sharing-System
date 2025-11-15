@@ -35,7 +35,7 @@ export class OwnershipGroupsService {
     return await this.groupRepo.find({ relations: ['vehicle'] });
   }
 
-  async findOne(id: string): Promise<OwnershipGroup> {
+  async findOne(id: number): Promise<OwnershipGroup> {
     const group = await this.groupRepo.findOne({
       where: { group_id: id },
       relations: ['vehicle'],
@@ -45,7 +45,7 @@ export class OwnershipGroupsService {
   }
 
   async update(
-    id: string,
+    id: number,
     dto: UpdateOwnershipGroupDto,
   ): Promise<OwnershipGroup> {
     const group = await this.findOne(id);
@@ -53,7 +53,7 @@ export class OwnershipGroupsService {
     return await this.groupRepo.save(group);
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: number): Promise<void> {
     const result = await this.groupRepo.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException('Ownership group not found');

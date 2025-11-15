@@ -1,49 +1,73 @@
-/* eslint-disable prettier/prettier */
+// e-contracts/e-contract.service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { EContact } from './e-contract.entity';
-import { GroupMember } from '../group-members/group-members.entity';
-import { CreateEContactDto, UpdateEContactDto } from './e-contract.dto';
+import { EContract, SignatureStatus } from './e-contract.entity';
+import { OwnershipGroup } from '../ownership-groups/ownership-groups.entity';
+import { CreateEContractDto, UpdateEContractDto } from './e-contract.dto';
+import { HttpUserService } from '../common/http-user.service';
 
 @Injectable()
-export class EContactsService {
+export class EContractService {
   constructor(
-    @InjectRepository(EContact)
-    private readonly contactRepo: Repository<EContact>,
-    @InjectRepository(GroupMember)
-    private readonly memberRepo: Repository<GroupMember>,
+    @InjectRepository(EContract)
+    private readonly contractRepo: Repository<EContract>,
+
+    @InjectRepository(OwnershipGroup)
+    private readonly groupRepo: Repository<OwnershipGroup>,
+
+    private readonly httpUserService: HttpUserService, // gọi User Service
   ) {}
 
-  async create(dto: CreateEContactDto): Promise<EContact> {
-    const member = await this.memberRepo.findOne({ where: { member_id: dto.member_id } });
-    if (!member) throw new NotFoundException('Group member not found');
-
-    const contact = this.contactRepo.create({
-      ...dto,
-      member,
+  async create(dto: CreateEContractDto): Promise<EContract> {
+    // 1. Kiểm tra nhóm sở hữu tồn tạ
+    const group = await this.groupRepo.findOne({
+      where: { group_id: dto.ownership_group_id },
     });
-    return await this.contactRepo.save(contact);
+    if (!group) {
+      throw new NotFoundException('Nhóm sở hữu không tồn tại');
+    }
+    // 4️⃣ Gọi User Service xác thực user_id
+    const user = await this.httpUserService.getUserById(dto.user_id);
+    if (!user) throw new NotFoundException('User not found in User Service');
+
+    const contract = this.contractRepo.create({
+      ownership_group_id: dto.ownership_group_id, // Bây giờ hợp lệ
+      contract_url: dto.contract_url,
+      user_id: dto.user_id,
+      signature_status: dto.signature_status ?? SignatureStatus.PENDING, // Dùng enum
+      ownership_group: group,
+    });
+    // 3. Lưu vào DB
+    return await this.contractRepo.save(contract);
   }
 
-  async findAll(): Promise<EContact[]> {
-    return await this.contactRepo.find({ relations: ['member'] });
+  async findAll(): Promise<EContract[]> {
+    return await this.contractRepo.find({
+      relations: ['ownership_group'],
+      order: { created_at: 'DESC' },
+    });
   }
 
-  async findOne(id: string): Promise<EContact> {
-    const contact = await this.contactRepo.findOne({ where: { contract_id: id }, relations: ['member'] });
-    if (!contact) throw new NotFoundException('E-Contact not found');
-    return contact;
+  async findOne(id: number): Promise<EContract> {
+    const contract = await this.contractRepo.findOne({
+      where: { contract_id: id },
+      relations: ['ownership_group'],
+    });
+    if (!contract) {
+      throw new NotFoundException('Hợp đồng không tồn tại');
+    }
+    return contract;
   }
 
-  async update(id: string, dto: UpdateEContactDto): Promise<EContact> {
-    const contact = await this.findOne(id);
-    Object.assign(contact, dto);
-    return await this.contactRepo.save(contact);
+  async update(id: number, dto: UpdateEContractDto): Promise<EContract> {
+    const contract = await this.findOne(id);
+    Object.assign(contract, dto);
+    return await this.contractRepo.save(contract);
   }
 
-  async remove(id: string): Promise<void> {
-    const contact = await this.findOne(id);
-    await this.contactRepo.remove(contact);
+  async remove(id: number): Promise<void> {
+    const contract = await this.findOne(id);
+    await this.contractRepo.remove(contract);
   }
 }

@@ -4,6 +4,7 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
+import { UserResponseDto } from './user.dto';
 
 @Injectable()
 export class HttpUserService {
@@ -19,7 +20,7 @@ export class HttpUserService {
    * Lấy thông tin user từ User Service
    * @param user_id UUID của user
    */
-  async getUserById(user_id: string) {
+  async getUserById(user_id: number): Promise<UserResponseDto | null> {
     try {
       const url = `${this.userServiceUrl}/users/${user_id}`;
       const response = await firstValueFrom(this.httpService.get(url));
