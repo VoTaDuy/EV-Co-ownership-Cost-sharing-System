@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class PollVoteDTO {
     private Integer voteId;
     private Integer pollId;
-    private String userId;
+    private int userId;
     private String voteValue;
     private LocalDateTime votedAt;
 

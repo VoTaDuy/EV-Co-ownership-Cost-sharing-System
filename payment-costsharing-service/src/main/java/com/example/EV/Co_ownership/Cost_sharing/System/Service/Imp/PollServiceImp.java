@@ -5,9 +5,9 @@ import com.example.EV.Co_ownership.Cost_sharing.System.DTO.PollDTO;
 import java.util.List;
 
 public interface PollServiceImp {
-    List<PollDTO> getAll(String groupId);
+    List<PollDTO> getAll(Integer groupId);
     PollDTO getById(Integer pollId);
-    PollDTO createPoll(PollDTO dto, String userId);
-    PollDTO closePoll(Integer pollId, String userId);
+    PollDTO createPoll(PollDTO dto, int userId);
+    PollDTO closePoll(Integer pollId, int userId);
     void deletePoll(Integer pollId);
 }

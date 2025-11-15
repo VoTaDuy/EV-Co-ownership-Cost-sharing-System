@@ -23,12 +23,13 @@ public class PollService implements PollServiceImp {
     private final VehicleCostRepository costRepo;
 
     @Override
-    public List<PollDTO> getAll(String groupId) {
-        if (groupId != null && !groupId.isBlank()) {
+    public List<PollDTO> getAll(Integer groupId) {
+        if (groupId != null) {
             return pollRepo.findByGroupId(groupId).stream().map(PollDTO::fromEntity).toList();
         }
         return pollRepo.findAll().stream().map(PollDTO::fromEntity).toList();
     }
+
 
     @Override
     public PollDTO getById(Integer pollId) {
@@ -38,13 +39,13 @@ public class PollService implements PollServiceImp {
     }
 
     @Override
-    public PollDTO createPoll(PollDTO dto, String userId) {
+    public PollDTO createPoll(PollDTO dto, int userId) {
         Poll poll = Poll.builder()
                 .groupId(dto.getGroupId())
                 .description(dto.getDescription())
                 .createdBy(userId)
                 .expiresAt(dto.getExpiresAt())
-                .status(PollStatus.ACTIVE)
+                .status(PollStatus.active)
                 .build();
 
         if (dto.getCostId() != null) {
@@ -58,10 +59,10 @@ public class PollService implements PollServiceImp {
     }
 
     @Override
-    public PollDTO closePoll(Integer pollId, String userId) {
+    public PollDTO closePoll(Integer pollId, int userId) {
         Poll poll = pollRepo.findById(pollId)
                 .orElseThrow(() -> new NotFoundException("Poll not found: " + pollId));
-        poll.setStatus(PollStatus.CLOSED);
+        poll.setStatus(PollStatus.closed);
         pollRepo.save(poll);
         return PollDTO.fromEntity(poll);
     }

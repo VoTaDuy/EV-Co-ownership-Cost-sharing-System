@@ -10,6 +10,6 @@ import java.util.Optional;
 @Repository
 public interface PollVoteRepository extends JpaRepository<PollVote, Integer> {
     List<PollVote> findByPoll_PollId(Integer pollId);
-    Optional<PollVote> findByPoll_PollIdAndUserId(Integer pollId, String userId);
+    Optional<PollVote> findByPoll_PollIdAndUserId(Integer pollId, int userId);
     void deleteByPoll_PollId(Integer pollId);
 }

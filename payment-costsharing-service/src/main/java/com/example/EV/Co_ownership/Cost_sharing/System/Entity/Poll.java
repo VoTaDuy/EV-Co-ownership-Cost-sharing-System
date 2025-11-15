@@ -22,7 +22,7 @@ public class Poll {
     private Integer pollId;
 
     @Column(name = "group_id", nullable = false, length = 255)
-    private String groupId;
+    private int groupId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cost_id")
@@ -31,8 +31,8 @@ public class Poll {
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "created_by", length = 255)
-    private String createdBy;
+    @Column(name = "created_by")
+    private int createdBy;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
@@ -43,6 +43,6 @@ public class Poll {
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "ENUM('active','closed') DEFAULT 'active'")
-    private PollStatus status = PollStatus.ACTIVE;
+    private PollStatus status = PollStatus.active;
     
 }

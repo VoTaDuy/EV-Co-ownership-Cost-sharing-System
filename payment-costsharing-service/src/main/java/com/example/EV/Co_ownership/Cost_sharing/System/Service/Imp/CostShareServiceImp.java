@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface CostShareServiceImp {
     List<CostShareDTO> getByCost(Integer costId);
-    List<CostShareDTO> getByUser(String userId);
-    List<CostShareDTO> createShares(CreateShareRequest request, String userId);
-    CostShareDTO settleShare(Integer shareId, SettleShareRequest request, String userId);
+    List<CostShareDTO> getByUser(int userId);
+    List<CostShareDTO> createShares(CreateShareRequest request, int userId);
+    CostShareDTO settleShare(Integer shareId, SettleShareRequest request, int userId);
     void deleteByCost(Integer costId);
 }

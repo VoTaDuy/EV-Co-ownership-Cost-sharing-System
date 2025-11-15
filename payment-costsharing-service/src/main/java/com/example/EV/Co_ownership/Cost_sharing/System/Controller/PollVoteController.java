@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/poll-votes")
+@RequestMapping("/payment/poll-votes")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 public class PollVoteController {
@@ -23,7 +23,7 @@ public class PollVoteController {
 
     @PostMapping("/poll/{pollId}")
     public PollVoteDTO vote(@PathVariable Integer pollId,
-                            @RequestHeader("userId") String userId,
+                            @RequestHeader("userId") int userId,
                             @RequestParam String voteValue) {
         return voteService.vote(pollId, userId, voteValue);
     }

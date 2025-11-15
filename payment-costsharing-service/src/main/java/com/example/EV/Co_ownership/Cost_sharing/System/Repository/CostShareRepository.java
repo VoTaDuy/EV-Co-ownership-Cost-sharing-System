@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface CostShareRepository extends JpaRepository<CostShare, Integer> {
     List<CostShare> findByCost_CostId(Integer costId);
-    List<CostShare> findByUserId(String userId);
+    List<CostShare> findByUserId(int userId);
     List<CostShare> findByCost_CostIdAndStatusNot(Integer costId, CostShareStatus status);
 }

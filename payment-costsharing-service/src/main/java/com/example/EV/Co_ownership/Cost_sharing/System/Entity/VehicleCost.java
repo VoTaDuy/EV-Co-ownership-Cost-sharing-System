@@ -25,15 +25,15 @@ public class VehicleCost {
     @Column(name = "cost_id")
     private Integer costId;
 
-    @Column(name = "group_id", nullable = false, length = 255)
-    private String groupId;
+    @Column(name = "group_id")
+    private int groupId;
 
     @ManyToOne
     @JoinColumn(name = "fund_id")
     private GroupFund fund;
 
     @Column(name = "vehicle_id", length = 255)
-    private String vehicleId;
+    private int vehicleId;
 
     @Column(name = "cost_name", nullable = false, length = 255)
     private String costName;

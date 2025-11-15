@@ -5,10 +5,10 @@ import java.time.LocalDateTime;
 
 public record GroupFundDTO(
         Integer fundId,
-        String groupId,
+        int groupId,
         String fundName,
         BigDecimal balance,
-        String createdBy,
+        int createdBy,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {}

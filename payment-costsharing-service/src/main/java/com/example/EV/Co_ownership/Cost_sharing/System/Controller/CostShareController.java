@@ -12,14 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/costshares")
+@RequestMapping("/payment/costshares")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 public class CostShareController {
 
     private final CostShareServiceImp shareService;
 
-    @GetMapping
+    @GetMapping("/all")
     public List<CostShareDTO> getAll(@RequestParam(required = false) Integer costId) {
         if (costId != null) {
             return shareService.getByCost(costId);
@@ -28,14 +28,14 @@ public class CostShareController {
     }
 
     @GetMapping("/user/{userId}")
-    public List<CostShareDTO> getByUser(@PathVariable String userId) {
+    public List<CostShareDTO> getByUser(@PathVariable int userId) {
         return shareService.getByUser(userId);
     }
 
     @PostMapping
     public List<CostShareDTO> createShares(
             @RequestBody CreateShareRequest request,
-            @RequestHeader("userId") String userId) {
+            @RequestHeader("userId") int userId) {
         return shareService.createShares(request, userId);
     }
 
@@ -43,7 +43,7 @@ public class CostShareController {
     public CostShareDTO settleShare(
             @PathVariable Integer id,
             @RequestBody SettleShareRequest request,
-            @RequestHeader("userId") String userId) {
+            @RequestHeader("userId") int userId) {
         return shareService.settleShare(id, request, userId);
     }
 

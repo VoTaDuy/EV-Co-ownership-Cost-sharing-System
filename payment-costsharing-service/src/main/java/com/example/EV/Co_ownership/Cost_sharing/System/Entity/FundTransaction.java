@@ -43,8 +43,8 @@ public class FundTransaction {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "performed_by", length = 255)
-    private String performedBy;
+    @Column(name = "performed_by")
+    private int performedBy;
 
     @Column(name = "gateway_order_id", length = 100)
     private String gatewayOrderId;
