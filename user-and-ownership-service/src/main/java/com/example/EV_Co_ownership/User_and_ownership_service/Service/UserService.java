@@ -27,7 +27,7 @@ public class UserService {
     private ModelMapper modelMapper;
 
     public List<UserDTO> getAllUsers() {
-        List<Users> users = userRepository.findAllActive();
+        List<Users> users = userRepository.findAll()    ;
 
         return users.stream()
                 .map(this::convertUserToDTO)
@@ -44,8 +44,8 @@ public class UserService {
         return userDTO;
     }
 
-    public Users getUserById(UUID id) {
-        return userRepository.findByIdAndIsDeletedFalse(id)
+    public Users getUserById(int id) {
+        return userRepository.findByUserIdAndIsDeletedFalse(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
     }
 
@@ -61,7 +61,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public Users updateUser(UUID id, UserDTO userDTO) {
+    public Users updateUser(int id, UserDTO userDTO) {
         Users user = getUserById(id);
         if (userDTO.getEmail() != null && !userDTO.getEmail().isEmpty()) {
             user.setEmail(userDTO.getEmail());
@@ -81,7 +81,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public Users removeUserById(UUID id) {
+    public Users removeUserById(int id) {
         Users user = getUserById(id);
         user.setDeleted(true);
         return userRepository.save(user);

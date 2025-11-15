@@ -41,7 +41,7 @@ public class CustomFilterSecurity {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(
                                 HttpMethod.POST,
-                                "/user/login/sign_in/**",
+                                "/user/login/sign_in",
                                 "/user/register/**",
                                 "/user/forgot-password"
                         ).permitAll()

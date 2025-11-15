@@ -15,6 +15,7 @@ import java.util.Map;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/user/login")
+//@CrossOrigin(origins = "http://localhost:3000")
 public class LoginController {
 
     @Autowired
@@ -33,7 +34,7 @@ public class LoginController {
         if (users != null) {
             String token = jwtUtilHelper.generateToken(users.getEmail());
             Map<String, Object> data = new HashMap<>();
-            data.put("userId", users.getUser_id());
+            data.put("userId", users.getUserId());
             data.put("email", users.getEmail());
             data.put("token", token);
             data.put("is_deleted", users.isDeleted());

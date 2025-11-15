@@ -4,8 +4,7 @@
 
     public class ProfileDTO {
 
-        private UUID profiles_id;
-        private UUID user_id;
+        private int userId;
         private String full_name;
         private String phone_number;
         private String address;
@@ -13,20 +12,12 @@
         private String driver_license_expiry;
         private String license_image_url;
 
-        public UUID getProfiles_id() {
-            return profiles_id;
+        public int getUserId() {
+            return userId;
         }
 
-        public void setProfiles_id(UUID profiles_id) {
-            this.profiles_id = profiles_id;
-        }
-
-        public UUID getUser_id() {
-            return user_id;
-        }
-
-        public void setUser_id(UUID user_id) {
-            this.user_id = user_id;
+        public void setUserId(int userId) {
+            this.userId = userId;
         }
 
         public String getFull_name() {
