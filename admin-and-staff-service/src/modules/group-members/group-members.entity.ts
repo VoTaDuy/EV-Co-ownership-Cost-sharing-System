@@ -7,8 +7,10 @@ import {
   Unique,
   JoinColumn,
   Index,
+  OneToMany,
 } from 'typeorm';
 import { OwnershipGroup } from '../ownership-groups/ownership-groups.entity';
+import { EContract } from '../e-contract/e-contract.entity';
 
 @Entity('group_members')
 @Unique(['group_id', 'user_id']) // 1 user chỉ thuộc 1 group 1 lần
@@ -45,4 +47,8 @@ export class GroupMember {
   })
   @JoinColumn({ name: 'group_id' })
   group: OwnershipGroup;
+
+  // Quan hệ 1-n đến EContract
+  @OneToMany(() => EContract, (contract) => contract.ownership_group)
+  contracts: EContract[];
 }

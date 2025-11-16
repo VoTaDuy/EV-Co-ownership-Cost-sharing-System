@@ -13,7 +13,7 @@ import { HttpUserService } from '../common/http-user.service';
     HttpModule, // ✅ import module để HttpUserService dùng HttpService
   ],
   controllers: [GroupMembersController],
-  providers: [GroupMembersService, HttpUserService], // ✅ service phải ở providers
+  providers: [GroupMembersService, HttpUserService],
   exports: [TypeOrmModule, GroupMembersService],
 })
 export class GroupMembersModule {}

@@ -9,17 +9,7 @@ import {
   JoinColumn,
   Index,
 } from 'typeorm';
-import {
-  IsInt,
-  Min,
-  IsOptional,
-  IsEnum,
-  IsString,
-  IsUrl,
-  IsDate,
-  IsNumber,
-} from 'class-validator';
-import { Expose } from 'class-transformer';
+
 import { OwnershipGroup } from '../ownership-groups/ownership-groups.entity';
 
 /**
@@ -85,88 +75,4 @@ export class EContract {
   })
   @JoinColumn({ name: 'ownership_group_id' })
   ownership_group: OwnershipGroup;
-}
-
-/**
- * ===================================================================
- * DTO: Tạo mới E-Contract
- * ===================================================================
- */
-export class CreateEContractDto {
-  @IsInt()
-  @Min(1)
-  ownership_group_id: number;
-
-  @IsInt()
-  @Min(1)
-  user_id: number;
-
-  @IsString()
-  @IsUrl({}, { message: 'contract_url must be a valid URL' })
-  contract_url: string;
-
-  @IsOptional()
-  @IsEnum(SignatureStatus, {
-    message: 'signature_status must be one of: pending, signed, rejected, expired',
-  })
-  signature_status?: SignatureStatus;
-}
-
-/**
- * ===================================================================
- * DTO: Cập nhật E-Contract (chỉ trạng thái + thời gian ký)
- * ===================================================================
- */
-export class UpdateEContractDto {
-  @IsOptional()
-  @IsEnum(SignatureStatus)
-  signature_status?: SignatureStatus;
-
-  @IsOptional()
-  @IsDate()
-  signed_at?: Date | null;
-}
-
-/**
- * ===================================================================
- * DTO: Trả về cho client
- * ===================================================================
- */
-export class EContractResponseDto {
-  @IsInt()
-  @Min(1)
-  @Expose()
-  contract_id: number;
-
-  @IsInt()
-  @Min(1)
-  @Expose()
-  ownership_group_id: number;
-
-  @IsInt()
-  @Min(1)
-  @Expose()
-  user_id: number;
-
-  @IsString() 
-  @IsUrl()
-  @Expose()
-  contract_url: string;
-
-  @IsEnum(SignatureStatus)
-  @Expose()
-  signature_status: SignatureStatus;
-
-  @IsOptional()
-  @IsDate()
-  @Expose()
-  signed_at: Date | null;
-
-  @IsDate()
-  @Expose()
-  created_at: Date;
-
-  @IsDate()
-  @Expose()
-  updated_at: Date;
 }

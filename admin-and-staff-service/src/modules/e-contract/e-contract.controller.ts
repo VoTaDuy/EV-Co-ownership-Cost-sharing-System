@@ -15,6 +15,8 @@ import { EContractService } from './e-contract.service';
 import { CreateEContractDto, UpdateEContractDto } from './e-contract.dto';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
+import { ParseIntPipe } from '@nestjs/common';
+import { SignatureStatus } from './e-contract.entity';
 
 @Controller('admin/e-contracts')
 export class EContractController {
@@ -27,15 +29,21 @@ export class EContractController {
   @UseInterceptors(AnyFilesInterceptor())
   async create(
     @UploadedFiles() files: Express.Multer.File[],
-    @Body() dto: CreateEContractDto,
+    @Body('ownership_group_id', ParseIntPipe) ownership_group_id: number,
+    @Body('user_id', ParseIntPipe) user_id: number,
+    @Body('signature_status') signature_status?: SignatureStatus,
   ) {
-    const pdfFile = files?.[0];
+    const pdfFile = files?.[0]; 
     if (!pdfFile) throw new BadRequestException('PDF file is required');
 
     const url = await this.cloudinaryService.uploadPdf(pdfFile);
 
-    // Gán URL sau khi DTO đã được validate
-    dto.contract_url = url;
+    const dto: CreateEContractDto = {
+      ownership_group_id,
+      user_id,
+      signature_status,
+      contract_url: url,
+    };
 
     return this.service.create(dto);
   }
