@@ -12,19 +12,18 @@ export class AlertService {
 
   // Lấy tất cả alert, có thể lọc theo loại
   async getAllAlerts(type?: AlertType): Promise<AlertLog[]> {
-    const where = type ? { alert_type: type } : {};
-    return this.alertRepo.find({
-      where,
-      order: { created_at: 'DESC' },
-    });
+    const query = this.alertRepo.createQueryBuilder('alert');
+    if (type) query.where('alert.alert_type = :type', { type });
+    return query.getMany(); 
   }
+
 
   // Lấy alert theo user_id
   async getAlertsByUser(user_id: number): Promise<AlertLog[]> {
     return this.alertRepo.find({
-      where: { user_id },
+      where: { user_id: Number(user_id) },
       order: { created_at: 'DESC' },
-    });
+    }); 
   }
 
   // Đánh dấu alert là đã đọc

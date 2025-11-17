@@ -10,7 +10,7 @@ export class AlertController {
   constructor(private readonly alertService: AlertService) {}
 
   // Lấy tất cả alert (có thể lọc theo type)
-  @Get()
+  @Get('get-all')
   @ApiOperation({ summary: 'Lấy tất cả cảnh báo (có thể lọc theo loại)' })
   @ApiQuery({
     name: 'type',
@@ -22,7 +22,7 @@ export class AlertController {
     return this.alertService.getAllAlerts(type);
   }
 
-  // Lấy alert theo user_id
+  // Lấy alert theo user_id 
   @Get('user/:user_id')
   @ApiOperation({ summary: 'Lấy tất cả cảnh báo của người dùng' })
   @ApiParam({ name: 'user_id', description: 'ID người dùng cần lấy cảnh báo' })
