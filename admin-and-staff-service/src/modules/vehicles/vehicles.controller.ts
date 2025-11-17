@@ -68,7 +68,6 @@ export class VehiclesController {
   findAll() {
     return this.vehiclesService.findAll();
   }
-
   // ============================
   // GET ONE (INT)
   // ============================

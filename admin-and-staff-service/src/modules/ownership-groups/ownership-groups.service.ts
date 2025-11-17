@@ -10,11 +10,15 @@ import {
   CreateOwnershipGroupDto,
   UpdateOwnershipGroupDto,
 } from './ownership-groups.dto';
+import { GroupMember } from '../group-members/group-members.entity';
 @Injectable()
 export class OwnershipGroupsService {
   constructor(
     @InjectRepository(OwnershipGroup)
     private readonly groupRepo: Repository<OwnershipGroup>,
+
+    @InjectRepository(GroupMember)
+    private readonly memberRepo: Repository<GroupMember>,
   ) {}
 
   // 🟢 Tạo mới group — mỗi xe chỉ được thuộc 1 nhóm
@@ -42,6 +46,14 @@ export class OwnershipGroupsService {
     });
     if (!group) throw new NotFoundException('Ownership group not found');
     return group;
+  }
+
+  async getGroupsByUser(userId: number): Promise<OwnershipGroup[]> {
+    const members = await this.memberRepo.find({
+      where: { user_id: userId },
+      relations: ['group', 'group.vehicle'],
+    });
+    return members.map((m) => m.group);
   }
 
   async update(

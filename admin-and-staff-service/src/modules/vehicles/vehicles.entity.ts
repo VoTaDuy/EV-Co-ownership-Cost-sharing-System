@@ -1,5 +1,4 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-import { OneToMany } from 'typeorm';
 
 @Entity('vehicles')
 export class Vehicle {

@@ -29,6 +29,11 @@ export class OwnershipGroupsController {
   findAll() {
     return this.ownershipGroupsService.findAll();
   }
+  // Lấy tất cả group của một user
+  @Get('user/:userId/groups')
+  getGroupsByUser(@Param('userId') userId: number) {
+    return this.ownershipGroupsService.getGroupsByUser(Number(userId));
+  }
 
   @Get(':id')
   findOne(@Param('id') id: number) {
