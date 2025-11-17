@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/polls")
+@RequestMapping("/payment/polls")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 public class PollController {
@@ -17,7 +17,7 @@ public class PollController {
     private final PollServiceImp pollService;
 
     @GetMapping
-    public List<PollDTO> getAll(@RequestParam(required = false) String groupId) {
+    public List<PollDTO> getAll(@RequestParam(required = false) Integer groupId) {
         return pollService.getAll(groupId);
     }
 
@@ -28,13 +28,13 @@ public class PollController {
 
     @PostMapping
     public PollDTO createPoll(@RequestBody PollDTO dto,
-                              @RequestHeader("userId") String userId) {
+                              @RequestHeader("userId") int userId) {
         return pollService.createPoll(dto, userId);
     }
 
     @PostMapping("/{id}/close")
     public PollDTO closePoll(@PathVariable Integer id,
-                             @RequestHeader("userId") String userId) {
+                             @RequestHeader("userId") int userId) {
         return pollService.closePoll(id, userId);
     }
 

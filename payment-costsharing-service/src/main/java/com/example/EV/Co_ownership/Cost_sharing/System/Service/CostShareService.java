@@ -39,14 +39,14 @@ public class CostShareService implements CostShareServiceImp {
     }
 
     @Override
-    public List<CostShareDTO> getByUser(String userId) {
+    public List<CostShareDTO> getByUser(int userId) {
         return shareRepo.findByUserId(userId).stream()
                 .map(this::toDTO)
                 .toList();
     }
 
     @Override
-    public List<CostShareDTO> createShares(CreateShareRequest request, String userId) {
+    public List<CostShareDTO> createShares(CreateShareRequest request, int userId) {
         VehicleCost cost = costRepo.findById(request.costId())
                 .orElseThrow(() -> new NotFoundException("Chi phí không tồn tại: " + request.costId()));
 
@@ -84,13 +84,14 @@ public class CostShareService implements CostShareServiceImp {
     }
 
     @Override
-    public CostShareDTO settleShare(Integer shareId, SettleShareRequest request, String userId) {
+    public CostShareDTO settleShare(Integer shareId, SettleShareRequest request, int userId) {
         CostShare share = shareRepo.findById(shareId)
                 .orElseThrow(() -> new NotFoundException("Phần chia không tồn tại: " + shareId));
 
-        if (!share.getUserId().equals(userId)) {
+        if (share.getUserId() != userId) {
             throw new SecurityException("Không được thanh toán phần của người khác");
         }
+
 
         BigDecimal remaining = share.getAmountDue().subtract(share.getSettledAmount());
         BigDecimal settleAmount = request.amount().min(remaining);
@@ -117,7 +118,7 @@ public class CostShareService implements CostShareServiceImp {
         shareRepo.findByCost_CostId(costId).forEach(shareRepo::delete);
     }
 
-    private void settleFromFund(CostShare share, GroupFund fund, String userId) {
+    private void settleFromFund(CostShare share, GroupFund fund, int userId) {
         if (fund.getBalance().compareTo(share.getAmountDue()) >= 0) {
             fund.setBalance(fund.getBalance().subtract(share.getAmountDue()));
             share.setSettledAmount(share.getAmountDue());
@@ -127,7 +128,7 @@ public class CostShareService implements CostShareServiceImp {
         }
     }
 
-    private void logFundTransfer(CostShare share, String userId) {
+    private void logFundTransfer(CostShare share, int userId) {
         FundTransaction tx = new FundTransaction();
         tx.setFund(share.getCost().getFund());
         tx.setCost(share.getCost());

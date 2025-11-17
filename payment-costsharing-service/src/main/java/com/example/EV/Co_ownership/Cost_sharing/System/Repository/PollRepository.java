@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface PollRepository extends JpaRepository<Poll, Integer> {
-    List<Poll> findByGroupId(String groupId);
+    List<Poll> findByGroupId(int groupId);
     List<Poll> findByStatus(PollStatus status);
 }

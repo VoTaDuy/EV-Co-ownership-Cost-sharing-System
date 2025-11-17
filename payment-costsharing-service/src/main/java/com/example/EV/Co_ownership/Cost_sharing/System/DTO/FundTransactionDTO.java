@@ -12,7 +12,7 @@ public record FundTransactionDTO(
         String transactionType,
         BigDecimal amount,
         String description,
-        String performedBy,
+        int performedBy,
         String gatewayOrderId,
         String status,
         LocalDateTime createdAt

@@ -22,8 +22,8 @@ public class CostShare {
     @JoinColumn(name = "cost_id", nullable = false)
     private VehicleCost cost;
 
-    @Column(name = "user_id", nullable = false, length = 255)
-    private String userId;
+    @Column(name = "user_id")
+    private int userId;
 
     @Column(name = "share_percentage", nullable = false, columnDefinition = "DECIMAL(5,2)")
     private BigDecimal sharePercentage;

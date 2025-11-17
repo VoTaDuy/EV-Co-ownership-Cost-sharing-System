@@ -3,9 +3,9 @@ package com.example.EV.Co_ownership.Cost_sharing.System.DTO;
 import java.math.BigDecimal;
 
 public record CreateCostRequest(
-        String groupId,
+        int groupId,
         Integer fundId,
-        String vehicleId,
+        int vehicleId,
         String costName,
         BigDecimal amount
 ) {}

@@ -56,4 +56,14 @@ export class GroupMembersController {
   ) {
     return this.service.addMemberToGroup(group_id, dto);
   }
+
+  // 🔥 Xóa thành viên khỏi nhóm (dựa trên group_id và user_id)
+  @Delete('/:group_id/remove/:user_id')
+  removeMemberFromGroup(
+    @Param('group_id') group_id: number,
+    @Param('user_id') user_id: number,
+  ) {
+    return this.service.removeMemberFromGroup(group_id, user_id);
+}
+
 }

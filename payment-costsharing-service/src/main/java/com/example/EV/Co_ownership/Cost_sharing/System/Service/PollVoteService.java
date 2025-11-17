@@ -3,6 +3,7 @@ package com.example.EV.Co_ownership.Cost_sharing.System.Service;
 import com.example.EV.Co_ownership.Cost_sharing.System.DTO.PollVoteDTO;
 import com.example.EV.Co_ownership.Cost_sharing.System.Entity.Poll;
 import com.example.EV.Co_ownership.Cost_sharing.System.Entity.PollVote;
+import com.example.EV.Co_ownership.Cost_sharing.System.Enum.PollVoteValue;
 import com.example.EV.Co_ownership.Cost_sharing.System.Exception.NotFoundException;
 import com.example.EV.Co_ownership.Cost_sharing.System.Repository.PollRepository;
 import com.example.EV.Co_ownership.Cost_sharing.System.Repository.PollVoteRepository;
@@ -29,13 +30,17 @@ public class PollVoteService implements PollVoteServiceImp {
     }
 
     @Override
-    public PollVoteDTO vote(Integer pollId, String userId, String voteValueStr) {
+    public PollVoteDTO vote(Integer pollId, int userId, String voteValueStr) {
         Poll poll = pollRepo.findById(pollId)
                 .orElseThrow(() -> new NotFoundException("Poll not found: " + pollId));
 
-        PollVote.VoteValue voteValue = PollVote.VoteValue.valueOf(voteValueStr);
+        PollVoteValue voteValue;
+        try {
+            voteValue = PollVoteValue.valueOf(voteValueStr.toUpperCase()); // chuyển chữ thường sang chữ hoa
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Vote value must be YES, NO, or ABSTAIN");
+        }
 
-        // Nếu user đã vote trước đó -> update
         PollVote vote = voteRepo.findByPoll_PollIdAndUserId(pollId, userId)
                 .orElse(PollVote.builder()
                         .poll(poll)

@@ -28,7 +28,7 @@ public class VehicleCostService implements VehicleCostServiceImp {
     private final FundTransactionRepository txRepo;
 
     @Override
-    public List<VehicleCostDTO> getAllByGroup(String groupId) {
+    public List<VehicleCostDTO> getAllByGroup(int groupId) {
         return costRepo.findByGroupId(groupId).stream()
                 .map(this::toDTO)
                 .toList();
@@ -42,7 +42,7 @@ public class VehicleCostService implements VehicleCostServiceImp {
     }
 
     @Override
-    public VehicleCostDTO create(CreateCostRequest request, String userId) {
+    public VehicleCostDTO create(CreateCostRequest request, int userId) {
         VehicleCost cost = new VehicleCost();
         cost.setGroupId(request.groupId());
         cost.setVehicleId(request.vehicleId());
@@ -73,7 +73,7 @@ public class VehicleCostService implements VehicleCostServiceImp {
     }
 
     @Override
-    public VehicleCostDTO updateStatus(Integer costId, String status, String userId) {
+    public VehicleCostDTO updateStatus(Integer costId, String status, int userId) {
         VehicleCost cost = costRepo.findById(costId)
                 .orElseThrow(() -> new NotFoundException("Chi phí không tồn tại: " + costId));
 
@@ -103,7 +103,7 @@ public class VehicleCostService implements VehicleCostServiceImp {
         costRepo.delete(cost);
     }
 
-    private void logFundTransfer(VehicleCost cost, String userId) {
+    private void logFundTransfer(VehicleCost cost, int userId) {
         FundTransaction tx = new FundTransaction();
         tx.setFund(cost.getFund());
         tx.setCost(cost);

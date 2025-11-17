@@ -29,14 +29,14 @@ public class PaymentService implements PaymentServiceImp {
     private final GroupFundRepository fundRepo;
 
     @Override
-    public List<PaymentDTO> getByGroup(String groupId) {
+    public List<PaymentDTO> getByGroup(int groupId) {
         return paymentRepo.findByGroupId(groupId).stream()
                 .map(PaymentDTO::fromEntity)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<PaymentDTO> getByUser(String userId) {
+    public List<PaymentDTO> getByUser(int userId) {
         return paymentRepo.findByUserId(userId).stream()
                 .map(PaymentDTO::fromEntity)
                 .collect(Collectors.toList());
@@ -57,9 +57,9 @@ public class PaymentService implements PaymentServiceImp {
     }
 
     @Override
-    public PaymentDTO createPayment(Map<String, Object> request, String userId) {
+    public PaymentDTO createPayment(Map<String, Object> request, int userId) {
         Payment payment = new Payment();
-        payment.setGroupId((String) request.get("groupId"));
+        payment.setGroupId((int) request.get("groupId"));
         payment.setUserId(userId);
         payment.setAmount(new BigDecimal(request.get("amount").toString()));
         payment.setGateway((String) request.get("gateway"));

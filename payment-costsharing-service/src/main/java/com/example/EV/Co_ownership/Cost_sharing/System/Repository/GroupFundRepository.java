@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface GroupFundRepository extends JpaRepository<GroupFund, Integer> {
-    List<GroupFund> findByGroupId(String groupId);
+    List<GroupFund> findByGroupId(int groupId);
 }

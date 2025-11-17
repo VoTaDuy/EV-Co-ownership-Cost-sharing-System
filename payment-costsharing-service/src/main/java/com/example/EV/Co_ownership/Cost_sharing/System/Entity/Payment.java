@@ -22,11 +22,11 @@ public class Payment {
     @Column(name = "payment_id")
     private Integer paymentId;
 
-    @Column(name = "group_id", nullable = false, length = 255)
-    private String groupId;
+    @Column(name = "group_id")
+    private int groupId;
 
-    @Column(name = "user_id", nullable = false, length = 255)
-    private String userId;
+    @Column(name = "user_id")
+    private int userId;
 
     @ManyToOne
     @JoinColumn(name = "cost_id")

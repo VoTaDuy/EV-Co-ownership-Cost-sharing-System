@@ -33,13 +33,13 @@ export class GroupMembersService {
   }
 
   async findAll(): Promise<GroupMember[]> {
-    return await this.memberRepo.find({ relations: ['contacts'] });
+    return await this.memberRepo.find({ relations: ['contracts'] });
   }
 
   async findOne(id: number): Promise<GroupMember> {
     const member = await this.memberRepo.findOne({
       where: { member_id: id },
-      relations: ['contacts'],
+      relations: ['contracts'],
     });
     if (!member) throw new NotFoundException('Group member not found');
     return member;
@@ -48,7 +48,7 @@ export class GroupMembersService {
   async findMember(id: number): Promise<GroupMember[]> {
     const member = await this.memberRepo.find({
       where: { group_id: id },
-      relations: ['contacts'],
+      relations: ['contracts'],
     });
     if (!member) throw new NotFoundException('Group member not found');
     return member;
@@ -108,6 +108,29 @@ export class GroupMembersService {
     return {
       ...member,
       user,
+    };
+  }
+  async removeMemberFromGroup(group_id: number, user_id: number) {
+    // 1️⃣ Kiểm tra group có tồn tại
+    const group = await this.groupRepo.findOne({
+      where: { group_id },
+      relations: ['members'],
+    });
+    if (!group) throw new NotFoundException('Ownership group not found');
+
+    // 2️⃣ Kiểm tra user có nằm trong group không
+    const member = await this.memberRepo.findOne({
+      where: { group_id, user_id },
+    });
+    if (!member)
+      throw new NotFoundException('User is not a member of this group');
+
+    // 3️⃣ Xóa member bằng TypeORM
+    await this.memberRepo.remove(member);
+
+    return {
+      message: 'Member removed successfully',
+      removed_member_id: member.member_id,
     };
   }
 }

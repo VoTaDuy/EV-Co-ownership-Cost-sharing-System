@@ -17,21 +17,18 @@ import { SignatureStatus } from './e-contract.entity';
  * ===================================================================
  */
 export class CreateEContractDto {
-  /** ID nhóm sở hữu (FK → ownership_groups.group_id) */
   @IsInt({ message: 'ownership_group_id must be a valid integer' })
   @Min(1, { message: 'ownership_group_id must be greater than 0' })
   ownership_group_id: number;
 
-  /** URL hợp đồng (PDF, Google Docs, v.v.) */
+  @IsOptional()
   @IsUrl({}, { message: 'contract_url must be a valid URL' })
-  contract_url: string;
+  contract_url?: string;
 
-  /** ID người dùng (FK → users.id) */
   @IsInt({ message: 'user_id must be a valid integer' })
   @Min(1, { message: 'user_id must be greater than 0' })
   user_id: number;
 
-  /** Trạng thái chữ ký (mặc định: PENDING) */
   @IsOptional()
   @IsEnum(SignatureStatus, {
     message:

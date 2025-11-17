@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 public interface PaymentServiceImp {
-    List<PaymentDTO> getByGroup(String groupId);
-    List<PaymentDTO> getByUser(String userId);
+    List<PaymentDTO> getByGroup(int groupId);
+    List<PaymentDTO> getByUser(int userId);
     List<PaymentDTO> getByCost(Integer costId);
     List<PaymentDTO> getByFund(Integer fundId);
-    PaymentDTO createPayment(Map<String, Object> request, String userId);
+    PaymentDTO createPayment(Map<String, Object> request, int userId);
     PaymentDTO handleGatewayCallback(String gatewayOrderId, String status, String response);
 }

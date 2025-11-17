@@ -22,7 +22,7 @@ public class GroupFund {
     private Integer fundId;
 
     @Column(name = "group_id", nullable = false, length = 255)
-    private String groupId;
+    private int groupId;
 
     @Column(name = "fund_name", nullable = false, length = 255)
     private String fundName;
@@ -30,8 +30,8 @@ public class GroupFund {
     @Column(nullable = false, columnDefinition = "DECIMAL(15,2) DEFAULT 0.00")
     private BigDecimal balance = BigDecimal.ZERO;
 
-    @Column(name = "created_by", length = 255)
-    private String createdBy;
+    @Column(name = "created_by")
+    private int createdBy;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)

@@ -9,14 +9,17 @@ import java.util.List;
 
 public interface GroupFundServiceImp {
 
-    List<GroupFundDTO> getAll(String groupId);
+    List<GroupFundDTO> getAll(int groupId);
 
-    GroupFundDTO create(CreateFundRequest request, String userId);
+    GroupFundDTO create(CreateFundRequest request, int userId);
+
     GroupFundDTO getById(Integer fundId);
-    String initiateDeposit(Integer fundId, DepositRequest request, String userId);
+
+    String initiateDeposit(Integer fundId, DepositRequest request, int userId);
+
     void handleDepositCallback(String orderId, String status, String transactionId, String response);
 
-    void deleteFund(Integer fundId, String userId);
+    void deleteFund(Integer fundId, int userId);
 
-    List<FundTransactionDTO> getTransactions(Integer id);
+    List<FundTransactionDTO> getTransactions(Integer fundId);
 }

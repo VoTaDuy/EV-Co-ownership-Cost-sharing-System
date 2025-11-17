@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/costs")
+@RequestMapping("/payment/costs")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 public class VehicleCostController {
@@ -18,7 +18,7 @@ public class VehicleCostController {
     private final VehicleCostService costService;
 
     @GetMapping
-    public List<VehicleCostDTO> getAllByGroup(@RequestParam String groupId) {
+    public List<VehicleCostDTO> getAllByGroup(@RequestParam int groupId) {
         return costService.getAllByGroup(groupId);
     }
 
@@ -34,14 +34,14 @@ public class VehicleCostController {
 
     @PostMapping
     public VehicleCostDTO create(@RequestBody CreateCostRequest request,
-                                 @RequestHeader("userId") String userId) {
+                                 @RequestHeader("userId") int userId) {
         return costService.create(request, userId);
     }
 
     @PatchMapping("/{id}/status")
     public VehicleCostDTO updateStatus(@PathVariable Integer id,
                                        @RequestBody UpdateStatusRequest request,
-                                       @RequestHeader("userId") String userId) {
+                                       @RequestHeader("userId") int userId) {
         return costService.updateStatus(id, request.status(), userId);
     }
 

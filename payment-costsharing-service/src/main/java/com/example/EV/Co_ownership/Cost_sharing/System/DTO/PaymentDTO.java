@@ -16,10 +16,10 @@ import java.time.LocalDateTime;
 @Builder
 public class PaymentDTO {
     private Integer paymentId;
-    private String groupId;
-    private String userId;
-    private Integer costId;
-    private Integer fundId;
+    private int groupId;
+    private int userId;
+    private int costId;
+    private int fundId;
     private BigDecimal amount;
     private String gateway;
     private String gatewayOrderId;

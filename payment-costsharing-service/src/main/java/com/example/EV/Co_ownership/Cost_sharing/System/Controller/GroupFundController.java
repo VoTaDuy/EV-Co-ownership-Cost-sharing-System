@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/funds")
+@RequestMapping("/payment/funds")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 public class GroupFundController {
@@ -21,35 +21,37 @@ public class GroupFundController {
     private final GroupFundService fundService;
 
     @GetMapping
-    public List<GroupFundDTO> getAll(@RequestParam(required = false) String groupId) {
-        if (groupId != null && !groupId.isBlank()) {
+    public List<GroupFundDTO> getAll(@RequestParam(required = false) Integer groupId) {
+        if (groupId != null) {
             return fundService.getAll(groupId);
         }
-        return fundService.getAll(groupId);
+        return List.of();
     }
 
     @GetMapping("/{id}")
-    public GroupFundDTO getById(@PathVariable Integer id) {
+    public GroupFundDTO getById(@PathVariable int id) {
         return fundService.getById(id);
     }
 
     @GetMapping("/{id}/transactions")
-    public List<FundTransactionDTO> getTransactions(@PathVariable Integer id) {
+    public List<FundTransactionDTO> getTransactions(@PathVariable int id) {
         return fundService.getTransactions(id);
     }
 
     @PostMapping
     public GroupFundDTO create(@RequestBody CreateFundRequest request,
-                               @RequestHeader("userId") String userId) {
+                               @RequestHeader("userId") String userIdHeader) {
+        int userId = Integer.parseInt(userIdHeader); // parse String -> int
         return fundService.create(request, userId);
     }
 
     @PostMapping("/{id}/deposit")
     public ResponseEntity<Map<String, String>> deposit(
-            @PathVariable Integer id,
+            @PathVariable int id,
             @RequestBody DepositRequest request,
-            @RequestHeader("userId") String userId) {
+            @RequestHeader("userId") String userIdHeader) {
 
+        int userId = Integer.parseInt(userIdHeader);
         String paymentUrl = fundService.initiateDeposit(id, request, userId);
         return ResponseEntity.ok(Map.of("paymentUrl", paymentUrl));
     }
@@ -66,11 +68,12 @@ public class GroupFundController {
         return ResponseEntity.ok("OK");
     }
 
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFund(
-            @PathVariable Integer id,
-            @RequestHeader("userId") String userId) {
+            @PathVariable int id,
+            @RequestHeader("userId") String userIdHeader) {
+
+        int userId = Integer.parseInt(userIdHeader);
         fundService.deleteFund(id, userId);
         return ResponseEntity.noContent().build();
     }

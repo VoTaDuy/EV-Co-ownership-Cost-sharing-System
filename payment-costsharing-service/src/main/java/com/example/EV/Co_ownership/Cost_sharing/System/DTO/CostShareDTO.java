@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class CostShareDTO {
     private Integer shareId;
     private Integer costId;
-    private String userId;
+    private int userId;
     private BigDecimal sharePercentage;
     private BigDecimal amountDue;
     private BigDecimal settledAmount;

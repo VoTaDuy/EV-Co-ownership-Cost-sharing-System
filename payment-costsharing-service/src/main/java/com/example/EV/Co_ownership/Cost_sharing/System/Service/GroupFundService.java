@@ -31,21 +31,15 @@ public class GroupFundService implements GroupFundServiceImp {
     private final FundTransactionRepository txRepo;
     private final PaymentRepository paymentRepo;
 
-    // SỬA: LỌC THEO GROUP ID
     @Override
-    public List<GroupFundDTO> getAll(String groupId) {
-        if (groupId == null || groupId.isBlank()) {
-            return fundRepo.findAll().stream()
-                    .map(this::toDTO)
-                    .toList();
-        }
+    public List<GroupFundDTO> getAll(int groupId) {
         return fundRepo.findByGroupId(groupId).stream()
                 .map(this::toDTO)
                 .toList();
     }
 
     @Override
-    public GroupFundDTO create(CreateFundRequest request, String userId) {
+    public GroupFundDTO create(CreateFundRequest request, int userId) {
         GroupFund fund = new GroupFund();
         fund.setGroupId(request.groupId());
         fund.setFundName(request.fundName());
@@ -68,7 +62,7 @@ public class GroupFundService implements GroupFundServiceImp {
     }
 
     @Override
-    public String initiateDeposit(Integer fundId, DepositRequest request, String userId) {
+    public String initiateDeposit(Integer fundId, DepositRequest request, int userId) {
         GroupFund fund = fundRepo.findById(fundId)
                 .orElseThrow(() -> new NotFoundException("Quỹ không tồn tại"));
 
@@ -123,20 +117,19 @@ public class GroupFundService implements GroupFundServiceImp {
         }
     }
 
-    // XÓA QUỸ – DB TỰ XÓA fund_transactions
     @Override
-    public void deleteFund(Integer fundId, String userId) {
+    public void deleteFund(Integer fundId, int userId) {
         GroupFund fund = fundRepo.findById(fundId)
                 .orElseThrow(() -> new NotFoundException("Quỹ không tồn tại: " + fundId));
 
-        if (!fund.getCreatedBy().equals(userId)) {
+        if (fund.getCreatedBy() != userId) {
             throw new RuntimeException("Bạn không có quyền xóa quỹ này");
         }
 
         fundRepo.delete(fund); // CASCADE tự xóa
     }
 
-    private void logInitialDeposit(GroupFund fund, BigDecimal amount, String userId) {
+    private void logInitialDeposit(GroupFund fund, BigDecimal amount, int userId) {
         FundTransaction tx = new FundTransaction();
         tx.setFund(fund);
         tx.setTransactionType(TransactionType.deposit);
@@ -170,8 +163,8 @@ public class GroupFundService implements GroupFundServiceImp {
         return new FundTransactionDTO(
                 tx.getTransactionId(),
                 tx.getFund().getFundId(),
-                tx.getPayment() != null ? tx.getPayment().getPaymentId() : null,
-                tx.getCost() != null ? tx.getCost().getCostId() : null,
+                tx.getPayment() != null ? tx.getPayment().getPaymentId() : 0,
+                tx.getCost() != null ? tx.getCost().getCostId() : 0,
                 tx.getTransactionType().name(),
                 tx.getAmount(),
                 tx.getDescription(),

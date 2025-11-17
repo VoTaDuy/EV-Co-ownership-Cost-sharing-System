@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public record CreateShareRequest(
-        Integer costId,
+        int costId,
         List<ShareDetail> shares
 ) {
-    public record ShareDetail(String userId, BigDecimal percentage) {}
+    public record ShareDetail(int userId, BigDecimal percentage) {}
 }

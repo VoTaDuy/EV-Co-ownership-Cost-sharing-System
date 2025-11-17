@@ -14,10 +14,10 @@ import java.time.LocalDateTime;
 @Builder
 public class PollDTO {
     private Integer pollId;
-    private String groupId;
+    private int groupId;
     private Integer costId;
     private String description;
-    private String createdBy;
+    private int createdBy;
     private LocalDateTime createdAt;
     private LocalDateTime expiresAt;
     private String status;

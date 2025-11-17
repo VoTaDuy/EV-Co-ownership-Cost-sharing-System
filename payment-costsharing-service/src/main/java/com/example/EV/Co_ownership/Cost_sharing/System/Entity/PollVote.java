@@ -1,5 +1,6 @@
 package com.example.EV.Co_ownership.Cost_sharing.System.Entity;
 
+import com.example.EV.Co_ownership.Cost_sharing.System.Enum.PollVoteValue;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -26,18 +27,15 @@ public class PollVote {
     @JoinColumn(name = "poll_id", nullable = false)
     private Poll poll;
 
-    @Column(name = "user_id", nullable = false, length = 255)
-    private String userId;
+    @Column(name = "user_id")
+    private int userId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "vote_value", columnDefinition = "ENUM('yes','no','abstain')", nullable = false)
-    private VoteValue voteValue;
+    private PollVoteValue voteValue;
 
     @CreationTimestamp
     @Column(name = "voted_at", updatable = false)
     private LocalDateTime votedAt;
 
-    public enum VoteValue {
-        yes, no, abstain
-    }
 }
