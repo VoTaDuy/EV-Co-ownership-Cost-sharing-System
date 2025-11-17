@@ -6,7 +6,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 import { VehiclesModule } from './modules/vehicles/vehicles.module';
-import { ServiceTasksModule } from './modules/service-tasks/service-tasks.module';
 import { OwnershipGroupsModule } from './modules/ownership-groups/ownership-groups.module';
 import { OwnershipGroupsService } from './modules/ownership-groups/ownership-groups.service';
 import { OwnershipGroupsController } from './modules/ownership-groups/ownership-groups.controller';
@@ -32,7 +31,6 @@ import { EContractModule } from './modules/e-contract/e-contract.module';
       synchronize: true,
     }),
     VehiclesModule,
-    ServiceTasksModule,
     OwnershipGroupsModule,
     CloudinaryModule,
     GroupMembersModule,

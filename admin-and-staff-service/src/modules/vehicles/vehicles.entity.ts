@@ -1,6 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { OneToMany } from 'typeorm';
-import { ServiceTask } from '../service-tasks/service-tasks.entity';
 
 @Entity('vehicles')
 export class Vehicle {
@@ -34,7 +33,4 @@ export class Vehicle {
     onUpdate: 'CURRENT_TIMESTAMP',
   })
   updated_at: Date;
-
-  @OneToMany(() => ServiceTask, (task) => task.vehicle)
-  serviceTasks: ServiceTask[];
 }
