@@ -6,7 +6,7 @@ export enum SignatureType {
   CHECKOUT = 'checkout',
 }
 
-@Unique(['usage_id', 'type']) // 👈 Thêm dòng này
+@Unique(['usage_id', 'type']) 
 @Entity({ name: 'digital_signature' })
 export class DigitalSignature {
   @PrimaryGeneratedColumn()
@@ -25,6 +25,9 @@ export class DigitalSignature {
 
   @Column({ type: 'text', nullable: true })
   signature_data: string;
+
+  @Column({ type: 'text', nullable: true })
+  qr_token: string;
 
   @CreateDateColumn({ type: 'timestamp', precision: 6, default: () => 'CURRENT_TIMESTAMP(6)' })
   signed_at: Date;

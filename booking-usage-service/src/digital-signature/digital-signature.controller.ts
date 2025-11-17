@@ -16,7 +16,7 @@ export class DigitalSignatureController {
     return this.signatureService.createSignature(data);
   }
 
-  @Get()
+  @Get('get-all')
   @ApiOperation({ summary: 'Lấy danh sách tất cả chữ ký số' })
   async getAllSignatures() {
     return this.signatureService.getAllSignatures();

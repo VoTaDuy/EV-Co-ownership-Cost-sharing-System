@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { DigitalSignature, SignatureType } from './digital-signature.entity';
 import { UsageRecord } from '../usage/usage.entity';
 import * as crypto from 'crypto';
+import base64url from 'base64url';
 
 @Injectable()
 export class DigitalSignatureRepository {
@@ -34,9 +35,14 @@ export class DigitalSignatureRepository {
 
     const hash = crypto.createHash('sha256').update(signaturePayload).digest('hex');
 
+    // Sinh QR token (có thể encode base64 để dễ dùng QR)
+    const qrToken = base64url(signaturePayload);
+
+
     const signature = this.signatureRepo.create({
       ...data,
       signature_data: hash,
+      qr_token: qrToken,
       signed_at: localDateTime, // -> lưu thời gian tương ứng với giờ VN
     });
     const savedSignature = await this.signatureRepo.save(signature);
