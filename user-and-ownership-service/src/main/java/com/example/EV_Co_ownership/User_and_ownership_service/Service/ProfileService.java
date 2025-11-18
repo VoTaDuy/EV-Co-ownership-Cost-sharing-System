@@ -37,7 +37,7 @@ public class ProfileService {
 
             String email = user != null ? user.getEmail() : "unknown@example.com";
 
-            int role_id = 1;
+            int role_id = 1; // Mặc định là User
             if (user != null && user.getRoles() != null) {
                 role_id = user.getRoles().getRole_id();
             }

@@ -15,18 +15,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/user/users")
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class UserController {
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private ProfileService profileService;
+    @Autowired private UserService userService;
+    @Autowired private ProfileService profileService;
 
     @GetMapping("/get")
     public ResponseEntity<?> getAllUsers() {
@@ -41,37 +35,35 @@ public class UserController {
         return (CsrfToken) request.getAttribute("_csrf");
     }
 
-    @GetMapping("/profiles")
-    public ResponseEntity<?> getAllProfiles() {
+    @GetMapping("/admin/profiles")
+    public ResponseEntity<?> getAllProfilesForAdmin() {
         try {
-            List<Profiles> profiles = profileService.getAllProfiles();
-            return new ResponseEntity<>(profiles != null ? profiles : List.of(), HttpStatus.OK);
+            return ResponseEntity.ok(profileService.getAllProfilesWithUserInfo());
         } catch (Exception e) {
-            return new ResponseEntity<>("Lỗi server nội bộ: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi server: " + e.getMessage());
         }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable int id) {
         try {
-            Users user = userService.getUserById(id);
-            return new ResponseEntity<>(user, HttpStatus.OK);
+            return ResponseEntity.ok(userService.getUserById(id));
         } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
-            return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
         }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody UserDTO userDTO) {
         try {
-            Users updatedUser = userService.updateUser(id, userDTO);
-            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+            return ResponseEntity.ok(userService.updateUser(id, userDTO));
         } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -81,13 +73,14 @@ public class UserController {
         try {
             Users user = userService.removeUserById(id);
             responseData.setData(user);
-            return new ResponseEntity<>(responseData, HttpStatus.OK);
+            responseData.setMessage("Xóa user thành công");
+            return ResponseEntity.ok(responseData);
         } catch (EntityNotFoundException e) {
             responseData.setMessage(e.getMessage());
-            return new ResponseEntity<>(responseData, HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseData);
         } catch (Exception e) {
             responseData.setMessage("Lỗi server: " + e.getMessage());
-            return new ResponseEntity<>(responseData, HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseData);
         }
     }
 
@@ -95,40 +88,19 @@ public class UserController {
     public ResponseEntity<?> getProfileByUserId(@PathVariable int userId) {
         try {
             Profiles profile = profileService.getProfileByUserId(userId);
-            return new ResponseEntity<>(profile, HttpStatus.OK);
+            return ResponseEntity.ok(profile);
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
     @PutMapping("/{userId}/profile")
     public ResponseEntity<?> updateProfile(@PathVariable int userId, @RequestBody ProfileDTO profileDTO) {
         try {
-            Profiles updatedProfile = profileService.updateProfile(userId, profileDTO);
-            return new ResponseEntity<>(updatedProfile, HttpStatus.OK);
+            Profiles updated = profileService.updateProfile(userId, profileDTO);
+            return ResponseEntity.ok(updated);
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @GetMapping("/admin/profiles")
-    public ResponseEntity<?> getAllProfilesForAdmin() {
-        try {
-            List<ProfileService.ProfileWithUserInfo> profiles = profileService.getAllProfilesWithUserInfo();
-            return ResponseEntity.ok(profiles);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Lỗi server: " + e.getMessage());
-        }
-    }
-
-    @DeleteMapping("/admin/profiles/{userId}")
-    public ResponseEntity<?> deleteProfileByAdmin(@PathVariable int userId) {
-        try {
-            profileService.deleteProfile(userId);
-            return ResponseEntity.ok("Xóa hồ sơ thành công");
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }
