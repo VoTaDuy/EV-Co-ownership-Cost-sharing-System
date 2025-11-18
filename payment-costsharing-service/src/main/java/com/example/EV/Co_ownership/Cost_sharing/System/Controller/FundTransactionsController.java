@@ -3,6 +3,7 @@ package com.example.EV.Co_ownership.Cost_sharing.System.Controller;
 import com.example.EV.Co_ownership.Cost_sharing.System.DTO.FundTransactionDTO;
 import com.example.EV.Co_ownership.Cost_sharing.System.Service.FundTransactionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,5 +29,11 @@ public class FundTransactionsController {
     @GetMapping("/{id}")
     public FundTransactionDTO getById(@PathVariable Integer id) {
         return txService.getById(id);
+    }
+
+    @GetMapping("/admin/fund-transactions")
+    public ResponseEntity<List<FundTransactionDTO>> getAllTransactions() {
+        List<FundTransactionDTO> transactions = txService.getAll();
+        return ResponseEntity.ok(transactions);
     }
 }

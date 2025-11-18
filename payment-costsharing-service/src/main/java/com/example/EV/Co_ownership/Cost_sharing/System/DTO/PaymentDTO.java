@@ -18,8 +18,8 @@ public class PaymentDTO {
     private Integer paymentId;
     private int groupId;
     private int userId;
-    private int costId;
-    private int fundId;
+    private Integer costId;
+    private Integer fundId;
     private BigDecimal amount;
     private String gateway;
     private String gatewayOrderId;
