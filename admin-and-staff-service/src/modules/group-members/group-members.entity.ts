@@ -11,7 +11,8 @@ import {
 } from 'typeorm';
 import { OwnershipGroup } from '../ownership-groups/ownership-groups.entity';
 import { EContract } from '../e-contract/e-contract.entity';
-
+/* Dùng chung type cho group_role để tránh lỗi TypeORM save() */
+export type GroupRole = 'admin' | 'member';
 @Entity('group_members')
 @Unique(['group_id', 'user_id']) // 1 user chỉ thuộc 1 group 1 lần
 @Index(['group_id'])
@@ -29,9 +30,13 @@ export class GroupMember {
   @Column({ type: 'int' })
   user_id: number;
 
-  // Vai trò trong nhóm
-  @Column({ type: 'varchar', length: 50, default: 'Co-owner' })
-  group_role: string;
+  // Vai trò: leader (trưởng nhóm) hoặc member
+  @Column({
+    type: 'enum',
+    enum: ['admin', 'member'],
+    default: 'member',
+  })
+  group_role: 'admin' | 'member';
 
   // Tỷ lệ sở hữu (0 - 100 hoặc 0.0 - 1.0)
   @Column({ type: 'float', default: 0 })
