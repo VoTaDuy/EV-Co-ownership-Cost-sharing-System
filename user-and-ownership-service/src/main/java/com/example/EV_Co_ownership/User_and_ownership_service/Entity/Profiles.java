@@ -1,10 +1,6 @@
 package com.example.EV_Co_ownership.User_and_ownership_service.Entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-
-import java.util.UUID;
-
 
 @Entity
 @Table(name = "profiles")

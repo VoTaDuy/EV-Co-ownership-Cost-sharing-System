@@ -8,6 +8,7 @@ import com.example.EV_Co_ownership.User_and_ownership_service.Repository.UserRep
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class UserService {
     private ModelMapper modelMapper;
 
     public List<UserDTO> getAllUsers() {
-        List<Users> users = userRepository.findAll()    ;
+        List<Users> users = userRepository.findAll(Sort.by(Sort.Direction.ASC, "userId"));
 
         return users.stream()
                 .map(this::convertUserToDTO)
@@ -35,12 +36,21 @@ public class UserService {
     }
 
     private UserDTO convertUserToDTO(Users user) {
-        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+        UserDTO userDTO = new UserDTO();
+
+        userDTO.setUserId(user.getUserId());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setPassword(user.getPassword());
+        userDTO.setCreatedAt(user.getCreatedAt());
+        userDTO.setDeleted(user.isDeleted());
+        userDTO.setVerified(user.isVerified());
+
         if (user.getRoles() != null) {
             userDTO.setRole_id(user.getRoles().getRole_id());
+        } else {
+            userDTO.setRole_id(1);
         }
-        userDTO.setVerified(user.isVerified());
-        userDTO.setCreatedAt(user.getCreatedAt());
+
         return userDTO;
     }
 
@@ -82,7 +92,9 @@ public class UserService {
     }
 
     public Users removeUserById(int id) {
-        Users user = getUserById(id);
+        Users user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
+
         user.setDeleted(true);
         return userRepository.save(user);
     }

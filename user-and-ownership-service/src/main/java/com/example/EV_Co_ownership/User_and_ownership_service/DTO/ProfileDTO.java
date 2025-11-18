@@ -1,7 +1,5 @@
     package com.example.EV_Co_ownership.User_and_ownership_service.DTO;
 
-    import java.util.UUID;
-
     public class ProfileDTO {
 
         private int userId;

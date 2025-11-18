@@ -1,9 +1,7 @@
 package com.example.EV_Co_ownership.User_and_ownership_service.DTO;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.LocalDateTime;
-import java.util.UUID;
+
 
 public class UserDTO {
 
@@ -12,7 +10,7 @@ public class UserDTO {
     private int role_id;
     private String password;
     private boolean isVerified;
-    private boolean isDeleted = false;
+    private boolean isDeleted;
     private LocalDateTime createdAt;
 
     public int getUserId() {
