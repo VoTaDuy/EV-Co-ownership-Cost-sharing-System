@@ -39,9 +39,14 @@ export class GroupMembersController {
     return this.service.findMember(id);
   }
 
-  @Put(':id')
-  update(@Param('id') id: number, @Body() dto: UpdateGroupMemberDto) {
-    return this.service.update(id, dto);
+  // PUT /group-members/:group_id/:user_id
+  @Put(':group_id/:user_id')
+  update(
+    @Param('group_id') group_id: number,
+    @Param('user_id') user_id: number,
+    @Body() dto: UpdateGroupMemberDto,
+  ) {
+    return this.service.update(group_id, user_id, dto);
   }
 
   @Delete(':id')

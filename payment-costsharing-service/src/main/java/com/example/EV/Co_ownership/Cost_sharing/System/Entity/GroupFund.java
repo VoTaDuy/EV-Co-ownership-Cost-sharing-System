@@ -21,13 +21,13 @@ public class GroupFund {
     @Column(name = "fund_id")
     private Integer fundId;
 
-    @Column(name = "group_id", nullable = false, length = 255)
+    @Column(name = "group_id")
     private int groupId;
 
-    @Column(name = "fund_name", nullable = false, length = 255)
+    @Column(name = "fund_name")
     private String fundName;
 
-    @Column(nullable = false, columnDefinition = "DECIMAL(15,2) DEFAULT 0.00")
+    @Column(name = "balance", nullable = false, precision = 15, scale = 2)
     private BigDecimal balance = BigDecimal.ZERO;
 
     @Column(name = "created_by")

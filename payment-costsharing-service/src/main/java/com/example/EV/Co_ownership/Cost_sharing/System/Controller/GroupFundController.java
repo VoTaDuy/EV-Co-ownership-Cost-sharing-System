@@ -41,7 +41,7 @@ public class GroupFundController {
     @PostMapping
     public GroupFundDTO create(@RequestBody CreateFundRequest request,
                                @RequestHeader("userId") String userIdHeader) {
-        int userId = Integer.parseInt(userIdHeader); // parse String -> int
+        int userId = Integer.parseInt(userIdHeader);
         return fundService.create(request, userId);
     }
 

@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface PollVoteServiceImp {
     List<PollVoteDTO> getByPoll(Integer pollId);
-    PollVoteDTO vote(Integer pollId, int userId, String voteValue);
+    PollVoteDTO vote(Integer pollId, int userId, String voteValue, int groupId);
     void deleteByPoll(Integer pollId);
+
 }

@@ -31,7 +31,7 @@ public class PollVote {
     private int userId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "vote_value", columnDefinition = "ENUM('yes','no','abstain')", nullable = false)
+    @Column(name = "vote_value")
     private PollVoteValue voteValue;
 
     @CreationTimestamp

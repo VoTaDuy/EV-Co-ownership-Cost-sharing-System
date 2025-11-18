@@ -54,10 +54,16 @@ export class GroupMembersService {
     return member;
   }
 
-  async update(id: number, dto: UpdateGroupMemberDto): Promise<GroupMember> {
-    const member = await this.findOne(id);
-    Object.assign(member, dto);
-    return await this.memberRepo.save(member);
+  async update(group_id: number, user_id: number, dto: UpdateGroupMemberDto) {
+    const member = await this.memberRepo.findOne({
+      where: { group_id, user_id },
+    });
+
+    if (!member) {
+      throw new NotFoundException('Member not found in this group');
+    }
+
+    return this.memberRepo.save({ ...member, ...dto });
   }
 
   async remove(id: number): Promise<void> {
@@ -97,7 +103,7 @@ export class GroupMembersService {
     const member = this.memberRepo.create({
       group_id,
       user_id: dto.user_id,
-      group_role: dto.group_role || 'Co-owner',
+      group_role: dto.group_role,
       ownership_ratio: ratio,
     });
 

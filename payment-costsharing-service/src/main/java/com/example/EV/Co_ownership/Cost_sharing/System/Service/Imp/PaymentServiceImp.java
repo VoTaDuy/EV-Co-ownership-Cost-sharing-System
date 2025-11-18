@@ -12,4 +12,6 @@ public interface PaymentServiceImp {
     List<PaymentDTO> getByFund(Integer fundId);
     PaymentDTO createPayment(Map<String, Object> request, int userId);
     PaymentDTO handleGatewayCallback(String gatewayOrderId, String status, String response);
+
+    PaymentDTO handleFakePaymentSuccess(String gatewayOrderId);
 }

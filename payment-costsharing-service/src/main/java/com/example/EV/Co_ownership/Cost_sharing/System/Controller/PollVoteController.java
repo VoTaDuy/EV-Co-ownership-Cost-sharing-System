@@ -21,11 +21,17 @@ public class PollVoteController {
         return voteService.getByPoll(pollId);
     }
 
+
+
     @PostMapping("/poll/{pollId}")
-    public PollVoteDTO vote(@PathVariable Integer pollId,
-                            @RequestHeader("userId") int userId,
-                            @RequestParam String voteValue) {
-        return voteService.vote(pollId, userId, voteValue);
+    public ResponseEntity<PollVoteDTO> vote(
+            @PathVariable Integer pollId,
+            @RequestParam String voteValue,
+            @RequestHeader("userId") int userId,
+            @RequestParam int groupId
+    ) {
+        PollVoteDTO vote = voteService.vote(pollId, userId, voteValue, groupId);
+        return ResponseEntity.ok(vote);
     }
 
     @DeleteMapping("/poll/{pollId}")

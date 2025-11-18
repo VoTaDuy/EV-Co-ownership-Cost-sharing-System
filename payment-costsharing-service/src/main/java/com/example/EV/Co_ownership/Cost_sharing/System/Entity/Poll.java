@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "polls")
@@ -21,7 +22,7 @@ public class Poll {
     @Column(name = "poll_id")
     private Integer pollId;
 
-    @Column(name = "group_id", nullable = false, length = 255)
+    @Column(name = "group_id")
     private int groupId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -44,5 +45,7 @@ public class Poll {
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "ENUM('active','closed') DEFAULT 'active'")
     private PollStatus status = PollStatus.active;
-    
+
+    @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PollVote> votes;
 }

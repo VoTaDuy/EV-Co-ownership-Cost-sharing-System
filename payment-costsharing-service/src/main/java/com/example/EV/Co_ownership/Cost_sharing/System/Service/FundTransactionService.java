@@ -35,11 +35,21 @@ public class FundTransactionService implements FundTransactionsServiceImp {
                 .toList();
     }
 
+
     @Override
     public FundTransactionDTO getById(Integer transactionId) {
         return txRepo.findById(transactionId)
                 .map(this::toDTO)
                 .orElseThrow(() -> new NotFoundException("Giao dịch không tồn tại: " + transactionId));
+    }
+
+    // FundTransactionService.java (implementation)
+    @Override
+    public List<FundTransactionDTO> getAll() {
+        return txRepo.findAll().stream()
+                .map(this::toDTO)
+                .sorted((a, b) -> b.createdAt().compareTo(a.createdAt()))
+                .toList();
     }
 
     private FundTransactionDTO toDTO(FundTransaction tx) {
