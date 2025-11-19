@@ -19,6 +19,20 @@ export class EContractService {
     private readonly httpUserService: HttpUserService, // gọi User Service
   ) {}
 
+  async getContractsByUser(user_id: number): Promise<EContract[]> {
+    const contracts = await this.contractRepo.find({
+      where: { user_id },
+      relations: ['ownership_group'], // NHỚ sửa đúng tên relations!
+      order: { created_at: 'DESC' },
+    });
+
+    if (contracts.length === 0) {
+      throw new NotFoundException('Không có hợp đồng nào của user này');
+    }
+
+    return contracts;
+  }
+
   async create(dto: CreateEContractDto): Promise<EContract> {
     // 1. Kiểm tra nhóm sở hữu tồn tạ
     const group = await this.groupRepo.findOne({

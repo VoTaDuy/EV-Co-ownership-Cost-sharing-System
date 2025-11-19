@@ -33,7 +33,7 @@ export class EContractController {
     @Body('user_id', ParseIntPipe) user_id: number,
     @Body('signature_status') signature_status?: SignatureStatus,
   ) {
-    const pdfFile = files?.[0]; 
+    const pdfFile = files?.[0];
     if (!pdfFile) throw new BadRequestException('PDF file is required');
 
     const url = await this.cloudinaryService.uploadPdf(pdfFile);
@@ -46,6 +46,11 @@ export class EContractController {
     };
 
     return this.service.create(dto);
+  }
+
+  @Get('user/:user_id')
+  getByUser(@Param('user_id') user_id: number) {
+    return this.service.getContractsByUser(user_id);
   }
 
   @Get()

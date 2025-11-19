@@ -39,7 +39,7 @@ export class EContract {
   contract_id: number;
 
   // FK: ownership_group_id → int
-  @Column({ type: 'int', name: 'ownership_group_id' })
+  @Column({ type: 'int' })
   ownership_group_id: number;
 
   // FK: user_id → int (giả sử bảng users dùng id tự tăng)

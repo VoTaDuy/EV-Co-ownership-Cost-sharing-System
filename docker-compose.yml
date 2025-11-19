@@ -39,7 +39,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 123456
       MYSQL_DATABASE: booking_usage_service
-      MYSQL_USER: booking_user
+      MYSQL_USER: mysql-booking
       MYSQL_PASSWORD: 123456
     ports:
       - "3308:3306"
@@ -114,7 +114,7 @@ services:
       - mysql-booking
     environment:
       DB_HOST: mysql-booking
-      DB_PORT: 3306
+      DB_PORT: 3308
       DB_USER: mysql-booking
       DB_PASS: 123456
       DB_NAME: booking_usage_service
