@@ -6,9 +6,9 @@ import com.example.EV_Co_ownership.User_and_ownership_service.Payloads.Request.R
 import com.example.EV_Co_ownership.User_and_ownership_service.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.EV_Co_ownership.User_and_ownership_service.DTO.UserDTO.*;
-
 import java.time.LocalDateTime;
+
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class RegisterService {
@@ -16,6 +16,7 @@ public class RegisterService {
     @Autowired
     private UserRepository userRepository;
 
+    @Transactional
     public boolean registerUser(RegisterRequest registerRequest) {
         if (userRepository.findByEmail(registerRequest.getEmail()).isPresent()) {
             throw new RuntimeException("Email already exists");
@@ -33,12 +34,7 @@ public class RegisterService {
         user.setCreatedAt(LocalDateTime.now());
         user.setDeleted(false);
 
-        try {
-            userRepository.save(user);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+        userRepository.save(user); // sẽ throw exception nếu có lỗi
+        return true;
     }
 }

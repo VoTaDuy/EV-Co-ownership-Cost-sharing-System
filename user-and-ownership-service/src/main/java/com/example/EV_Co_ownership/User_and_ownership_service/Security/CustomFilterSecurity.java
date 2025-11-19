@@ -38,7 +38,7 @@ public class CustomFilterSecurity {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/user/**"
+                                "/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 );

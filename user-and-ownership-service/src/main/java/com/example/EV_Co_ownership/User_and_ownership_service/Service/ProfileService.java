@@ -1,5 +1,7 @@
 package com.example.EV_Co_ownership.User_and_ownership_service.Service;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.example.EV_Co_ownership.User_and_ownership_service.DTO.ProfileDTO;
 import com.example.EV_Co_ownership.User_and_ownership_service.Entity.Profiles;
 import com.example.EV_Co_ownership.User_and_ownership_service.Entity.Users;
@@ -7,8 +9,10 @@ import com.example.EV_Co_ownership.User_and_ownership_service.Repository.Profile
 import com.example.EV_Co_ownership.User_and_ownership_service.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,6 +23,22 @@ public class ProfileService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private Cloudinary cloudinary;
+    // CREATE mới profile
+    public Profiles createProfile(ProfileDTO dto) {
+        Profiles profile = new Profiles();
+        profile.setUserId(dto.getUserId());
+        profile.setFullName(dto.getFullName());
+        profile.setPhoneNumber(dto.getPhoneNumber());
+        profile.setAddress(dto.getAddress());
+        profile.setDriverLicenseNumber(dto.getDriverLicenseNumber());
+        profile.setDriverLicenseExpiry(dto.getDriverLicenseExpiry());
+        profile.setLicenseImageUrl(dto.getLicenseImageUrl());
+
+        return profileRepository.save(profile);
+    }
 
     public List<Profiles> getAllProfiles() {
         return profileRepository.findAll();
@@ -37,40 +57,44 @@ public class ProfileService {
 
             String email = user != null ? user.getEmail() : "unknown@example.com";
 
-            int role_id = 1; // Mặc định là User
-            if (user != null && user.getRoles() != null) {
-                role_id = user.getRoles().getRole_id();
-            }
+            int roleId = 1; // Mặc định là User
 
             return new ProfileWithUserInfo(
                     profile.getUserId(),
                     email,
-                    role_id,
-                    profile.getFull_name(),
-                    profile.getPhone_number(),
+                    roleId,
+                    profile.getFullName(),
+                    profile.getPhoneNumber(),
                     profile.getAddress(),
-                    profile.getDriver_license_number(),
-                    profile.getDriver_license_expiry(),
-                    profile.getLicense_image_url()
+                    profile.getDriverLicenseNumber(),
+                    profile.getDriverLicenseExpiry(),
+                    profile.getLicenseImageUrl()
             );
         }).collect(Collectors.toList());
     }
 
-    public Profiles updateProfile(int userId, ProfileDTO profileDTO) {
+    public Profiles updateProfile(
+            int userId,
+            String fullName,
+            String phoneNumber,
+            String address,
+            String driverLicenseNumber,
+            String driverLicenseExpiry,
+            MultipartFile licenseFile
+    ) throws Exception {
         Profiles profile = getProfileByUserId(userId);
 
-        if (profileDTO.getFull_name() != null)
-            profile.setFull_name(profileDTO.getFull_name());
-        if (profileDTO.getPhone_number() != null)
-            profile.setPhone_number(profileDTO.getPhone_number());
-        if (profileDTO.getAddress() != null)
-            profile.setAddress(profileDTO.getAddress());
-        if (profileDTO.getDriver_license_number() != null)
-            profile.setDriver_license_number(profileDTO.getDriver_license_number());
-        if (profileDTO.getDriver_license_expiry() != null)
-            profile.setDriver_license_expiry(profileDTO.getDriver_license_expiry());
-        if (profileDTO.getLicense_image_url() != null)
-            profile.setLicense_image_url(profileDTO.getLicense_image_url());
+        if (fullName != null) profile.setFullName(fullName);
+        if (phoneNumber != null) profile.setPhoneNumber(phoneNumber);
+        if (address != null) profile.setAddress(address);
+        if (driverLicenseNumber != null) profile.setDriverLicenseNumber(driverLicenseNumber);
+        if (driverLicenseExpiry != null) profile.setDriverLicenseExpiry(driverLicenseExpiry);
+
+        if (licenseFile != null && !licenseFile.isEmpty()) {
+            Map uploadResult = cloudinary.uploader().upload(licenseFile.getBytes(),
+                    ObjectUtils.asMap("folder", "licenses"));
+            profile.setLicenseImageUrl(uploadResult.get("secure_url").toString());
+        }
 
         return profileRepository.save(profile);
     }
@@ -83,12 +107,12 @@ public class ProfileService {
     public record ProfileWithUserInfo(
             int userId,
             String email,
-            int role_id,
-            String full_name,
-            String phone_number,
+            int roleId,
+            String fullName,
+            String phoneNumber,
             String address,
-            String driver_license_number,
-            String driver_license_expiry,
-            String license_image_url
+            String driverLicenseNumber,
+            String driverLicenseExpiry,
+            String licenseImageUrl
     ) {}
 }

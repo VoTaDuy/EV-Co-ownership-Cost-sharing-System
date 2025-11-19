@@ -20,7 +20,7 @@ public class CloudinaryService {
     }
 
     public String upload(MultipartFile file, String folder) throws IOException {
-        Map<Object, Object> options = ObjectUtils.asMap(
+        Map options = ObjectUtils.asMap(
                 "folder", folder,
                 "resource_type", "image"
         );
