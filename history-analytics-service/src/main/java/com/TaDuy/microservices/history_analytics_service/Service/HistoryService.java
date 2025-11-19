@@ -4,10 +4,13 @@ import com.TaDuy.microservices.history_analytics_service.Entity.History;
 import com.TaDuy.microservices.history_analytics_service.Repository.HistoryRepository;
 import com.TaDuy.microservices.history_analytics_service.Service.Imp.HistoryServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -26,7 +29,7 @@ public class HistoryService implements HistoryServiceImp {
 
         for (History history : historyList) {
             HistoryDTO dto = new HistoryDTO();
-            dto.setId(history.getId());
+            dto.setId(history.getUsageId());
             dto.setUsageId(history.getUsageId());
             dto.setBookingId(history.getBookingId());
             dto.setUserId(history.getUserId());
@@ -45,13 +48,13 @@ public class HistoryService implements HistoryServiceImp {
     }
 
     @Override
-    public List<HistoryDTO> getHistoryByUserId(String userId) {
+    public List<HistoryDTO> getHistoryByUserId(Integer userId) {
         List<History> historyList = historyRepository.findHistoryByUserId(userId);
         List<HistoryDTO> historyDTOList = new ArrayList<>();
 
         for (History history : historyList) {
             HistoryDTO dto = new HistoryDTO();
-            dto.setId(history.getId());
+            dto.setId(history.getUsageId());
             dto.setUsageId(history.getUsageId());
             dto.setBookingId(history.getBookingId());
             dto.setUserId(history.getUserId());
@@ -71,7 +74,7 @@ public class HistoryService implements HistoryServiceImp {
 
 
     @Override
-    public String convertHistoryListToString(String startTimeStr, String endTimeStr) {
+    public String convertHistoryListToString(LocalDateTime startTimeStr, LocalDateTime endTimeStr) {
         List<History> historyList = historyRepository.findByRecordTimeBetween(startTimeStr, endTimeStr);
 
         if (historyList.isEmpty()) {
@@ -106,7 +109,7 @@ public class HistoryService implements HistoryServiceImp {
         return sb.toString();
     }
     @Override
-    public String convertUserHistoryToString(String userId, String startTime, String endTime) {
+    public String convertUserHistoryToString(Integer userId, LocalDateTime startTime, LocalDateTime endTime) {
         List<History> historyList = historyRepository.findByUserIdAndRecordTimeBetween(userId, startTime, endTime);
         if (historyList.isEmpty()) {
             return "No history records for user " + userId + " in this time range.";

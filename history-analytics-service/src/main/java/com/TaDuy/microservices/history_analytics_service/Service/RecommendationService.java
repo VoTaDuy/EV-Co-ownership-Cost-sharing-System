@@ -33,14 +33,14 @@ public class RecommendationService implements RecommendationServiceImp {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public String generateRecommendation(String userId, String daysRange) {
+    public String generateRecommendation(Integer userId, String daysRange) {
         String url = genimiConfig.getUrl() + "?key=" + genimiConfig.getApiKey();
 
         int days = (daysRange != null) ? Integer.parseInt(daysRange) : 10;
         LocalDateTime endTime = LocalDateTime.now();
         LocalDateTime startTime = endTime.minusDays(days);
 
-        String historyText = historyServiceImp.convertUserHistoryToString(userId, startTime.toString(), endTime.toString());
+        String historyText = historyServiceImp.convertUserHistoryToString(userId, startTime, endTime);
         String fullPrompt = "Dựa trên lịch sử của user " + userId + " từ " +
                 startTime + " đến " + endTime + ":\n" + historyText +
                 "\nHãy đưa ra gợi ý thuê xe, thời gian, và các khuyến nghị khác.";

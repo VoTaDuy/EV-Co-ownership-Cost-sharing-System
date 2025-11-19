@@ -1,144 +1,91 @@
 package com.TaDuy.microservices.history_analytics_service.Entity;
 
+import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
-@Document(collection = "history")
+@Entity
+@Table(name = "usage_record")
 public class History {
 
     @Id
-    private String id;
-
-    @Field("usage_id")
+    @Column(name = "usage_id")
     private String usageId;
 
-    @Field("booking_id")
+    @Column(name = "booking_id")
     private String bookingId;
 
-    @Field("user_id")
-    private String userId;
+    @Column(name = "user_id")
+    private Integer userId;
 
-    @Field("vehicle_id")
+    @Column(name = "vehicle_id")
     private String vehicleId;
 
-    @Field("start_date")
-    private String startDate;
+    @Column(name = "start_date")
+    private LocalDateTime startDate;
 
-    @Field("end_date")
-    private String endDate;
+    @Column(name = "end_date")
+    private LocalDateTime endDate;
 
-    @Field("check_in_time")
+    @Column(name = "check_in_time")
     private String checkInTime;
 
-    @Field("check_out_time")
+    @Column(name = "check_out_time")
     private String checkOutTime;
 
-    @Field("vehicle_condition")
+    @Column(name = "vehicle_condition")
     private String vehicleCondition;
 
-    @Field("distance")
+    @Column(name = "distance")
     private Double distance;
 
-    @Field("record_time")
-    private String recordTime;
-
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+    @Column(name = "record_time")
+    private LocalDateTime recordTime;
 
     public String getUsageId() {
         return usageId;
-    }
-
-    public void setUsageId(String usageId) {
-        this.usageId = usageId;
     }
 
     public String getBookingId() {
         return bookingId;
     }
 
-    public void setBookingId(String bookingId) {
-        this.bookingId = bookingId;
-    }
-
-    public String getUserId() {
+    public Integer getUserId() {
         return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public String getVehicleId() {
         return vehicleId;
     }
 
-    public void setVehicleId(String vehicleId) {
-        this.vehicleId = vehicleId;
-    }
-
-    public String getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    public String getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
     }
 
     public String getCheckInTime() {
         return checkInTime;
     }
 
-    public void setCheckInTime(String checkInTime) {
-        this.checkInTime = checkInTime;
-    }
-
     public String getCheckOutTime() {
         return checkOutTime;
-    }
-
-    public void setCheckOutTime(String checkOutTime) {
-        this.checkOutTime = checkOutTime;
     }
 
     public String getVehicleCondition() {
         return vehicleCondition;
     }
 
-    public void setVehicleCondition(String vehicleCondition) {
-        this.vehicleCondition = vehicleCondition;
-    }
-
     public Double getDistance() {
         return distance;
     }
 
-    public void setDistance(Double distance) {
-        this.distance = distance;
-    }
-
-    public String getRecordTime() {
+    public LocalDateTime getRecordTime() {
         return recordTime;
-    }
-
-    public void setRecordTime(String recordTime) {
-        this.recordTime = recordTime;
     }
 }

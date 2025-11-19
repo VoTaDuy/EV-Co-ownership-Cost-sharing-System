@@ -23,11 +23,11 @@ public class AiRecommendationController {
     private RecommendationServiceImp recommendationServiceImp;
 
     @PostMapping("/generate")
-    public ResponseEntity<?> generateRecommendation(@RequestBody Map<String, String> request) {
+    public ResponseEntity<?> generateRecommendation(@RequestBody Map<Integer, String> request) {
         ResponseData responseData = new ResponseData();
 
         try {
-            String userId = request.get("userId");
+            Integer userId = Integer.valueOf(request.get("userId"));
             String daysRange = request.get("daysRange");
 
             String aiText = recommendationServiceImp.generateRecommendation(userId, daysRange);
