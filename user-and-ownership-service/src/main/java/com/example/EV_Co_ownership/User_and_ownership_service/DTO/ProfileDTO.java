@@ -13,5 +13,4 @@ public class ProfileDTO {
     private String driverLicenseNumber;
     private String driverLicenseExpiry;
     private String licenseImageUrl;
-
 }

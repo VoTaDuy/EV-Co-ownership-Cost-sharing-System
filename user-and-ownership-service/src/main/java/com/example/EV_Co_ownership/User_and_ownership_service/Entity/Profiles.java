@@ -16,10 +16,10 @@ public class Profiles {
     private int userId;
 
     @Column(name = "full_name")
-    private String fullName;  // ✅ đổi sang camelCase
+    private String fullName;
 
     @Column(name = "phone_number")
-    private String phoneNumber;  // ✅ camelCase
+    private String phoneNumber;
 
     @Column(name = "address")
     private String address;

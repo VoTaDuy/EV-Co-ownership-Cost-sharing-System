@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @CrossOrigin(
-        origins = "http://localhost:3001",
+        origins = "http://localhost:3000",
         allowedHeaders = "*",
         allowCredentials = "true",
         methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS}

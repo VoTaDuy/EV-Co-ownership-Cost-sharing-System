@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public class UserDTO {
-
     private int userId;
     private String email;
     private int role_id;
@@ -17,5 +16,4 @@ public class UserDTO {
     private boolean isVerified;
     private boolean isDeleted;
     private LocalDateTime createdAt;
-
 }
