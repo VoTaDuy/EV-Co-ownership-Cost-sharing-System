@@ -30,6 +30,13 @@ public class PaymentService implements PaymentServiceImp {
     private final GroupFundRepository fundRepo;
 
     @Override
+    public List<PaymentDTO> getAllPayments() {
+        return paymentRepo.findAll().stream()
+                .map(PaymentDTO::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<PaymentDTO> getByGroup(int groupId) {
         return paymentRepo.findByGroupId(groupId).stream()
                 .map(PaymentDTO::fromEntity)

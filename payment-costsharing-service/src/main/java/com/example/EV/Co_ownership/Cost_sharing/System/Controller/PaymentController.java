@@ -22,6 +22,11 @@ public class PaymentController {
     private final VnPayService vnPayService;
 
     // === LẤY DỮ LIỆU ===
+    @GetMapping
+    public List<PaymentDTO> getAllPayments() {
+        return paymentService.getAllPayments();
+    }
+
     @GetMapping("/group/{groupId}")
     public List<PaymentDTO> getByGroup(@PathVariable int groupId) {
         return paymentService.getByGroup(groupId);
