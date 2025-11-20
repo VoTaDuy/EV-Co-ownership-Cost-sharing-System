@@ -114,7 +114,7 @@ services:
       - mysql-booking
     environment:
       DB_HOST: mysql-booking
-      DB_PORT: 3308
+      DB_PORT: 3306
       DB_USER: mysql-booking
       DB_PASS: 123456
       DB_NAME: booking_usage_service
