@@ -6,7 +6,6 @@ import {
   Delete,
   Param,
   Body,
-  Query,
 } from '@nestjs/common';
 import {
   CreateGroupMemberDto,
@@ -70,15 +69,5 @@ export class GroupMembersController {
     @Param('user_id') user_id: number,
   ) {
     return this.service.removeMemberFromGroup(group_id, user_id);
-  }
-  @Get('/:groupId/cost')
-  calculateCost(
-    @Param('groupId') groupId: number,
-    @Query('total') total: number,
-  ) {
-    return this.service.calculateCostByOwnership(
-      Number(groupId),
-      Number(total),
-    );
   }
 }

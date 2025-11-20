@@ -31,7 +31,6 @@ public class HistoryAnalyticsServiceApplication {
         try (MongoClient mongoClient = MongoClients.create(uri)) {
             MongoDatabase database = mongoClient.getDatabase("history_db"); // Lưu ý tên DB đúng trên Atlas
             MongoCollection<Document> collection = database.getCollection("test");
-            collection.insertOne(new Document("name", "duy").append("createAt", new Date()));
 
             for (Document doc : collection.find()) {
                 System.out.println(doc.toJson());

@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 public interface PaymentServiceImp {
+    List<PaymentDTO> getAllPayments();
+
     List<PaymentDTO> getByGroup(int groupId);
     List<PaymentDTO> getByUser(int userId);
     List<PaymentDTO> getByCost(Integer costId);

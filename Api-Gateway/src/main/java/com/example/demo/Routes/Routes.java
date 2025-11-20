@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.server.mvc.handler.HandlerFunctions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.servlet.function.RequestPredicates;
 import org.springframework.web.servlet.function.RouterFunction;
 import org.springframework.web.servlet.function.RouterFunctions;
@@ -22,6 +23,11 @@ public class Routes {
 
     @Value("${booking.service.url}")
     private String bookingServiceUrl;
+
+    @Value("${user.service.url}")
+    private String userServiceUrl;
+
+    @Value("${payment.service.url}")
 
     @Bean
     public RouterFunction<ServerResponse> adminContractsTemplate() {
@@ -44,24 +50,31 @@ public class Routes {
 
 
     @Bean
-    public RouterFunction<ServerResponse> historyService() {
-        RouterFunction<ServerResponse> getRoute = route(RequestPredicates.GET("/api/reports/**"), request -> {
-            String pathAfter = request.path().replaceFirst("/api/reports/", "");
-            String url = historyServiceUrl + "/api/reports/" + pathAfter;
+    public RouterFunction<ServerResponse> historyService(){
+        return RouterFunctions.route(RequestPredicates.path("/past/**"),request -> {
+            String pathAfter = request.path().replaceFirst("/past", "");
+            String url = historyServiceUrl + "/past" + pathAfter;
             return HandlerFunctions.http(url).handle(request);
         });
-
-        RouterFunction<ServerResponse> postRoute = route(RequestPredicates.POST("/api/reports/**"), request -> {
-            String pathAfter = request.path().replaceFirst("/api/reports/", "");
-            String url = historyServiceUrl + "/api/reports/" + pathAfter;
-            return HandlerFunctions.http(url).handle(request);
-        });
-
-        return getRoute.and(postRoute); // ghép nhiều route
     }
 
+    @Bean
+    public RouterFunction<ServerResponse> userService(){
+        return RouterFunctions.route(RequestPredicates.path("/user/**"),request -> {
+            String pathAfter = request.path().replaceFirst("/user", "");
+            String url = historyServiceUrl + "/user" + pathAfter;
+            return HandlerFunctions.http(url).handle(request);
+        });
+    }
 
-
+    @Bean
+    public RouterFunction<ServerResponse> paymentService(){
+        return RouterFunctions.route(RequestPredicates.path("/payment/**"),request -> {
+            String pathAfter = request.path().replaceFirst("/payment", "");
+            String url = historyServiceUrl + "/payment" + pathAfter;
+            return HandlerFunctions.http(url).handle(request);
+        });
+    }
 
     @Bean
     public RouterFunction<ServerResponse> fallbackRoute() {

@@ -139,34 +139,4 @@ export class GroupMembersService {
       removed_member_id: member.member_id,
     };
   }
-
-  async calculateCostByOwnership(groupId: number, totalCost: number) {
-    const members = await this.memberRepo.find({
-      where: { group_id: groupId },
-    });
-
-    if (!members.length) {
-      throw new Error('No members in this ownership group');
-    }
-
-    // Tổng tỷ lệ sở hữu
-    const totalOwnership = members.reduce(
-      (sum, m) => sum + m.ownership_ratio,
-      0,
-    );
-
-    if (Math.round(totalOwnership) !== 100) {
-      throw new Error(
-        `Total ownership ratio = ${totalOwnership}%. Must be 100%.`,
-      );
-    }
-
-    // Tính số tiền mỗi người phải trả
-    return members.map((member) => ({
-      member_id: member.member_id,
-      user_id: member.user_id,
-      ownership_ratio: member.ownership_ratio,
-      cost: (totalCost * member.ownership_ratio) / 100,
-    }));
-  }
 }

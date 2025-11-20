@@ -4,19 +4,15 @@ import com.TaDuy.microservices.history_analytics_service.Entity.History;
 import com.TaDuy.microservices.history_analytics_service.Repository.HistoryRepository;
 import com.TaDuy.microservices.history_analytics_service.Service.Imp.HistoryServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
 public class HistoryService implements HistoryServiceImp {
-    @Autowired
-    private RestTemplate restTemplate;
 
 
     @Autowired
