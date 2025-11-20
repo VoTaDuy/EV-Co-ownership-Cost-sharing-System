@@ -224,7 +224,9 @@ services:
     ports:
       - "3310:3306"
     volumes:
-      - dw_mysql_data:/var/lib/mysql
+      - dw_mysql:/var/lib/mysql
+    networks:
+      - microservices-network
 # === Mạng & Volume dùng chung ===
 networks:
   microservices-network:
@@ -238,4 +240,4 @@ volumes:
   mongo_data:
   nifi_conf:
   nifi_drivers:
-  dw_mysql_data:
+  dw_mysql:
