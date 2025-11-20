@@ -1,18 +1,21 @@
 package com.TaDuy.microservices.history_analytics_service.DTO;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 public class HistoryDTO {
     private String id;
     private String usageId;
     private String bookingId;
-    private String userId;
+    private Integer userId;
     private String vehicleId;
-    private String startDate;       // giữ nguyên kiểu String vì Mongo lưu dạng text
-    private String endDate;
+    private LocalDateTime  startDate;       // giữ nguyên kiểu String vì Mongo lưu dạng text
+    private LocalDateTime endDate;
     private String checkInTime;
     private String checkOutTime;
     private String vehicleCondition;
     private Double distance;
-    private String recordTime;      // cũng là String trong Mongo
+    private LocalDateTime recordTime;      // cũng là String trong Mongo
 
 
     public String getId() {
@@ -39,11 +42,11 @@ public class HistoryDTO {
         this.bookingId = bookingId;
     }
 
-    public String getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
@@ -55,19 +58,19 @@ public class HistoryDTO {
         this.vehicleId = vehicleId;
     }
 
-    public String getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public String getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 
@@ -103,11 +106,11 @@ public class HistoryDTO {
         this.distance = distance;
     }
 
-    public String getRecordTime() {
+    public LocalDateTime getRecordTime() {
         return recordTime;
     }
 
-    public void setRecordTime(String recordTime) {
+    public void setRecordTime(LocalDateTime recordTime) {
         this.recordTime = recordTime;
     }
 }

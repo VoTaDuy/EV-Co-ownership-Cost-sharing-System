@@ -3,13 +3,14 @@ package com.TaDuy.microservices.history_analytics_service.Service.Imp;
 import com.TaDuy.microservices.history_analytics_service.DTO.HistoryDTO;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 public interface HistoryServiceImp {
     List<HistoryDTO> getAllHistory();
-    List<HistoryDTO> getHistoryByUserId(String userId);
-    String convertHistoryListToString(String startTime, String endTime);
+    List<HistoryDTO> getHistoryByUserId(Integer userId);
+    String convertHistoryListToString(LocalDateTime startTime, LocalDateTime endTime);
 
 
-    String convertUserHistoryToString(String userId, String startTime, String endTime);
+    String convertUserHistoryToString(Integer userId, LocalDateTime startTime, LocalDateTime endTime);
 }

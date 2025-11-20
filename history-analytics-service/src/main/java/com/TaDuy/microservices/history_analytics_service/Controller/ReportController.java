@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
@@ -41,10 +42,10 @@ public class ReportController {
 
         try {
             String prompt = request.get("prompt");
-            String startTime = request.get("startTime");
-            String endTime = request.get("endTime");
+            LocalDateTime startTime = LocalDateTime.parse(request.get("startTime"));
+            LocalDateTime endTime = LocalDateTime.parse(request.get("endTime"));
 
-            if (!isValidDate(startTime) || !isValidDate(endTime)) {
+            if (!isValidDate(String.valueOf(startTime)) || !isValidDate(String.valueOf(endTime))) {
                 throw new IllegalArgumentException("Sai định dạng ngày (dd/MM/yyyy hoặc yyyy-MM-dd)");
             }
 

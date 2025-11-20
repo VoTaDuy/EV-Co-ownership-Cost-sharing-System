@@ -6,14 +6,12 @@ import com.TaDuy.microservices.history_analytics_service.Service.Imp.HistoryServ
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/history")
 public class HistoryController {
@@ -21,7 +19,7 @@ public class HistoryController {
     HistoryServiceImp historyServiceImp;
 
     @GetMapping("/get/{userId}")
-    public ResponseEntity<?> getHistoryByUserId(@PathVariable  String userId){
+    public ResponseEntity<?> getHistoryByUserId(@PathVariable  Integer userId){
         List<HistoryDTO> historyDTOList  =historyServiceImp.getHistoryByUserId(userId);
 
         return new ResponseEntity<>(historyDTOList ,HttpStatus.OK);

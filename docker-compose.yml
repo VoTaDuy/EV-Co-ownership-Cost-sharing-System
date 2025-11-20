@@ -1,5 +1,5 @@
 version: '3.8'
-
+  
 services:
   # === MySQL cho User service ===
   mysql-user:
@@ -98,7 +98,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-payment:3306/payment_costsharing_service?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 123456
-      SERVER_PORT: 8081 
+      SERVER_PORT: 8081
     ports:
       - "8081:8081"
     networks:
@@ -198,6 +198,35 @@ services:
     networks:
       - microservices-network
 
+  nifi:
+    image: apache/nifi:2.6.0
+    container_name: nifi
+    user: root
+    ports:
+      - "8443:8443" 
+    environment:
+      - NIFI_WEB_PROXY_HOST=localhost:8443
+    # nếu bật HTTPS
+    volumes:
+      - ./conf:/opt/nifi/nifi-current/conf
+      - ./drivers:/opt/nifi/nifi-current/drivers
+    restart: unless-stopped
+    networks:
+      - microservices-network
+
+  dw-mysql:
+    image: mysql:8.0
+    container_name: dw_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: data_warehouse
+    ports:
+      - "3310:3306"
+    volumes:
+      - dw_mysql:/var/lib/mysql
+    networks:
+      - microservices-network
 # === Mạng & Volume dùng chung ===
 networks:
   microservices-network:
@@ -209,3 +238,6 @@ volumes:
   mysql_data_booking:
   pgdata:
   mongo_data:
+  nifi_conf:
+  nifi_drivers:
+  dw_mysql:
