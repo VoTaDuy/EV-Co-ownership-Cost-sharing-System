@@ -26,7 +26,6 @@ public class ProfileService {
 
     @Autowired
     private Cloudinary cloudinary;
-    // CREATE mới profile
     public Profiles createProfile(ProfileDTO dto) {
         Profiles profile = new Profiles();
         profile.setUserId(dto.getUserId());
