@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin("*")
 @RestController
-@RequestMapping("/api/reports")
+@RequestMapping("/past/reports")
 public class ReportController {
 
     @Autowired
@@ -42,12 +42,11 @@ public class ReportController {
 
         try {
             String prompt = request.get("prompt");
-            LocalDateTime startTime = LocalDateTime.parse(request.get("startTime"));
-            LocalDateTime endTime = LocalDateTime.parse(request.get("endTime"));
+            String startStr = request.get("startTime");
+            String endStr = request.get("endTime");
 
-            if (!isValidDate(String.valueOf(startTime)) || !isValidDate(String.valueOf(endTime))) {
-                throw new IllegalArgumentException("Sai định dạng ngày (dd/MM/yyyy hoặc yyyy-MM-dd)");
-            }
+            LocalDateTime startTime = parseToLocalDateTime(startStr);
+            LocalDateTime endTime = parseToLocalDateTime(endStr);
 
             Object result = genimiServiceImp.generateReport(prompt, startTime, endTime);
             responseData.setData(result);
@@ -60,4 +59,23 @@ public class ReportController {
             return new ResponseEntity<>(responseData, HttpStatus.BAD_REQUEST);
         }
     }
+
+    // Hàm parse linh hoạt
+    private LocalDateTime parseToLocalDateTime(String str) {
+        if (str == null || str.isEmpty()) {
+            throw new IllegalArgumentException("Ngày không được để trống");
+        }
+
+        try {
+            return LocalDateTime.parse(str);
+        } catch (DateTimeParseException e) {
+            try {
+                LocalDate date = LocalDate.parse(str);
+                return date.atStartOfDay();
+            } catch (DateTimeParseException ex) {
+                throw new IllegalArgumentException("Sai định dạng ngày (dd/MM/yyyy hoặc yyyy-MM-dd hoặc yyyy-MM-ddTHH:mm:ss)");
+            }
+        }
+    }
+
 }
