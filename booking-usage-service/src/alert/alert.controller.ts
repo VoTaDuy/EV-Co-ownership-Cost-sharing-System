@@ -29,13 +29,4 @@ export class AlertController {
   async getAlertsByUser(@Param('user_id') user_id: number): Promise<AlertLog[]> {
     return this.alertService.getAlertsByUser(user_id);
   }
-
-  // Đánh dấu alert là "đã đọc"
-  @Post(':id/read')
-  @ApiOperation({ summary: 'Đánh dấu cảnh báo là đã đọc' })
-  @ApiParam({ name: 'id', description: 'ID của alert cần cập nhật' })
-  async markAsRead(@Param('id') id: number) {
-    await this.alertService.markAlertAsRead(id);
-    return { message: '✅ Alert marked as read' };
-  }
 }
