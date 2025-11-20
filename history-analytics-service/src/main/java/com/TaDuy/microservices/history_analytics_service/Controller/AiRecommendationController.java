@@ -17,9 +17,6 @@ import java.util.Map;
 public class AiRecommendationController {
 
     @Autowired
-    private GenimiServiceImp genimiServiceImp;
-
-    @Autowired
     private RecommendationServiceImp recommendationServiceImp;
 
     @PostMapping("/generate")

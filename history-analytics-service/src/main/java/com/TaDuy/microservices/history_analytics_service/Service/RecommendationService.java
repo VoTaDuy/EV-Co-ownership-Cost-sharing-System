@@ -22,8 +22,6 @@ import java.util.Map;
 @Service
 public class RecommendationService implements RecommendationServiceImp {
 
-    @Autowired
-    HistoryRepository historyRepository;
 
     @Autowired
     HistoryServiceImp historyServiceImp;

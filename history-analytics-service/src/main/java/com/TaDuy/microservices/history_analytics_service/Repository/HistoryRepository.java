@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-    public interface HistoryRepository extends JpaRepository<History, Integer> {
+public interface HistoryRepository extends JpaRepository<History, Integer> {
     List<History> findByRecordTimeBetween(LocalDateTime startTime, LocalDateTime endTime);
 
     List<History> findByUserIdAndRecordTimeBetween(Integer userId, LocalDateTime startTime, LocalDateTime endTime);

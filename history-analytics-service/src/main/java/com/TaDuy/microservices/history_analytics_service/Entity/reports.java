@@ -14,11 +14,6 @@ import java.util.List;
 public class Reports {
     @Id
     private String report_id;
-
-    private String user_id;
-
-    private String vehicle_id;
-
     private String type;
 
     private LocalDateTime generated_at;
@@ -27,12 +22,6 @@ public class Reports {
 
     private String excelUrl;
 
-    private LocalDateTime fromTime;
-
-    private LocalDateTime toTime;
-
-    @DBRef
-    private List<History> histories;
 
     public String getReport_id() {
         return report_id;
@@ -40,22 +29,6 @@ public class Reports {
 
     public void setReport_id(String report_id) {
         this.report_id = report_id;
-    }
-
-    public String getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
-    }
-
-    public String getVehicle_id() {
-        return vehicle_id;
-    }
-
-    public void setVehicle_id(String vehicle_id) {
-        this.vehicle_id = vehicle_id;
     }
 
     public String getType() {
@@ -90,19 +63,4 @@ public class Reports {
         this.excelUrl = excelUrl;
     }
 
-    public LocalDateTime getFromTime() {
-        return fromTime;
-    }
-
-    public void setFromTime(LocalDateTime fromTime) {
-        this.fromTime = fromTime;
-    }
-
-    public LocalDateTime getToTime() {
-        return toTime;
-    }
-
-    public void setToTime(LocalDateTime toTime) {
-        this.toTime = toTime;
-    }
 }
