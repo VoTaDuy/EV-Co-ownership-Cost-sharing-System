@@ -12,15 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
-@CrossOrigin(
-        origins = "http://localhost:3000",
-        allowedHeaders = "*",
-        allowCredentials = "true",
-        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS}
-)
 @RestController
 @RequestMapping("/user/login")
-//@CrossOrigin(origins = "http://localhost:3000")
 public class LoginController {
 
     @Autowired
