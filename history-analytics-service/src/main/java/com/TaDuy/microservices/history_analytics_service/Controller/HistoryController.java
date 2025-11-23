@@ -31,11 +31,6 @@ public class HistoryController {
         return new ResponseEntity<>(historyServiceImp,HttpStatus.OK);
     }
 
-    public ResponseEntity<?> getPromptFromHistory(){
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
     @GetMapping("/getDistance")
     public ResponseEntity<?> getDistance(){
         Double totalDistance = historyServiceImp.getDistance();

@@ -29,11 +29,7 @@ async function bootstrap() {
     }),
   );
 
-  // ✅ Cho phép CORS (nếu dùng API)
-  app.enableCors({
-    origin: true,
-    credentials: true,
-  });
+
 
   // ✅ Chạy song song HTTP và Microservice
   await app.startAllMicroservices();
