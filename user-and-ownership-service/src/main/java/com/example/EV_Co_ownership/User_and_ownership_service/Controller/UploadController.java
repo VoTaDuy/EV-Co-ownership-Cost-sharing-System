@@ -10,7 +10,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/upload")
-@CrossOrigin(origins = "*")  // sau này thay bằng domain frontend của bạn
 public class UploadController {
 
     @Autowired

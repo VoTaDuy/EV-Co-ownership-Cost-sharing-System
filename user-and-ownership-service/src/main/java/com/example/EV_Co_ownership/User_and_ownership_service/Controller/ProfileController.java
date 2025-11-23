@@ -12,7 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/user/profiles")
-    public class ProfileController {
+
+public class ProfileController {
 
     @Autowired
     private ProfileService profileService;
@@ -45,8 +46,7 @@ import org.springframework.web.multipart.MultipartFile;
             @RequestParam(value = "address", required = false) String address,
             @RequestParam(value = "driverLicenseNumber", required = false) String driverLicenseNumber,
             @RequestParam(value = "driverLicenseExpiry", required = false) String driverLicenseExpiry,
-            @RequestParam(value = "licenseFile", required = false) MultipartFile licenseFile
-    ) {
+            @RequestParam(value = "licenseFile", required = false) MultipartFile licenseFile) {
         try {
             Profiles updated = profileService.updateProfile(
                     userId,
@@ -55,14 +55,12 @@ import org.springframework.web.multipart.MultipartFile;
                     address,
                     driverLicenseNumber,
                     driverLicenseExpiry,
-                    licenseFile
-            );
+                    licenseFile);
             return ResponseEntity.ok(updated);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
 
     @PostMapping("/{userId}")
     public ResponseEntity<?> createProfile(@PathVariable int userId, @RequestBody ProfileDTO dto) {
