@@ -34,7 +34,7 @@ public class LoginController {
             Map<String, Object> data = new HashMap<>();
             data.put("userId", users.getUserId());
             data.put("email", users.getEmail());
-            data.put("role_id", users.getRoles());
+            data.put("role_name", users.getRoles().getRole_name());
             data.put("token", token);
             data.put("is_deleted", users.isDeleted());
 
