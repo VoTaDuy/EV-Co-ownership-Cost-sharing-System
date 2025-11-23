@@ -19,7 +19,7 @@ public class LoginController {
     @Autowired
     private JwtUtilHelper jwtUtilHelper;
 
-    @Autowired
+    @Autowired  
     private LoginService loginService;
 
     @PostMapping("/sign_in")
@@ -34,6 +34,7 @@ public class LoginController {
             Map<String, Object> data = new HashMap<>();
             data.put("userId", users.getUserId());
             data.put("email", users.getEmail());
+            data.put("role_id", users.getRoles());
             data.put("token", token);
             data.put("is_deleted", users.isDeleted());
 

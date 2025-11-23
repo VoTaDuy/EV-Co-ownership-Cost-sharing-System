@@ -10,7 +10,7 @@ public interface HistoryServiceImp {
     List<HistoryDTO> getAllHistory();
     List<HistoryDTO> getHistoryByUserId(Integer userId);
     String convertHistoryListToString(LocalDateTime startTime, LocalDateTime endTime);
-
-
     String convertUserHistoryToString(Integer userId, LocalDateTime startTime, LocalDateTime endTime);
+    Double getDistance();
+    public List<Double> getDistanceByMonth(int year);
 }

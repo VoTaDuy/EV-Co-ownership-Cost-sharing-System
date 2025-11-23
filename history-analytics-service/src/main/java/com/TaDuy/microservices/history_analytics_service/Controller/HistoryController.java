@@ -36,5 +36,16 @@ public class HistoryController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping("/getDistance")
+    public ResponseEntity<?> getDistance(){
+        Double totalDistance = historyServiceImp.getDistance();
+        return new ResponseEntity<>(totalDistance, HttpStatus.OK);
+    }
+
+    @GetMapping("/getDistanceByMonth")
+    public ResponseEntity<?> getDistanceByMonth(@RequestParam  int year){
+        List<Double> distanceByMonth = historyServiceImp.getDistanceByMonth(year);
+        return new ResponseEntity<>(distanceByMonth, HttpStatus.OK);
+    }
 
 }

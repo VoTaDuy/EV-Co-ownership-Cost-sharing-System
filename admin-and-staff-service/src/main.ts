@@ -1,7 +1,5 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,22 +17,6 @@ async function bootstrap() {
   //     },
   //   },
   // });
-
-  // ✅ Global pipes
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transform: true,
-    }),
-  );
-
-  // ✅ Cho phép CORS (nếu dùng API)
-  app.enableCors({
-    origin: true,
-    credentials: true,
-  });
-
   // ✅ Chạy song song HTTP và Microservice
   await app.startAllMicroservices();
   await app.listen(3000);
