@@ -132,6 +132,34 @@ public class HistoryService implements HistoryServiceImp {
         }
         return sb.toString();
     }
+
+    @Override
+    public Double getDistance() {
+        List<History> historyList = historyRepository.findAll();
+        List<HistoryDTO> historyDTOList = new ArrayList<>();
+        double distance = 0.0;
+        for (History h : historyList){
+            HistoryDTO historyDTO = new HistoryDTO();
+                distance += h.getDistance();
+            }
+        return distance;
+    }
+
+    @Override
+    public List<Double> getDistanceByMonth(int year) {
+        List<Object[]> results = historyRepository.getTotalDistanceByMonth(year);
+        List<Double> monthlyDistance = new ArrayList<>();
+        for (int i = 0; i < 12; i++) monthlyDistance.add(0.0);
+
+        for (Object[] row : results) {
+            Integer month = (Integer) row[0];
+            Double totalDistance = (Double) row[1];
+
+            monthlyDistance.set(month - 1, totalDistance);
+        }
+
+        return monthlyDistance;
+    }
 }
 
 
