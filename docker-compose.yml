@@ -64,8 +64,6 @@ services:
     networks:
       - microservices-network
 
-
-
   # === User & Ownership (Spring Boot) ===
   user-service:
     build:
@@ -166,7 +164,6 @@ services:
     networks:
         - microservices-network
 
-
   # === API Gateway (Spring Cloud Gateway) ===
   api-gateway:
     build:
@@ -213,7 +210,6 @@ services:
       - ./drivers:/opt/nifi/nifi-current/drivers
     restart: unless-stopped
     networks:
-
       - microservices-network
 
   dw-mysql:
