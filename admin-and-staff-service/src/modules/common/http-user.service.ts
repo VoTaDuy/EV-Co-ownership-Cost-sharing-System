@@ -12,7 +12,7 @@ export class HttpUserService {
 
   constructor(private readonly httpService: HttpService) {
     // Lấy từ biến môi trường, fallback mặc định
-    this.userServiceUrl = 'http://user-service:8085/user';
+    this.userServiceUrl = 'http://user-service:8080/user';
   }
 
   /**
