@@ -64,8 +64,6 @@ services:
     networks:
       - microservices-network
 
-
-
   # === User & Ownership (Spring Boot) ===
   user-service:
     build:
@@ -143,6 +141,7 @@ services:
       DATABASE_PASSWORD: 123456
       DATABASE_NAME: postgres
       PORT: 3000  
+      USER_SERVICE_URL: http://user-service:8080/user
     env_file:
       - ./admin-and-staff-service/.env
     ports:
@@ -164,7 +163,6 @@ services:
       - "8083:8083"
     networks:
         - microservices-network
-
 
   # === API Gateway (Spring Cloud Gateway) ===
   api-gateway:

@@ -26,11 +26,6 @@ export class AlertService {
     }); 
   }
 
-  // Đánh dấu alert là đã đọc
-  async markAlertAsRead(alert_id: number): Promise<void> {
-    await this.alertRepo.update(alert_id, { status: 'read' });
-  }
-
   // Dùng cho hệ thống cảnh báo tự động (DigitalSignatureService)
   async createAlert(user_id: number, alert_type: AlertType, message: string): Promise<AlertLog> {
     const alert = this.alertRepo.create({ user_id, alert_type, message });

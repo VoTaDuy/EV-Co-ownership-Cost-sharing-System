@@ -45,13 +45,31 @@ export class GroupMembersService {
     return member;
   }
 
-  async findMember(id: number): Promise<GroupMember[]> {
-    const member = await this.memberRepo.find({
-      where: { group_id: id },
+  async findMember(groupId: number): Promise<any[]> {
+    const members = await this.memberRepo.find({
+      where: { group_id: groupId },
       relations: ['contracts'],
     });
-    if (!member) throw new NotFoundException('Group member not found');
-    return member;
+
+    if (!members || members.length === 0) {
+      throw new NotFoundException('Group member not found');
+    }
+
+    // Gọi Profile từ User Service
+    const result = await Promise.all(
+      members.map(async (m) => {
+        const user = await this.httpUserService
+          .getProfileByUserId(m.user_id)
+          .catch(() => null);
+
+        return {
+          ...m,
+          user, // thêm thông tin user vào response
+        };
+      }),
+    );
+
+    return result;
   }
 
   async update(group_id: number, user_id: number, dto: UpdateGroupMemberDto) {

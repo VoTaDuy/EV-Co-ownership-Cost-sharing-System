@@ -30,9 +30,4 @@ export class AlertRepository {
       order: { created_at: 'DESC' },
     });
   }
-
-  async markAsRead(alert_id: number): Promise<void> {
-    await this.repo.update(alert_id, { status: 'read' });
-  }
-
 }

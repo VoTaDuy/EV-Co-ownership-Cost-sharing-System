@@ -12,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/user/profiles")
-
     public class ProfileController {
 
     @Autowired
