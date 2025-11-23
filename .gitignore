@@ -2,7 +2,4 @@
 /mysql_data
 /.idea
 /.vscode
-/conf/
-conf/flow.json.gz
-conf/nifi.properties
-/conf
+conf/
