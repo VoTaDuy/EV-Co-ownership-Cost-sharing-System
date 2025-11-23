@@ -13,13 +13,12 @@ import org.springframework.web.servlet.function.RouterFunctions;
 import org.springframework.web.servlet.function.ServerResponse;
 
 import static org.springframework.web.servlet.function.RouterFunctions.route;
-import static org.springframework.web.servlet.function.ServerResponse.async;
 
 @Configuration
 public class Routes {
 
     @Value("${history.service.url}")
-    private String historyServiceUrl; // ví dụ http://localhost:8083
+    private String historyServiceUrl;
 
     @Value("${admin.service.url}")
     private String adminServiceUrl;
@@ -32,7 +31,6 @@ public class Routes {
 
     @Value("${payment.service.url}")
     private String paymentServiceUrl;
-
 
     @Bean
     public RouterFunction<ServerResponse> adminContractsTemplate() {
