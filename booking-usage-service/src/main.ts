@@ -7,13 +7,6 @@ import 'dotenv/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
-  // Bật CORS
-  app.enableCors({
-    origin: ['http://localhost:3000', 'http://localhost:5001'], // FE + Swagger UI
-    credentials: true,
-  });
-
   // Kết nối RabbitMQ
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,

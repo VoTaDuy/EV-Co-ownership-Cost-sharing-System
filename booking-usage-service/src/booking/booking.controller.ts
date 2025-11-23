@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, Query } from '@nestjs/common';
 import { BookingService } from './booking.service';
 import { Booking } from './booking.entity';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
@@ -41,5 +41,20 @@ export class BookingController {
   @ApiOperation({ summary: 'Xóa booking (đặt lịch xe)' })
   async deleteBooking(@Param() params: BookingIdDto) {
     return this.bookingService.deleteBooking(params.id);
+  }
+
+  @Get('stats/total')
+  async getTotalBookings() {
+    return {
+      total: await this.bookingService.getTotalBookings(),
+    };
+  }
+
+  @Get('stats/bookings-by-month')
+  async getBookingsByMonth(@Query('year') year: string) {
+    return {
+      year: Number(year),
+      data: await this.bookingService.getBookingByMonth(Number(year)),
+    };
   }
 }

@@ -4,18 +4,18 @@ import { Booking } from './booking.entity';
 import { ConflictLogService } from '../conflict_log/conflict-log.service';
 import { BookingStatus } from './booking.entity';
 import { UsageRepository } from '../usage/usage.repository';
-import { HttpUserService } from '../common/http-user.service';
-import { HttpAdminService } from '../common/http-admin.service';
+import { StatsHelper } from '../common/stats.helper';
 
 @Injectable()
 export class BookingService {
+  private readonly bookingStats: StatsHelper<Booking>;
   constructor(
     private readonly bookingRepository: BookingRepository,
     private readonly conflictLogService: ConflictLogService,
     private readonly UsageRepository: UsageRepository,
-    private readonly httpUserService: HttpUserService,
-    private readonly httpAdminService: HttpAdminService,
-  ) {}
+  ) {
+    this.bookingStats = new StatsHelper<Booking>(this.bookingRepository['bookingRepo']);
+  }
 
   //Tạo booking
   async createBooking(data: Partial<Booking>): Promise<Booking> {
@@ -116,5 +116,13 @@ export class BookingService {
     const existing = await this.getBookingById(id);
     if (!existing) throw new NotFoundException('Không tìm thấy booking');
     return this.bookingRepository.deleteBooking(id);
+  }
+
+  async getTotalBookings(): Promise<number> {
+    return this.bookingStats.countTotal();
+  }
+
+  async getBookingByMonth(year: number): Promise<number[]> {
+    return this.bookingStats.countByMonth(year);
   }
 }

@@ -1,10 +1,16 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConflictLogRepository } from './conflict-log.repository';
 import { ConflictLog, ResolutionStatus } from './conflict-log.entity';
+import { StatsHelper } from '../common/stats.helper';
 
 @Injectable()
 export class ConflictLogService {
-  constructor(private readonly conflictRepo: ConflictLogRepository) {}
+  private readonly conflictStats: StatsHelper<ConflictLog>;
+  constructor(
+    private readonly conflictRepo: ConflictLogRepository,
+  ) {
+    this.conflictStats = new StatsHelper(this.conflictRepo['conflictRepo']);
+  }
 
   // Tạo mới conflict log
   async createConflict(user_id: number, booking_id: number, description: string): Promise<ConflictLog> {
@@ -43,5 +49,13 @@ export class ConflictLogService {
       throw new NotFoundException(`Không tìm thấy conflict với ID: ${conflict_id}`);
     }
     return updated;
+  }
+
+  async getTotalConflicts(): Promise<number> {
+    return this.conflictStats.countTotal();
+  }
+
+  async getConflictsByMonth(year: number): Promise<number[]> {
+    return this.conflictStats.countByMonth(year);
   }
 }

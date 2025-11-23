@@ -2,10 +2,14 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { UsageRepository } from './usage.repository';
 import { UsageRecord } from './usage.entity';
 import { GetAllUsageDto } from './dto/get-all-usage.dto';
+import { StatsHelper } from '../common/stats.helper';
 
 @Injectable()
 export class UsageService {
-  constructor(private readonly usageRepository: UsageRepository) {}
+  private readonly usageStats: StatsHelper<UsageRecord>; 
+  constructor(private readonly usageRepository: UsageRepository) {
+    this.usageStats = new StatsHelper<UsageRecord>(this.usageRepository['usageRepo']);
+  }
 
   async createUsage(data: Partial<UsageRecord>): Promise<UsageRecord> {
     return this.usageRepository.createUsage(data);
@@ -37,5 +41,13 @@ export class UsageService {
     const existing = await this.getUsageById(id);
     if (!existing) throw new NotFoundException('Không tìm thấy usage record');
     await this.usageRepository.deleteUsage(id);
+  }
+
+  async getTotalUsage(): Promise<number> {
+    return this.usageStats.countTotal();
+  }
+
+  async getUsageByMonth(year: number): Promise<number[]> {
+    return this.usageStats.countByMonthForUsage(year);
   }
 }

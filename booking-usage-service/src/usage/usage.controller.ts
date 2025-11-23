@@ -40,6 +40,21 @@ export class UsageController {
     async getAllUsage(@Query() query: GetAllUsageDto) {
       return this.usageService.getAllUsage(query);
     }
+  
+    @Get('stats/total')
+  async getTotalUsage() {
+    return {
+      total: await this.usageService.getTotalUsage(),
+    };
+  }
+
+  @Get('stats/by-month')
+  async getUsageByMonth(@Query('year') year: string) {
+    return {
+      year: Number(year),
+      data: await this.usageService.getUsageByMonth(Number(year)),
+    };
+  }
 
   @Get(':usage_id')
     @ApiOperation({ summary: 'Lấy bản ghi cụ thể theo ID' })
@@ -81,4 +96,5 @@ export class UsageController {
   async deleteUsage(@Param() params: UsageIdDto) {
     return this.usageService.deleteUsage(params.usage_id);
   }
+
 }

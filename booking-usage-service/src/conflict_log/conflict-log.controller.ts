@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, Body, Patch } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, Patch, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { ConflictLogService } from './conflict-log.service';
 import { ResolutionStatus } from './conflict-log.entity';
@@ -21,6 +21,21 @@ export class ConflictLogController {
   @ApiOperation({ summary: 'Lấy tất cả conflict logs' })
   async getAll() {
     return this.conflictService.getAllConflicts();
+  }
+
+  @Get('stats/total')
+  async getTotalConflicts() {
+    return {
+      total: await this.conflictService.getTotalConflicts(),
+    };
+  }
+
+  @Get('stats/by-month')
+  async getConflictsByMonth(@Query('year') year: string) {
+    return {
+      year: Number(year),
+      data: await this.conflictService.getConflictsByMonth(Number(year)),
+    };
   }
 
   @Get(':conflict_id')

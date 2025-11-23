@@ -5,9 +5,7 @@ import { BookingService } from './booking.service';
 import { BookingController } from './booking.controller';
 import { BookingRepository } from './booking.repository';
 import { ConflictLogModule } from '../conflict_log/conflict-log.module';
-import { UsageModule } from '../usage/usage.module';
-import { HttpUserService } from '../common/http-user.service';
-import { HttpAdminService } from '../common/http-admin.service';  
+import { UsageModule } from '../usage/usage.module';  
 import { HttpModule } from '@nestjs/axios';
 
 @Module({
@@ -17,7 +15,7 @@ import { HttpModule } from '@nestjs/axios';
     , HttpModule
   ],
   controllers: [BookingController],
-  providers: [BookingService, BookingRepository, HttpUserService, HttpAdminService],
-  exports: [BookingService, BookingRepository, HttpUserService, HttpAdminService],
+  providers: [BookingService, BookingRepository],
+  exports: [BookingService, BookingRepository],
 })
 export class BookingModule {}
