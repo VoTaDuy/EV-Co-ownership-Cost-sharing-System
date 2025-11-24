@@ -93,6 +93,11 @@ export class BookingService {
     return booking;
   }
 
+   // Lấy booking theo user_id
+  async getBookingsByUser(user_id: number): Promise<Booking[]> {
+    return this.bookingRepository.findByUserId(user_id);
+  }
+
   //Cập nhật booking
   async updateBooking(id: number, data: Partial<Booking>): Promise<Booking> {
   const existing = await this.getBookingById(id);
