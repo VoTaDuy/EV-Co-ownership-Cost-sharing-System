@@ -14,6 +14,8 @@ public interface UserRepository extends JpaRepository<Users, Integer> {
 
     Optional<Users> findByUserIdAndIsDeletedFalse(int id);
 
+    Optional<Users> findByPasswordResetToken(String token);
+
     @Query("SELECT u FROM Users u WHERE u.isDeleted = false")
     List<Users> findByIsDeletedFalse();
 }

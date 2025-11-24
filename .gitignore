@@ -1,4 +1,5 @@
 /mongo_data
 /mysql_data
 /.idea
-/.vscode    
+/.vscode
+conf/
