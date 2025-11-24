@@ -7,8 +7,6 @@ import { DigitalSignature } from '../digital-signature/digital-signature.entity'
 import { AlertLog } from '../alert/alert.entity';
 import { ConflictLog } from '../conflict_log/conflict-log.entity';
 import { Vehicle } from '../vehicles/vehicle.entity';
-import { OwnershipGroup } from '../group-member/ownership-group.entity';
-import { GroupMember } from '../group-member/group-member.entity';
 
 @Module({
   imports: [
@@ -44,7 +42,7 @@ import { GroupMember } from '../group-member/group-member.entity';
         username: configService.get<string>('DW_USER') ?? 'root',
         password: configService.get<string>('DW_PASS') ?? '123456',
         database: configService.get<string>('DW_NAME') ?? 'data_warehouse',
-        entities: [Vehicle, OwnershipGroup, GroupMember],
+        entities: [Vehicle],
         synchronize: true,
         logging: true,
       }),
