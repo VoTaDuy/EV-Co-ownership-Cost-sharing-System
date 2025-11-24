@@ -12,7 +12,7 @@ import { HttpUserService } from '../common/http-user.service';
 import { HttpModule } from '@nestjs/axios';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([DigitalSignature, UsageRecord]),
+  imports: [TypeOrmModule.forFeature([DigitalSignature, UsageRecord,], 'bookingConnection'),
   AlertModule,
   UsageModule,     
   BookingModule, 

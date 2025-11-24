@@ -9,7 +9,7 @@ import { UsageModule } from '../usage/usage.module';
 import { HttpModule } from '@nestjs/axios';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Booking])
+  imports: [TypeOrmModule.forFeature([Booking], 'bookingConnection')
     , ConflictLogModule
     , UsageModule
     , HttpModule

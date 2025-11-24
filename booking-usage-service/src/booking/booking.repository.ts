@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Booking } from './booking.entity';
+import { Booking, BookingStatus } from './booking.entity';
 
 @Injectable()
 export class BookingRepository {
   constructor(
-    @InjectRepository(Booking)
+    @InjectRepository(Booking, 'bookingConnection')
     private readonly bookingRepo: Repository<Booking>,
   ) {}
 
@@ -22,6 +22,16 @@ export class BookingRepository {
   // Lấy tất cả booking (hoặc lọc sau này)
   async findAll(): Promise<Booking[]> {
     return this.bookingRepo.find();
+  }
+
+  async getApprovedBookingsByDate(date: string | Date): Promise<Booking[]> {
+    const targetDate = typeof date === 'string' ? new Date(date) : date;
+
+    return this.bookingRepo
+      .createQueryBuilder('booking')
+      .where('booking.booking_status = :status', { status: BookingStatus.APPROVED })
+      .andWhere(':targetDate BETWEEN booking.start_date AND booking.end_date', { targetDate })
+      .getMany();
   }
 
   // Lấy booking theo ID

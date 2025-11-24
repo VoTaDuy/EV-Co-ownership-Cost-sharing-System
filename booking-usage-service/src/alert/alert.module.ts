@@ -3,11 +3,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AlertLog } from './alert.entity';
 import { AlertService } from './alert.service';
 import { AlertController } from './alert.controller';
+import { AlertRepository } from './alert.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([AlertLog])],
-  providers: [AlertService],
+  imports: [TypeOrmModule.forFeature([AlertLog], 'bookingConnection')],
+  providers: [AlertRepository, AlertService],
   controllers: [AlertController],
-  exports: [AlertService],
+  exports: [AlertRepository, AlertService],
 })
 export class AlertModule {}

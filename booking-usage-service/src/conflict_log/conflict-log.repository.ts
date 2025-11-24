@@ -6,7 +6,7 @@ import { ConflictLog } from './conflict-log.entity';
 @Injectable()
 export class ConflictLogRepository {
   constructor(
-    @InjectRepository(ConflictLog)
+    @InjectRepository(ConflictLog, 'bookingConnection')
     private readonly conflictRepo: Repository<ConflictLog>,
   ) {}
 

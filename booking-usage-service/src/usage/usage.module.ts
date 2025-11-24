@@ -6,7 +6,7 @@ import { UsageService } from './usage.service';
 import { UsageController } from './usage.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UsageRecord])],
+  imports: [TypeOrmModule.forFeature([UsageRecord], 'bookingConnection')],
   providers: [UsageRepository, UsageService],
   controllers: [UsageController],
   exports: [UsageService, UsageRepository],

@@ -6,7 +6,7 @@ import { ConflictLogService } from './conflict-log.service';
 import { ConflictLogController } from './conflict-log.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ConflictLog])],
+  imports: [TypeOrmModule.forFeature([ConflictLog], 'bookingConnection')],
   controllers: [ConflictLogController],
   providers: [ConflictLogRepository, ConflictLogService],
   exports: [ConflictLogService], // Để BookingService có thể inject và tạo conflict

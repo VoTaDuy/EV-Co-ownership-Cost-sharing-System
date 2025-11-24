@@ -9,10 +9,10 @@ import base64url from 'base64url';
 @Injectable()
 export class DigitalSignatureRepository {
   constructor(
-    @InjectRepository(DigitalSignature)
+    @InjectRepository(DigitalSignature, 'bookingConnection')
     private readonly signatureRepo: Repository<DigitalSignature>,
 
-    @InjectRepository(UsageRecord)
+    @InjectRepository(UsageRecord, 'bookingConnection')
     private readonly usageRepo: Repository<UsageRecord>,
 
   ) {}

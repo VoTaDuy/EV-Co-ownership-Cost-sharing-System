@@ -77,6 +77,15 @@ export class BookingService {
     return this.bookingRepository.findAll();
   }
 
+  async getUnavailableVehicleIds(date: string): Promise<number[]> {
+    const targetDate = new Date(date);
+
+    const bookings = await this.bookingRepository.getApprovedBookingsByDate(targetDate);
+
+    // Trả về danh sách vehicle_id đang bận
+    return bookings.map(b => b.vehicle_id);
+  }
+
   //Lấy booking theo ID
   async getBookingById(id: number): Promise<Booking> {
     const booking = await this.bookingRepository.findById(id);

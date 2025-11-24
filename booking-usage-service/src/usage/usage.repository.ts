@@ -7,7 +7,7 @@ import { GetAllUsageDto } from './dto/get-all-usage.dto';
 @Injectable()
 export class UsageRepository {
   constructor(
-    @InjectRepository(UsageRecord)
+    @InjectRepository(UsageRecord, 'bookingConnection')
     private readonly usageRepo: Repository<UsageRecord>,
   ) {}
 

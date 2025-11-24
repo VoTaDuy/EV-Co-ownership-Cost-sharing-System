@@ -25,6 +25,11 @@ export class BookingController {
     return this.bookingService.getAllBookings();
   }
 
+  @Get("unavailable-vehicles")
+  async getUnavailableVehicles(@Query('date') date: string) {
+    return this.bookingService.getUnavailableVehicleIds(date);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Lấy booking (đặt lịch xe) theo ID của booking đó' })
   async getBookingById(@Param() params: BookingIdDto) {

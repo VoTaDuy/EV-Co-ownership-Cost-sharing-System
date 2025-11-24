@@ -6,7 +6,7 @@ import { AlertLog, AlertType } from './alert.entity';
 @Injectable()
 export class AlertRepository {
   constructor(
-    @InjectRepository(AlertLog)
+    @InjectRepository(AlertLog, 'bookingConnection')
     private readonly repo: Repository<AlertLog>,
   ) {}
 
@@ -27,6 +27,13 @@ export class AlertRepository {
   async findByUser(user_id: number): Promise<AlertLog[]> {
     return this.repo.find({
       where: { user_id },
+      order: { created_at: 'DESC' },
+    });
+  }
+
+  async findByType(type: AlertType): Promise<AlertLog[]> {
+    return this.repo.find({
+      where: { alert_type: type },
       order: { created_at: 'DESC' },
     });
   }
