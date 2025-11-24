@@ -44,7 +44,7 @@ export class ConflictLogController {
     return this.conflictService.getConflictById(params.conflict_id);
   }
 
-  @Get(':user_id')
+  @Get('user_id/:user_id')
   @ApiOperation({ summary: 'Lấy danh sách conflict theo user ID' })
   async getByBooking(@Param() params: GetConflictsByUserDto) {
     return this.conflictService.getConflictsByUser(params.user_id);
