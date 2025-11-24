@@ -19,6 +19,7 @@ public class VehicleCostController {
 
     @GetMapping
     public List<VehicleCostDTO> getAllByGroup(@RequestParam int groupId) {
+
         return costService.getAllByGroup(groupId);
     }
 
