@@ -157,4 +157,35 @@ export class GroupMembersService {
       removed_member_id: member.member_id,
     };
   }
+
+  async findBookingAvailable(vehicle_id: number, user_id: number) {
+    // 1️⃣ Tìm group theo vehicle_id
+    const group = await this.groupRepo.findOne({
+      where: { vehicle_id },
+      relations: ['members'],
+    });
+    if (!group) throw new NotFoundException('Ownership group not found');
+    console.log('id', group);
+    // 2️⃣ Tìm thành viên trong group
+    const member = group.members.find((m) => m.user_id === user_id);
+    if (!member) {
+      throw new NotFoundException(
+        'User is not a member of this ownership group',
+      );
+    }
+
+    // 3️⃣ Tính ngày khả dụng
+    const daysInMonth = 30; // hoặc new
+    const availableDays = Math.floor(
+      (Number(member.ownership_ratio) / 100) * daysInMonth,
+    );
+
+    return {
+      user_id,
+      vehicle_id,
+      ownership_ratio: member.ownership_ratio,
+      available_days: availableDays,
+      month_days: daysInMonth,
+    };
+  }
 }

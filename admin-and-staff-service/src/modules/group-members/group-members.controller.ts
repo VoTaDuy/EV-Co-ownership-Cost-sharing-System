@@ -6,6 +6,7 @@ import {
   Delete,
   Param,
   Body,
+  ParseIntPipe,
 } from '@nestjs/common';
 import {
   CreateGroupMemberDto,
@@ -36,6 +37,14 @@ export class GroupMembersController {
   @Get('group/:group_id')
   findMemberByGroupId(@Param('group_id') id: number) {
     return this.service.findMember(id);
+  }
+
+  @Get('/:vehicle_id/:user_id/available-days')
+  getBookingAvailable(
+    @Param('vehicle_id', ParseIntPipe) vehicle_id: number,
+    @Param('user_id', ParseIntPipe) user_id: number,
+  ) {
+    return this.service.findBookingAvailable(vehicle_id, user_id);
   }
 
   // PUT /group-members/:group_id/:user_id
