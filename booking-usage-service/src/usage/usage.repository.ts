@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Repository, Between } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UsageRecord } from './usage.entity';
 import { GetAllUsageDto } from './dto/get-all-usage.dto';
@@ -63,5 +63,18 @@ export class UsageRepository {
   async deleteUsage(id: number): Promise<void> {
     if (!id) throw new Error('Usage ID is required');
     await this.usageRepo.delete({ usage_id: id });
+  }
+
+  async getUsageInMonth(user_id: number, vehicle_id: number, year: number, month: number) {
+    const startOfMonth = new Date(year, month - 1, 1);
+    const endOfMonth = new Date(year, month, 0); // ngày cuối tháng
+
+    return await this.usageRepo.find({
+      where: {
+        user_id,
+        vehicle_id,
+        start_date: Between(startOfMonth, endOfMonth),
+      },
+    });
   }
 }

@@ -67,6 +67,23 @@ export class UsageController {
     async getUsageById(@Param() params: UsageIdDto) {
       return this.usageService.getUsageById(params.usage_id);
     }
+  
+  @Get('user/:user_id/month')
+  async getUsedDays(
+    @Param('user_id') user_id: number,
+    @Query('vehicle_id') vehicle_id: number,
+    @Query('year') year: number,
+    @Query('month') month: number,
+  ) {
+    const total = await this.usageService.getUsedDaysInMonth(
+      Number(user_id),
+      Number(vehicle_id),
+      Number(year),
+      Number(month),
+    );
+
+    return { total_used_days: total };
+  }
 
   @Put(':usage_id') 
   @ApiOperation({ summary: 'Cập nhật thông tin bản ghi usage' })
