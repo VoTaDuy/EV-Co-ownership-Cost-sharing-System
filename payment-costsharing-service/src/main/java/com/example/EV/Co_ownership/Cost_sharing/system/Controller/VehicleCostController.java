@@ -6,6 +6,7 @@ import com.example.EV.Co_ownership.Cost_sharing.system.Service.Imp.VehicleCostSe
 import com.example.EV.Co_ownership.Cost_sharing.system.Service.VehicleCostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,11 +20,14 @@ public class VehicleCostController {
 
     @Autowired
     private VehicleCostServiceImp costService;
-
     @GetMapping
     public List<VehicleCostDTO> getAllByGroup(@RequestParam int groupId) {
-
         return costService.getAllByGroup(groupId);
+    }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<?> getAllCostDTO(){
+        return new ResponseEntity<>( costService.getAllVehicleCost(),HttpStatus.OK);
     }
         
 

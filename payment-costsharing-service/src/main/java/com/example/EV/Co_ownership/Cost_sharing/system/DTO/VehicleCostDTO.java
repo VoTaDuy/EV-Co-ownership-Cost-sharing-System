@@ -13,4 +13,5 @@ public record VehicleCostDTO(
         String status,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
-) {}
+) {
+}

@@ -2,6 +2,8 @@ package com.example.EV.Co_ownership.Cost_sharing.system.Service;
 
 import com.example.EV.Co_ownership.Cost_sharing.system.DTO.CreateCostRequest;
 import com.example.EV.Co_ownership.Cost_sharing.system.DTO.VehicleCostDTO;
+import com.example.EV.Co_ownership.Cost_sharing.system.DTO.VehicleCostDTOGet;
+import com.example.EV.Co_ownership.Cost_sharing.system.DTO.VehicleDTO;
 import com.example.EV.Co_ownership.Cost_sharing.system.Entity.FundTransaction;
 import com.example.EV.Co_ownership.Cost_sharing.system.Entity.GroupFund;
 import com.example.EV.Co_ownership.Cost_sharing.system.Entity.VehicleCost;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -82,6 +85,26 @@ public class VehicleCostService implements VehicleCostServiceImp {
                 .orElseThrow(() -> new NotFoundException("Chi phí không tồn tại: " + costId));
         costRepo.delete(cost);
     }
+
+    @Override
+    public List<VehicleCostDTOGet> getAllVehicleCost() {
+
+
+        List<VehicleCost> vehicleCostList = costRepo.findAll();
+
+        List<VehicleCostDTOGet> vehicleCostDTOGetList = new ArrayList<>();
+
+        for (VehicleCost v : vehicleCostList)
+        {
+            VehicleCostDTOGet vehicleCostDTOGet = new VehicleCostDTOGet();
+            vehicleCostDTOGet.setCostId(v.getCostId());
+            vehicleCostDTOGet.setCostName(v.getCostName());
+            vehicleCostDTOGetList.add(vehicleCostDTOGet);
+        }
+
+        return vehicleCostDTOGetList;
+    }
+
 
     private void logFundTransfer(VehicleCost cost, int userId) {
         FundTransaction tx = new FundTransaction();
