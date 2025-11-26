@@ -15,7 +15,6 @@ export class AlertRepository {
       user_id,
       alert_type,
       message,
-      status: 'unread',
     });
     return this.repo.save(alert);
   }

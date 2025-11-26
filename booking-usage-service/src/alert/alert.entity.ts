@@ -5,7 +5,6 @@ export enum AlertType {
   LATE_CHECKOUT = 'LATE_CHECKOUT',
 }
 
-export type AlertStatus = 'unread' | 'read' ;
 
 @Entity({ name: 'alert_log' })
 export class AlertLog {
@@ -20,9 +19,6 @@ export class AlertLog {
 
   @Column({ type: 'text' })
   message: string;
-
-  @Column({ type: 'varchar', length: 20, default: 'unread' })
-  status: AlertStatus;
 
   @CreateDateColumn({ type: 'timestamp', precision: 6, default: () => 'CURRENT_TIMESTAMP(6)' })
   created_at: Date;
