@@ -39,6 +39,11 @@ export class BookingRepository {
     return this.bookingRepo.findOne({ where: { booking_id: id } });
   }
 
+  // Lấy booking theo user_id
+  async findByUserId(user_id: number): Promise<Booking[]> {
+    return this.bookingRepo.find({ where: { user_id } }); // đổi userId nếu entity khác
+  }
+
   // Cập nhật booking
   async updateBooking(id: number, updateData: Partial<Booking>): Promise<Booking> {
     await this.bookingRepo.update(id, updateData);

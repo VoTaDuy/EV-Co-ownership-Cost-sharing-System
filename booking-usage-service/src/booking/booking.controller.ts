@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Put, Delete, Body, Param, Query } from '@nestjs/common';
 import { BookingService } from './booking.service';
 import { Booking } from './booking.entity';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { CreateBookingDto } from './dto/createBooking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
 import { BookingIdDto } from './dto/booking-Id.dto';
@@ -20,8 +20,12 @@ export class BookingController {
 
   
   @Get()
-  @ApiOperation({ summary: 'Lấy danh sách booking (đặt lịch xe) đang khả dụng' })
-  async getAllBookings() {
+  @ApiOperation({ summary: 'Lấy danh sách booking (đặt lịch xe) đang khả dụng, có thể lọc theo user_id' })
+  @ApiQuery({ name: 'user_id', required: false, type: Number })
+  async getAllBookings(@Query('user_id') user_id?: string) {
+    if (user_id) {
+      return this.bookingService.getBookingsByUser(Number(user_id));
+    }
     return this.bookingService.getAllBookings();
   }
 

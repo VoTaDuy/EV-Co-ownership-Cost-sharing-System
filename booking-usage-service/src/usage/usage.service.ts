@@ -50,4 +50,34 @@ export class UsageService {
   async getUsageByMonth(year: number): Promise<number[]> {
     return this.usageStats.countByMonthForUsage(year);
   }
+
+  async getUsedDaysInMonth(
+    user_id: number,
+    vehicle_id: number,
+    year: number,
+    month: number,
+  ): Promise<number> {
+    const records = await this.usageRepository.getUsageInMonth(
+      user_id,
+      vehicle_id,
+      year,
+      month,
+    );
+
+    let totalDays = 0;
+
+    for (const r of records) {
+      const start = new Date(r.start_date);
+      const end = new Date(r.end_date);
+
+      // số ngày giữa start và end
+      const diff = Math.ceil(
+        (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)
+      ) + 1; // +1 vì tính cả ngày bắt đầu
+
+      totalDays += diff;
+    }
+
+    return totalDays;
+  }
 }
