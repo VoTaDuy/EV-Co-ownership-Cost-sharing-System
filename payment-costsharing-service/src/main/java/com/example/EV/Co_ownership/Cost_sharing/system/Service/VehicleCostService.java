@@ -13,6 +13,7 @@ import com.example.EV.Co_ownership.Cost_sharing.system.Repository.GroupFundRepos
 import com.example.EV.Co_ownership.Cost_sharing.system.Repository.VehicleCostRepository;
 import com.example.EV.Co_ownership.Cost_sharing.system.Service.Imp.VehicleCostServiceImp;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,9 +24,15 @@ import java.util.List;
 @Transactional
 public class VehicleCostService implements VehicleCostServiceImp {
 
-    private final VehicleCostRepository costRepo;
-    private final GroupFundRepository fundRepo;
-    private final FundTransactionRepository txRepo;
+    @Autowired
+    private  VehicleCostRepository costRepo;
+
+    @Autowired
+    private GroupFundRepository fundRepo;
+
+
+    @Autowired
+    private FundTransactionRepository txRepo;
 
     @Override
     public List<VehicleCostDTO> getAllByGroup(int groupId) {
@@ -34,33 +41,16 @@ public class VehicleCostService implements VehicleCostServiceImp {
                 .toList();
     }
 
-    @Override
-    public List<VehicleCostDTO> getAllByFund(Integer fundId) {
-        return costRepo.findByFund_FundId(fundId).stream()
-                .map(this::toDTO)
-                .toList();
-    }
 
     @Override
-    public VehicleCostDTO create(CreateCostRequest request, int userId) {
+    public VehicleCostDTO create(CreateCostRequest request, int groupId, int userId) {
         VehicleCost cost = new VehicleCost();
-        cost.setGroupId(request.groupId());
+        cost.setGroupId(groupId);
+        cost.setUserId(userId);
         cost.setVehicleId(request.vehicleId());
         cost.setCostName(request.costName());
         cost.setAmount(request.amount());
-
-        if (request.fundId() != null) {
-            GroupFund fund = fundRepo.findById(request.fundId())
-                    .orElseThrow(() -> new NotFoundException("Quỹ không tồn tại: " + request.fundId()));
-            cost.setFund(fund);
-        }
-
         cost = costRepo.save(cost);
-
-        // Ghi log giao dịch nếu dùng quỹ
-        if (request.fundId() != null && cost.getStatus() == VehicleCostStatus.paid) {
-            logFundTransfer(cost, userId);
-        }
 
         return toDTO(cost);
     }
@@ -80,17 +70,7 @@ public class VehicleCostService implements VehicleCostServiceImp {
         VehicleCostStatus newStatus = VehicleCostStatus.valueOf(status.toLowerCase());
         cost.setStatus(newStatus);
 
-        // Nếu chuyển sang "paid" và có dùng quỹ → trừ tiền
-        if (newStatus == VehicleCostStatus.paid && cost.getFund() != null) {
-            GroupFund fund = cost.getFund();
-            if (fund.getBalance().compareTo(cost.getAmount()) < 0) {
-                throw new IllegalStateException("Số dư quỹ không đủ để thanh toán chi phí này.");
-            }
-            fund.setBalance(fund.getBalance().subtract(cost.getAmount()));
-            fundRepo.save(fund);
 
-            logFundTransfer(cost, userId);
-        }
 
         cost = costRepo.save(cost);
         return toDTO(cost);
@@ -105,7 +85,6 @@ public class VehicleCostService implements VehicleCostServiceImp {
 
     private void logFundTransfer(VehicleCost cost, int userId) {
         FundTransaction tx = new FundTransaction();
-        tx.setFund(cost.getFund());
         tx.setCost(cost);
         tx.setTransactionType(TransactionType.transfer);
         tx.setAmount(cost.getAmount());
@@ -119,7 +98,7 @@ public class VehicleCostService implements VehicleCostServiceImp {
         return new VehicleCostDTO(
                 cost.getCostId(),
                 cost.getGroupId(),
-                cost.getFund() != null ? cost.getFund().getFundId() : null,
+                cost.getUserId(),
                 cost.getVehicleId(),
                 cost.getCostName(),
                 cost.getAmount(),

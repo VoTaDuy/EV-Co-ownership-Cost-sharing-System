@@ -28,9 +28,10 @@ public class VehicleCost {
     @Column(name = "group_id")
     private int groupId;
 
-    @ManyToOne
-    @JoinColumn(name = "fund_id")
-    private GroupFund fund;
+
+    @Column(name = "userId")
+    private  int userId;
+
 
     @Column(name = "vehicle_id", length = 255)
     private int vehicleId;

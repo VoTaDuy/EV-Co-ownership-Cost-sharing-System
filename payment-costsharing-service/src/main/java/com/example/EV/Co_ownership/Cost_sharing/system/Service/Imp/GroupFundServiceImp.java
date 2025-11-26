@@ -11,7 +11,7 @@ public interface GroupFundServiceImp {
 
     List<GroupFundDTO> getAll(int groupId);
 
-    GroupFundDTO create(CreateFundRequest request, int userId);
+    GroupFundDTO create(CreateFundRequest request, int userId, int groupId);
 
     GroupFundDTO getById(Integer fundId);
 

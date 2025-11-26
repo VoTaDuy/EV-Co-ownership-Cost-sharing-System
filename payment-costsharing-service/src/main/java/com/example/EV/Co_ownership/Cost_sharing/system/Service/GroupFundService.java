@@ -15,6 +15,7 @@ import com.example.EV.Co_ownership.Cost_sharing.system.Repository.PaymentReposit
 import com.example.EV.Co_ownership.Cost_sharing.system.Service.Imp.GroupFundServiceImp;
 import com.example.EV.Co_ownership.Cost_sharing.system.Util.PaymentUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,9 +28,14 @@ import java.util.List;
 @Transactional
 public class GroupFundService implements GroupFundServiceImp {
 
-    private final GroupFundRepository fundRepo;
-    private final FundTransactionRepository txRepo;
-    private final PaymentRepository paymentRepo;
+    @Autowired
+    private GroupFundRepository fundRepo;
+
+    @Autowired
+    private FundTransactionRepository txRepo;
+
+    @Autowired
+    private PaymentRepository paymentRepo;
 
     @Override
     public List<GroupFundDTO> getAll(int groupId) {
@@ -39,9 +45,9 @@ public class GroupFundService implements GroupFundServiceImp {
     }
 
     @Override
-    public GroupFundDTO create(CreateFundRequest request, int userId) {
+    public GroupFundDTO create(CreateFundRequest request, int userId, int groupId) {
         GroupFund fund = new GroupFund();
-        fund.setGroupId(request.groupId());
+        fund.setGroupId(groupId);
         fund.setFundName(request.fundName());
         fund.setBalance(request.initialBalance() != null ? request.initialBalance() : BigDecimal.ZERO);
         fund.setCreatedBy(userId);

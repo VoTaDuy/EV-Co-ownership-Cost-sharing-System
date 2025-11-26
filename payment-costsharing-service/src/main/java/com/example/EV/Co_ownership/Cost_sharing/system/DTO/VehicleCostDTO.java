@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 public record VehicleCostDTO(
         Integer costId,
         int groupId,
-        Integer fundId,
+        int userId,
         int vehicleId,
         String costName,
         BigDecimal amount,

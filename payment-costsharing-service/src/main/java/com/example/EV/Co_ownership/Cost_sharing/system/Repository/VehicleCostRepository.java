@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface VehicleCostRepository extends JpaRepository<VehicleCost, Integer> {
     List<VehicleCost> findByGroupId(int groupId);
-    List<VehicleCost> findByFund_FundId(Integer fundId);
+
 }

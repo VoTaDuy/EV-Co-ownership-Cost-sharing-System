@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface VehicleCostServiceImp {
     List<VehicleCostDTO> getAllByGroup(int groupId);
-    List<VehicleCostDTO> getAllByFund(Integer fundId);
-    VehicleCostDTO create(CreateCostRequest request, int userId);
+
+    VehicleCostDTO create(CreateCostRequest request, int userId, int groupId);
     VehicleCostDTO getById(Integer costId);
     VehicleCostDTO updateStatus(Integer costId, String status, int userId);
     void delete(Integer costId);
