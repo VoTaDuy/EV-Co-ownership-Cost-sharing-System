@@ -7,13 +7,12 @@ import com.example.EV.Co_ownership.Cost_sharing.system.Service.Imp.OwnershipGrou
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/payment/ownership")
+@CrossOrigin(origins = "http://localhost:3000")
+
 public class OwnershipGroupController {
 
     @Autowired

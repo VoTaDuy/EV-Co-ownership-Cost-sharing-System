@@ -14,8 +14,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "vehicle_cost")
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class VehicleCost {
@@ -28,9 +26,10 @@ public class VehicleCost {
     @Column(name = "group_id")
     private int groupId;
 
-    @ManyToOne
-    @JoinColumn(name = "fund_id")
-    private GroupFund fund;
+
+    @Column(name = "userId")
+    private  int userId;
+
 
     @Column(name = "vehicle_id", length = 255)
     private int vehicleId;
@@ -52,4 +51,76 @@ public class VehicleCost {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public Integer getCostId() {
+        return costId;
+    }
+
+    public void setCostId(Integer costId) {
+        this.costId = costId;
+    }
+
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getVehicleId() {
+        return vehicleId;
+    }
+
+    public void setVehicleId(int vehicleId) {
+        this.vehicleId = vehicleId;
+    }
+
+    public String getCostName() {
+        return costName;
+    }
+
+    public void setCostName(String costName) {
+        this.costName = costName;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public VehicleCostStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(VehicleCostStatus status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }

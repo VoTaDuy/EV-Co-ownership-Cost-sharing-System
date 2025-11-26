@@ -5,7 +5,10 @@ import com.example.EV.Co_ownership.Cost_sharing.system.DTO.DepositRequest;
 import com.example.EV.Co_ownership.Cost_sharing.system.DTO.FundTransactionDTO;
 import com.example.EV.Co_ownership.Cost_sharing.system.DTO.GroupFundDTO;
 import com.example.EV.Co_ownership.Cost_sharing.system.Service.GroupFundService;
+import com.example.EV.Co_ownership.Cost_sharing.system.Service.Imp.GroupFundServiceImp;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,17 +21,15 @@ import java.util.Map;
 @CrossOrigin(origins = "http://localhost:3000")
 public class GroupFundController {
 
-    private final GroupFundService fundService;
+    @Autowired
+    private GroupFundServiceImp fundService;
 
-    @GetMapping
-    public List<GroupFundDTO> getAll(@RequestParam(required = false) Integer groupId) {
-        if (groupId != null) {
-            return fundService.getAll(groupId);
-        }
-        return List.of();
+    @GetMapping("/{groupId}")
+    public List<GroupFundDTO> getAll(@PathVariable Integer groupId) {
+        return fundService.getAll(groupId);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getFund/{id}")
     public GroupFundDTO getById(@PathVariable int id) {
         return fundService.getById(id);
     }
@@ -38,11 +39,13 @@ public class GroupFundController {
         return fundService.getTransactions(id);
     }
 
-    @PostMapping
-    public GroupFundDTO create(@RequestBody CreateFundRequest request,
-                               @RequestHeader("userId") String userIdHeader) {
-        int userId = Integer.parseInt(userIdHeader);
-        return fundService.create(request, userId);
+    @PostMapping("/{groupId}/{userId}")
+    public ResponseEntity<?> createFund(@RequestBody CreateFundRequest createFundRequest,
+                                        @PathVariable int userId,
+                                        @PathVariable int groupId){
+
+
+        return new ResponseEntity<>(fundService.create(createFundRequest, userId, groupId),HttpStatus.OK);
     }
 
     @PostMapping("/{id}/deposit")

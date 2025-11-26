@@ -76,9 +76,6 @@ public class CostShareService implements CostShareServiceImp {
             return shareRepo.save(share);
         }).toList();
 
-        if (cost.getStatus() == VehicleCostStatus.paid && cost.getFund() != null) {
-            shares.forEach(share -> settleFromFund(share, cost.getFund(), userId));
-        }
 
         return shares.stream().map(this::toDTO).toList();
     }
@@ -105,10 +102,7 @@ public class CostShareService implements CostShareServiceImp {
 
         share = shareRepo.save(share);
 
-        // Ghi log nếu thanh toán đầy đủ
-        if (share.getStatus() == CostShareStatus.paid && share.getCost().getFund() != null) {
-            logFundTransfer(share, userId);
-        }
+
 
         return toDTO(share);
     }
@@ -130,7 +124,6 @@ public class CostShareService implements CostShareServiceImp {
 
     private void logFundTransfer(CostShare share, int userId) {
         FundTransaction tx = new FundTransaction();
-        tx.setFund(share.getCost().getFund());
         tx.setCost(share.getCost());
         tx.setTransactionType(TransactionType.transfer);
         tx.setAmount(share.getAmountDue());
