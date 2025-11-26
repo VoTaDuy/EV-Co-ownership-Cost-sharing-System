@@ -76,6 +76,33 @@ export class VehiclesController {
     return this.vehiclesService.findOne(id);
   }
 
+  @Patch(':id/full')
+  @UseInterceptors(AnyFilesInterceptor())
+  async updateFullVehicle(
+    @Param('id', ParseIntPipe) id: number,
+    @UploadedFiles() files: Express.Multer.File[],
+    @Body() dto: UpdateVehicleDto,
+  ) {
+    // 1. File ảnh đại diện
+    const imageFile = files.find((f) => f.fieldname === 'image');
+
+    // 2. File ảnh thông số
+    const specFiles = files.filter((f) => f.fieldname === 'spec_images');
+
+    // Upload Cloudinary nếu có file mới
+    if (imageFile) {
+      dto.image_url = await this.cloudinaryService.uploadImage(imageFile);
+    }
+
+    if (specFiles.length > 0) {
+      dto.spec_image_urls =
+        await this.cloudinaryService.uploadMultiple(specFiles);
+    }
+
+    // Update tất cả
+    return this.vehiclesService.update(id, dto);
+  }
+
   // ============================
   // UPDATE (INT)
   // ============================
