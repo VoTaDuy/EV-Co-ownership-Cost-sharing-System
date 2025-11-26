@@ -13,4 +13,10 @@ export class VehicleController {
   ) {
     return this.vehicleService.getVehicleGroupTimeline(vehicleId, startDate);
   }
+
+  @Get('status/today')
+  async getVehiclesStatusToday(@Query('date') date?: string) {
+    const targetDate = date || new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+    return this.vehicleService.getVehiclesStatusSummaryByDate(targetDate);
+  }
 }

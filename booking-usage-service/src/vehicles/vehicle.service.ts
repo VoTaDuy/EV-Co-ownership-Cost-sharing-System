@@ -65,4 +65,39 @@ export class VehicleService {
       timeline,
     };
   }
+
+  async getVehiclesStatusSummaryByDate(dateString: string) {
+    const targetDate = new Date(dateString);
+    targetDate.setHours(0, 0, 0, 0);
+
+    const nextDate = new Date(targetDate);
+    nextDate.setDate(targetDate.getDate() + 1);
+
+    // 1) Lấy tất cả xe
+    const vehicles = await this.vehicleRepo.find();
+
+    // 2) Lấy tất cả booking APPROVED trùng ngày
+    const bookings = await this.bookingRepo.find({
+      where: {
+        booking_status: BookingStatus.APPROVED,
+        start_date: Between(targetDate, nextDate),
+      },
+    });
+
+    // 3) Đếm số xe theo status
+    let availableCount = 0;
+    let usedCount = 0;
+
+    vehicles.forEach(v => {
+      const isUsed = bookings.some(b => b.vehicle_id === v.vehicle_id);
+      if (isUsed) usedCount++;
+      else availableCount++;
+    });
+
+    return {
+      total: vehicles.length,
+      available: availableCount,
+      used: usedCount,
+    };
+  }
 }

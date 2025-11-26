@@ -17,7 +17,7 @@ export class ConflictLogController {
     return this.conflictService.createConflict(body.user_id, body.booking_id, body.description);
   }
 
-  @Get()
+  @Get('get-all')
   @ApiOperation({ summary: 'Lấy tất cả conflict logs' })
   async getAll() {
     return this.conflictService.getAllConflicts();
