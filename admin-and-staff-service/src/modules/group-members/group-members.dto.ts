@@ -33,11 +33,8 @@ export class CreateGroupMemberDto {
   group_role?: GroupRole;
 
   @IsOptional()
-  @IsNumber(
-    { maxDecimalPlaces: 2 },
-    { message: 'ownership_ratio phải có tối đa 2 chữ số thập phân' },
-  )
-  @Min(0, { message: 'Tỷ lệ sở hữu không được âm' })
+  @Type(() => Number)
+  @Min(10, { message: 'Tỷ lệ sở hữu phải lớn hơn 10%' })
   @Max(100, { message: 'Tỷ lệ sở hữu không được quá 100%' })
   ownership_ratio?: number;
 }
@@ -57,9 +54,9 @@ export class AddGroupMemberDto {
   group_role?: GroupRole;
 
   @IsOptional()
-  @IsNumber({ maxDecimalPlaces: 2 })
-  @Min(0)
-  @Max(100)
+  @Type(() => Number)
+  @Min(10, { message: 'Tỷ lệ sở hữu phải lớn hơn 10%' })
+  @Max(100, { message: 'Tỷ lệ sở hữu không được quá 100%' })
   ownership_ratio?: number;
 }
 
@@ -74,11 +71,8 @@ export class UpdateGroupMemberDto {
   group_role?: GroupRole;
 
   @IsOptional()
-  @IsNumber(
-    { maxDecimalPlaces: 2 },
-    { message: 'ownership_ratio phải có tối đa 2 chữ số thập phân' },
-  )
-  @Min(0, { message: 'Tỷ lệ sở hữu không được âm' })
+  @Type(() => Number)
+  @Min(10, { message: 'Tỷ lệ sở hữu phải lớn hơn 10%' })
   @Max(100, { message: 'Tỷ lệ sở hữu không được quá 100%' })
   ownership_ratio?: number;
 }

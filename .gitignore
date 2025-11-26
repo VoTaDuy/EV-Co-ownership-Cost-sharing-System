@@ -3,3 +3,4 @@
 /.idea
 /.vscode
 conf/
+user-and-ownership-service/src/main/java/com/example/EV_Co_ownership/User_and_ownership_service/Config/CorsConfig.java
