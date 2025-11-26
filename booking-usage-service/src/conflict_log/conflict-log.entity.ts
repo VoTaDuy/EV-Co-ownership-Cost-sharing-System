@@ -4,9 +4,7 @@ import { Booking } from '../booking/booking.entity';
 
 export enum ResolutionStatus {
   UNRESOLVED = 'unresolved',
-  IN_PROGRESS = 'in_progress',
-  RESOLVED = 'resolved',
-  REJECTED = 'rejected',
+  RESOLVED = 'resolved'
 }
 
 @Entity({ name: 'conflict_log' })

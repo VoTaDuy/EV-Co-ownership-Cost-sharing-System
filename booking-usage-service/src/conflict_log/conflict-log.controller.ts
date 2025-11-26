@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, Body, Patch, Query } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, Query, Put } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { ConflictLogService } from './conflict-log.service';
 import { ResolutionStatus } from './conflict-log.entity';
@@ -50,7 +50,7 @@ export class ConflictLogController {
     return this.conflictService.getConflictsByUser(Number(params.user_id));
   }
 
-  @Patch(':id/status')
+  @Put(':id/status')
   @ApiOperation({ summary: 'Cập nhật trạng thái conflict (resolve, reject, ...)' })
   async updateStatus(@Param('id') conflict_id: number, @Body() body: UpdateConflictStatusDto) {
     return this.conflictService.updateConflictStatus(conflict_id, body.status, body.resolved_by);
