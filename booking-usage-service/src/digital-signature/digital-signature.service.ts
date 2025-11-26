@@ -6,7 +6,6 @@ import { BookingRepository } from '../booking/booking.repository';
 import { AlertService } from '../alert/alert.service';
 import { AlertType } from '../alert/alert.entity';
 import { SignatureType } from './digital-signature.entity'; 
-import { HttpUserService } from '../common/http-user.service';
 
 const LATE_THRESHOLD = 15; // phút
 
@@ -17,21 +16,15 @@ export class DigitalSignatureService {
     private readonly usageRepo: UsageRepository,
     private readonly bookingRepo: BookingRepository,
     private readonly alertService: AlertService,
-    private readonly httpUserService: HttpUserService,
   ) {}
 
   // Tạo chữ ký số
   async createSignature(data: Partial<DigitalSignature>): Promise<DigitalSignature> {
-    const signature = await this.signatureRepo.createSignature(data);
-
     if (!data.user_id) {
-            throw new Error('Thiếu user_id');
-          }
-    
-    const user = await this.httpUserService.getUserById(data.user_id!);
-    if (!user) {
-      throw new NotFoundException(`User ${data.user_id} không tồn tại`);
+      throw new Error('Thiếu user_id');
     }
+
+    const signature = await this.signatureRepo.createSignature(data);
 
     // Lấy usage + booking
     const usage = await this.usageRepo.findById(signature.usage_id);
@@ -58,6 +51,7 @@ export class DigitalSignatureService {
     if (diff > LATE_THRESHOLD) {
       const type = data.type === SignatureType.CHECKIN ? AlertType.LATE_CHECKIN : AlertType.LATE_CHECKOUT;
       const msg = `Người dùng check-${data.type === SignatureType.CHECKIN ? 'in' : 'out'} muộn ${Math.floor(diff)} phút.`;
+
       await this.alertService.createAlert(booking.user_id, type, msg);
     }
 

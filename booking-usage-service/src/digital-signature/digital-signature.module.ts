@@ -8,18 +8,15 @@ import { DigitalSignatureController } from './digital-signature.controller';
 import { AlertModule } from '../alert/alert.module';
 import { UsageModule } from '../usage/usage.module';
 import { BookingModule } from '../booking/booking.module';
-import { HttpUserService } from '../common/http-user.service';
-import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [TypeOrmModule.forFeature([DigitalSignature, UsageRecord,], 'bookingConnection'),
   AlertModule,
   UsageModule,     
   BookingModule, 
-  HttpModule,
   ],
-  providers: [DigitalSignatureRepository, DigitalSignatureService, HttpUserService],
+  providers: [DigitalSignatureRepository, DigitalSignatureService],
   controllers: [DigitalSignatureController],
-  exports: [DigitalSignatureService, DigitalSignatureRepository, HttpUserService],
+  exports: [DigitalSignatureService, DigitalSignatureRepository],
 })
 export class DigitalSignatureModule {}
