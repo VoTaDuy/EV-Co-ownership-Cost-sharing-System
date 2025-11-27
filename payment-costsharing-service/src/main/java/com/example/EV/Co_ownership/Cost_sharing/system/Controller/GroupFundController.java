@@ -18,7 +18,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/payment/funds")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
 public class GroupFundController {
 
     @Autowired

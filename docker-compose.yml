@@ -83,7 +83,7 @@ services:
     networks:
       - microservices-network 
 
-  # === Payment & Costsharing (Spring Boot) ===
+  # === Payment & Costsharing (Spring Boot) === 
   payment-service:
     build:
       context: payment-costsharing-service

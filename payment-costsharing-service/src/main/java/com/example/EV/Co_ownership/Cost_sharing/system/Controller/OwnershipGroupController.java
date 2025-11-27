@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/payment/ownership")
-@CrossOrigin(origins = "http://localhost:3000")
-
 public class OwnershipGroupController {
 
     @Autowired

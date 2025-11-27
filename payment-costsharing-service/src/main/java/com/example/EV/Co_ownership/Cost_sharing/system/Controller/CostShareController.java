@@ -14,7 +14,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/payment/costshares")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
 public class CostShareController {
 
     private final CostShareServiceImp shareService;

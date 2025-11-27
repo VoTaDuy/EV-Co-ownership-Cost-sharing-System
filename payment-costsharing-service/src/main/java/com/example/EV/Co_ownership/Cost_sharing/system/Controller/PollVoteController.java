@@ -11,7 +11,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/payment/poll-votes")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
 public class PollVoteController {
 
     private final PollVoteServiceImp voteService;

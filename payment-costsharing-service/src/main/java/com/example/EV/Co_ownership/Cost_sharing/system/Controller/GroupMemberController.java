@@ -12,7 +12,6 @@ import java.util.List;
 
 @RestController()
 @RequestMapping("/payment/group_member")
-@CrossOrigin(origins = "http://localhost:3000")
 public class GroupMemberController {
 
     @Autowired

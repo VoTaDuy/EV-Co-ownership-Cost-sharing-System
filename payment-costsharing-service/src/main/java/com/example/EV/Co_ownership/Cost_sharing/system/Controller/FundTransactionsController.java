@@ -11,7 +11,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/payment/transactions")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
 public class FundTransactionsController {
 
     private final FundTransactionService txService;

@@ -14,7 +14,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/payment/costs")
-@CrossOrigin(origins = "http://localhost:3000")
 public class VehicleCostController {
 
 

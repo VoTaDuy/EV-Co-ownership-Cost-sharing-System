@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/payment/vehicle")
-@CrossOrigin(origins = "http://localhost:3000")
-
 public class VehicleController {
 
 
